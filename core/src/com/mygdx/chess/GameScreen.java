@@ -21,6 +21,9 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, GuiParams.WIDTH, GuiParams.HEIGHT);
         stage = new Stage(new ScreenViewport(), game.getBatch());
         Gdx.input.setInputProcessor(stage);
+
+        BoardGroup boardGroup = new BoardGroup();
+        stage.addActor(boardGroup);
     }
 
     @Override
