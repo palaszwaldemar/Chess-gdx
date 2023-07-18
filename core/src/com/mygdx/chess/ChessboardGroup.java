@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-public class BoardGroup extends Group {
+public class ChessboardGroup extends Group {
     private final Texture boardImage;
 
-    public BoardGroup() {
+    public ChessboardGroup() {
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
     }
 

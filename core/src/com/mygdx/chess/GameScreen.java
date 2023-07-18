@@ -18,12 +18,12 @@ public class GameScreen implements Screen {
 
         //przygotowanie elementów graficznych
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, GuiParams.WIDTH, GuiParams.HEIGHT);
+        camera.setToOrtho(false, GuiParams.WINDOW_SIZE, GuiParams.WINDOW_SIZE);
         stage = new Stage(new ScreenViewport(), game.getBatch());
         Gdx.input.setInputProcessor(stage);
 
-        BoardGroup boardGroup = new BoardGroup();
-        stage.addActor(boardGroup);
+        ChessboardGroup chessboardGroup = new ChessboardGroup();
+        stage.addActor(chessboardGroup);
     }
 
     @Override
