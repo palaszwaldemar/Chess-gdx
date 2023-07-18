@@ -9,9 +9,10 @@ public class ChessPieceActor extends Actor {
     private final ChessPiece chessPiece;
     private final Texture image;
 
-    public ChessPieceActor(ChessPiece chessPiece) {
+    public ChessPieceActor(ChessPiece chessPiece, ChessPieceType type, ChessPieceColor color, int x, int y) {
         this.chessPiece = chessPiece;
-        image = new Texture(Gdx.files.internal("chess_pieces/pawnBlack.png"));
+        image = new Texture(Gdx.files.internal("chess_pieces/" + type.getName() + color.getName() + ".png"));
+        setGridPosition(x, y);
     }
 
     public void setGridPosition(int x, int y) {

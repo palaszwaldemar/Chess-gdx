@@ -5,18 +5,23 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChessboardGroup extends Group {
     private final Texture boardImage;
+    private final PiecesFactory piecesFactory = new PiecesFactory();
 
     public ChessboardGroup() {
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
-        ChessPieceActor chessPieceActor = new ChessPieceActor(new ChessPiece());
-        ChessPieceActor chessPieceActor1 = new ChessPieceActor(new ChessPiece());
-        chessPieceActor.setGridPosition(1, 2);
-        chessPieceActor1.setGridPosition(2, 2);
-        addActor(chessPieceActor);
-        addActor(chessPieceActor1);
-        System.out.println(chessPieceActor); // TODO: 18.07.2023 to remove
+        addAllActors();
+    }
+
+    private void addAllActors() {
+        List<ChessPieceActor> chessPiecesActors = new ArrayList<>(piecesFactory.getChessPieces());
+        for (ChessPieceActor chessPieceActor : chessPiecesActors) {
+            addActor(chessPieceActor);
+        }
     }
 
     @Override
