@@ -26,7 +26,7 @@ public class ChessboardGroup extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(boardImage, GuiParams.CHESSBOARD_POSITION, GuiParams.CHESSBOARD_POSITION);
+        batch.draw(boardImage, getX(), getY());
         super.draw(batch, parentAlpha);
     }
 }

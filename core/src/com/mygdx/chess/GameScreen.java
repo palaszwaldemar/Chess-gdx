@@ -23,6 +23,7 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         ChessboardGroup chessboardGroup = new ChessboardGroup();
+        chessboardGroup.setPosition(GuiParams.CHESSBOARD_POSITION, GuiParams.CHESSBOARD_POSITION);
         stage.addActor(chessboardGroup);
     }
 
