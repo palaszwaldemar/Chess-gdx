@@ -18,9 +18,9 @@ public class ChessboardGroup extends Group {
     }
 
     private void addAllActors() {
-        List<ChessPieceActor> chessPiecesActors = new ArrayList<>(piecesFactory.getChessPieces());
-        for (ChessPieceActor chessPieceActor : chessPiecesActors) {
-            addActor(chessPieceActor);
+        List<ChessPiece> chessPieces = new ArrayList<>(piecesFactory.getChessPieces());
+        for (ChessPiece chessPiece : chessPieces) {
+            addActor(new ChessPieceActor(chessPiece, chessPiece.getX(), chessPiece.getY()));
         }
     }
 

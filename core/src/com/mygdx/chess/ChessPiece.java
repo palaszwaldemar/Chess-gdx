@@ -1,22 +1,25 @@
 package com.mygdx.chess;
 
 public class ChessPiece {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
+    private final String stringImage;
 
-    public void setX(int x) {
+    public ChessPiece(ChessPieceType type, ChessPieceColor color, int x, int y) {
         this.x = x;
-    }
-
-    public void setY(int y) {
         this.y = y;
+        stringImage = "chess_pieces/" + type.getName() + color.getName() + ".png";
     }
 
-    @Override
-    public String toString() {
-        return "ChessPiece{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public String getStringImage() {
+        return stringImage;
     }
 }

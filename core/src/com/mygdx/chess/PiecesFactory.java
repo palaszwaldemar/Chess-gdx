@@ -4,20 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PiecesFactory {
-    public List<ChessPieceActor> getChessPieces() {
-        List<ChessPieceActor> chessPieces = new ArrayList<>();
-        chessPieces.addAll(listOfPawns(ChessPieceColor.WHITE, Cords.yToCords(GuiParams.CHESSBOARD_POSITION) + 1));
-        chessPieces.addAll(listOfPawns(ChessPieceColor.BLACK, Cords.yToCords(GuiParams.CHESSBOARD_POSITION) + 6));
+    public List<ChessPiece> getChessPieces() {
+        List<ChessPiece> chessPieces = new ArrayList<>();
+        chessPieces.addAll(listOfPawns(ChessPieceColor.WHITE,  1));
+        chessPieces.addAll(listOfPawns(ChessPieceColor.BLACK,  6));
         return chessPieces;
     }
 
-    private List<ChessPieceActor> listOfPawns(ChessPieceColor color, int y) {
-        List<ChessPieceActor> chessPawns = new ArrayList<>();
+    private List<ChessPiece> listOfPawns(ChessPieceColor color, int y) {
+        List<ChessPiece> chessPawns = new ArrayList<>();
         ChessPieceType type = ChessPieceType.PAWN;
-        int x = Cords.xToCords(GuiParams.CHESSBOARD_POSITION);
-        for (int i = 0; i < 8; i++) {
-            ChessPieceActor chessPieceActor = new ChessPieceActor(new ChessPiece(), type, color, x + i, y);
-            chessPawns.add(chessPieceActor);
+        for (int x = 0; x < 8; x++) {
+            ChessPiece chessPiece = new ChessPiece(type, color, x, y);
+            chessPawns.add(chessPiece);
         }
         return chessPawns;
     }
