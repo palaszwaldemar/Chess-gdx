@@ -1,4 +1,4 @@
-package com.mygdx.chess;
+package com.mygdx.chess.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

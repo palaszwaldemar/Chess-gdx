@@ -1,4 +1,4 @@
-package com.mygdx.chess;
+package com.mygdx.chess.client;
 
 public class GuiParams {
     public static final int WINDOW_SIZE = 1000;

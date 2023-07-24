@@ -1,4 +1,4 @@
-package com.mygdx.chess;
+package com.mygdx.chess.client;
 
 public class Cords {
 

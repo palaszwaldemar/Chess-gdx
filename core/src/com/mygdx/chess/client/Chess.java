@@ -1,4 +1,4 @@
-package com.mygdx.chess;
+package com.mygdx.chess.client;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

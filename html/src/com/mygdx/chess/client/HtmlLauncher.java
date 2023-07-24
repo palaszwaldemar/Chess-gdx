@@ -3,7 +3,6 @@ package com.mygdx.chess.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.mygdx.chess.Chess;
 
 public class HtmlLauncher extends GwtApplication {
 

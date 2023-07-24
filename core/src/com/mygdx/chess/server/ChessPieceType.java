@@ -1,4 +1,4 @@
-package com.mygdx.chess;
+package com.mygdx.chess.server;
 
 public enum ChessPieceType {
     PAWN("pawn"),

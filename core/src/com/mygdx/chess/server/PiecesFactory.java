@@ -1,4 +1,8 @@
-package com.mygdx.chess;
+package com.mygdx.chess.server;
+
+import com.mygdx.chess.server.ChessPiece;
+import com.mygdx.chess.server.ChessPieceColor;
+import com.mygdx.chess.server.ChessPieceType;
 
 import java.util.ArrayList;
 import java.util.List;

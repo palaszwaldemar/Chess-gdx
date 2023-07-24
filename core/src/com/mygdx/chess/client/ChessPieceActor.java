@@ -1,9 +1,10 @@
-package com.mygdx.chess;
+package com.mygdx.chess.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.mygdx.chess.server.ChessPiece;
 
 public class ChessPieceActor extends Actor {
     private final Texture image;

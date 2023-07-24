@@ -2,6 +2,8 @@ package com.mygdx.chess;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.mygdx.chess.client.Chess;
+import com.mygdx.chess.client.GuiParams;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
