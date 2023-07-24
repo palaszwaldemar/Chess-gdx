@@ -1,6 +1,6 @@
 package com.mygdx.chess.server;
 
-public enum ChessPieceType {
+enum ChessPieceType {
     PAWN("pawn"),
     ROOK("rook"),
     KNIGHT("knight"),
@@ -14,7 +14,7 @@ public enum ChessPieceType {
         this.name = name;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 }

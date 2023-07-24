@@ -6,15 +6,15 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.chess.server.ChessPiece;
 
-public class ChessPieceActor extends Actor {
+class ChessPieceActor extends Actor {
     private final Texture image;
 
-    public ChessPieceActor(ChessPiece chessPiece, int x, int y) {
+    ChessPieceActor(ChessPiece chessPiece, int x, int y) {
         image = new Texture(Gdx.files.internal(chessPiece.getStringImage()));
         setGridPosition(x, y);
     }
 
-    public void setGridPosition(int x, int y) {
+    void setGridPosition(int x, int y) {
         setX(Cords.xToPixels(x));
         setY(Cords.yToPixels(y));
     }

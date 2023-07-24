@@ -13,7 +13,7 @@ public class GameScreen implements Screen {
     private final OrthographicCamera camera;
     private final Stage stage;
 
-    public GameScreen(Chess chess) {
+    GameScreen(Chess chess) {
         this.game = chess;
 
         //przygotowanie elementów graficznych

@@ -1,6 +1,6 @@
 package com.mygdx.chess.server;
 
-public enum ChessPieceColor {
+enum ChessPieceColor {
     BLACK("Black"),
     WHITE("White");
 
@@ -10,7 +10,7 @@ public enum ChessPieceColor {
         this.name = name;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 }

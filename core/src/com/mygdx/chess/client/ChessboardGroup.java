@@ -4,25 +4,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.mygdx.chess.server.ChessBoardService;
 import com.mygdx.chess.server.ChessPiece;
-import com.mygdx.chess.server.PiecesFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChessboardGroup extends Group {
+class ChessboardGroup extends Group {
     private final Texture boardImage;
-    private final PiecesFactory piecesFactory = new PiecesFactory();
+    private final ChessBoardService service = new ChessBoardService();
 
-    public ChessboardGroup() {
+    ChessboardGroup() {
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
         addAllActors();
     }
 
     private void addAllActors() {
-        List<ChessPiece> chessPieces = new ArrayList<>(piecesFactory.getChessPieces());
+        List<ChessPiece> chessPieces = new ArrayList<>(service.getChessPieces());
         for (ChessPiece chessPiece : chessPieces) {
-            addActor(new ChessPieceActor(chessPiece, chessPiece.getX(), chessPiece.getY()));
+            addActor(new ChessPieceActor(chessPiece, chessPiece.getX(), chessPiece.getY())); // CHECK: 24.07.2023 czy tak może zostać? Że mam dostęp do getX i getY?
         }
     }
 
