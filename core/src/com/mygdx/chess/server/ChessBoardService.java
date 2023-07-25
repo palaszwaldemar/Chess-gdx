@@ -4,14 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChessBoardService {
-    private final List<ChessPiece> chessPieces;
+    private final List<ChessPiece> whiteChessPieces;
+    private final List<ChessPiece> blackChessPieces;
 
     public ChessBoardService() {
         PiecesFactory piecesFactory = new PiecesFactory();
-        chessPieces = new ArrayList<>(piecesFactory.getChessPieces());
+        whiteChessPieces = new ArrayList<>(piecesFactory.getChessPieces(ChessPieceColor.WHITE));
+        blackChessPieces = new ArrayList<>(piecesFactory.getChessPieces(ChessPieceColor.BLACK));
     }
 
-    public List<ChessPiece> getChessPieces() {
-        return chessPieces;
+    public List<ChessPiece> getWhiteChessPieces() {
+        return whiteChessPieces;
+    }
+
+    public List<ChessPiece> getBlackChessPieces() {
+        return blackChessPieces;
     }
 }
