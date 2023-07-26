@@ -21,7 +21,7 @@ class ChessboardGroup extends Group {
     private void addAllActors() {
         List<ChessPiece> chessPieces = new ArrayList<>(controller.listOfPieces());
         for (ChessPiece chessPiece : chessPieces) {
-            addActor(new ChessPieceActor(chessPiece, chessPiece.getX(), chessPiece.getY())); // CHECK: 24.07.2023 czy tak może zostać? Że mam dostęp do getX i getY?
+            addActor(new ChessPieceActor(chessPiece));
         }
     }
 

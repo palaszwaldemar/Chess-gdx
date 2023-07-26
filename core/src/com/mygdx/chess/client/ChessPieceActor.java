@@ -9,12 +9,13 @@ import com.mygdx.chess.server.ChessPiece;
 class ChessPieceActor extends Actor {
     private final Texture image;
 
-    ChessPieceActor(ChessPiece chessPiece, int x, int y) {
+    ChessPieceActor(ChessPiece chessPiece) { // CHECK: 26.07.2023 nie powinienem przekazać tutaj Controller jako argument, abym mógł ustawić dostęp pakietowy w ChessPiece?
         image = new Texture(Gdx.files.internal(chessPiece.getStringImage()));
-        setGridPosition(x, y);
+        setBounds(0, 0, image.getWidth(), image.getHeight());// CHECK: 26.07.2023 metoda setBounds jest wymagana. Nie powinno być tak, żeby było wymuszone aby jej użyć?
+        setGridPosition(chessPiece.getX(), chessPiece.getY());
     }
 
-    void setGridPosition(int x, int y) {
+    private void setGridPosition(int x, int y) {
         setX(Cords.xToPixels(x));
         setY(Cords.yToPixels(y));
     }

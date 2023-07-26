@@ -1,8 +1,8 @@
 package com.mygdx.chess.server;
 
 public class ChessPiece {
-    private final int x;
-    private final int y;
+    private int x;
+     int y;
     private final String stringImage;
 
     public ChessPiece(ChessPieceType type, ChessPieceColor color, int x, int y) {
