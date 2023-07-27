@@ -18,12 +18,12 @@ public class GameScreen implements Screen {
 
         //przygotowanie elementów graficznych
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, GuiParams.WINDOW_SIZE, GuiParams.WINDOW_SIZE);
+        camera.setToOrtho(false, GuiParams.WINDOW_SIZE_WIDTH, GuiParams.WINDOW_SIZE_HEIGHT);
         stage = new Stage(new ScreenViewport(), game.getBatch());
         Gdx.input.setInputProcessor(stage);
 
         ChessboardGroup chessboardGroup = new ChessboardGroup();
-        chessboardGroup.setPosition(GuiParams.CHESSBOARD_POSITION, GuiParams.CHESSBOARD_POSITION);
+        chessboardGroup.setPosition(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION);// TODO: 27.07.2023 przenieść ustawianie do ChessboardGroup (setBounds())
         stage.addActor(chessboardGroup);
     }
 

@@ -9,9 +9,9 @@ import com.mygdx.chess.server.ChessPiece;
 class ChessPieceActor extends Actor {
     private final Texture image;
 
-    ChessPieceActor(ChessPiece chessPiece) { // CHECK: 26.07.2023 nie powinienem przekazać tutaj Controller jako argument, abym mógł ustawić dostęp pakietowy w ChessPiece?
+    ChessPieceActor(ChessPiece chessPiece) {
         image = new Texture(Gdx.files.internal(chessPiece.getStringImage()));
-        setBounds(0, 0, image.getWidth(), image.getHeight());
+        setBounds(0, 0, GuiParams.CHESS_PIECE_WIDTH, GuiParams.CHESS_PIECE_HEIGHT);
         setGridPosition(chessPiece.getX(), chessPiece.getY());
         addListener(new DragChessPieceListener());
     }
