@@ -13,6 +13,7 @@ class ChessPieceActor extends Actor {
         image = new Texture(Gdx.files.internal(chessPiece.getStringImage()));
         setBounds(0, 0, image.getWidth(), image.getHeight());
         setGridPosition(chessPiece.getX(), chessPiece.getY());
+        addListener(new DragChessPieceListener());
     }
 
     private void setGridPosition(int x, int y) {
@@ -23,5 +24,25 @@ class ChessPieceActor extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(image, getX(), getY());
+    }
+
+    private static class DragChessPieceListener extends DragListener {
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            System.out.println("touchDown");
+            return super.touchDown(event, x, y, pointer, button);
+        }
+
+        @Override
+        public void drag(InputEvent event, float x, float y, int pointer) {
+            System.out.println("drag");
+            super.drag(event, x, y, pointer);
+        }
+
+        @Override
+        public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            System.out.println("touchUp");
+            super.touchUp(event, x, y, pointer, button);
+        }
     }
 }
