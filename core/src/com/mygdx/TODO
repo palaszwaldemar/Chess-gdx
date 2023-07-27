@@ -1,6 +1,0 @@
-+ 1. Zrobić serwis 'board' - ustawienie coords chesspiece
-+ 2. ustawienie coords chesspiece na start, później actor zmienia coordy przy udziale użytkownika i informuje o tym chesspiece
-+ 3. Color i Type przenieść do chesspiece
-
-- czy chessboardService powinien odpowiadać za ustawianie x i y chessPiece? Wtedy modyfikator dostepu ChessPiece mogę ustawić na domyślny
-- punkt 1. Coordy ustawia fabryka przy tworzeniu chesspieces. Może tak być?
