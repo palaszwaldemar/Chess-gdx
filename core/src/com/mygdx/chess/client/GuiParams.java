@@ -7,4 +7,6 @@ public class GuiParams {
     public static final int CHESSBOARD_Y_POSITION = 100;
     public static final int CHESS_PIECE_WIDTH = 100;
     public static final int CHESS_PIECE_HEIGHT = 100;
+    public static final int CHESSBOARD_WIDTH = 800;
+    public static final int CHESSBOARD_HEIGHT = 800;
 }

@@ -14,6 +14,7 @@ class ChessboardGroup extends Group {
     private final Controller controller = new Controller();
 
     ChessboardGroup() {
+        setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION, GuiParams.CHESSBOARD_WIDTH, GuiParams.CHESSBOARD_HEIGHT);
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
         addAllActors();
     }
