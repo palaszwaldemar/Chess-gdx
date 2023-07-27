@@ -11,7 +11,7 @@ class ChessPieceActor extends Actor {
 
     ChessPieceActor(ChessPiece chessPiece) { // CHECK: 26.07.2023 nie powinienem przekazać tutaj Controller jako argument, abym mógł ustawić dostęp pakietowy w ChessPiece?
         image = new Texture(Gdx.files.internal(chessPiece.getStringImage()));
-        setBounds(0, 0, image.getWidth(), image.getHeight());// CHECK: 26.07.2023 metoda setBounds jest wymagana. Nie powinno być tak, żeby było wymuszone aby jej użyć?
+        setBounds(0, 0, image.getWidth(), image.getHeight());
         setGridPosition(chessPiece.getX(), chessPiece.getY());
     }
 
