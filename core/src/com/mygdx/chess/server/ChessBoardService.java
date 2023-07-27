@@ -12,7 +12,7 @@ public class ChessBoardService {
         chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.BLACK));
     }
 
-    public List<ChessPiece> getChessPieces() { // TODO: 27.07.2023 jedna metoda
+    public List<ChessPiece> getChessPieces() {
         return chessPieces;
     }
 }

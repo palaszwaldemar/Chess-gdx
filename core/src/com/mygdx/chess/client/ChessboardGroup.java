@@ -6,21 +6,17 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mygdx.chess.server.ChessPiece;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class ChessboardGroup extends Group {
     private final Texture boardImage;
-    private final Controller controller = new Controller();
 
     ChessboardGroup() {
         setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION, GuiParams.CHESSBOARD_WIDTH, GuiParams.CHESSBOARD_HEIGHT);
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
-        addAllActors();
     }
 
-    private void addAllActors() {
-        List<ChessPiece> chessPieces = new ArrayList<>(controller.listOfPieces());
+    void createActors(List<ChessPiece> chessPieces) {
         for (ChessPiece chessPiece : chessPieces) {
             addActor(new ChessPieceActor(chessPiece));
         }

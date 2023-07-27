@@ -15,6 +15,8 @@ public class GameScreen implements Screen {
 
     GameScreen(Chess chess) {
         this.game = chess;
+        ChessboardGroup chessboardGroup = new ChessboardGroup();
+        Controller controller = new Controller(chessboardGroup);
 
         //przygotowanie elementów graficznych
         camera = new OrthographicCamera();
@@ -22,8 +24,9 @@ public class GameScreen implements Screen {
         stage = new Stage(new ScreenViewport(), game.getBatch());
         Gdx.input.setInputProcessor(stage);
 
-        ChessboardGroup chessboardGroup = new ChessboardGroup();
         stage.addActor(chessboardGroup);
+
+        controller.startGame();
     }
 
     @Override
