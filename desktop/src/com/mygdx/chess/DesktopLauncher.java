@@ -12,6 +12,7 @@ public class DesktopLauncher {
         config.setTitle("Chess");
         config.setWindowedMode(GuiParams.WINDOW_SIZE_WIDTH, GuiParams.WINDOW_SIZE_HEIGHT);
         config.setResizable(false);
+        config.setWindowPosition(950, 50); // TODO: 28.07.2023 to remove
         new Lwjgl3Application(new Chess(), config);
     }
 }
