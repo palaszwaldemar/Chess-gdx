@@ -27,8 +27,8 @@ class ChessPieceActor extends Actor {
     }
 
     private class DragChessPieceListener extends DragListener {
-        Vector2 startTouchPosition = new Vector2();
-        Vector2 startPosition = new Vector2();
+        private final Vector2 startTouchPosition = new Vector2();
+        private final Vector2 startPosition = new Vector2();
 
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
