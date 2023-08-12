@@ -10,6 +10,7 @@ import java.util.List;
 
 class ChessboardGroup extends Group {
     private final Texture boardImage;
+    private Controller controller;
 
     ChessboardGroup() {
         setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION, GuiParams.CHESSBOARD_WIDTH, GuiParams.CHESSBOARD_HEIGHT);
@@ -18,8 +19,12 @@ class ChessboardGroup extends Group {
 
     void createActors(List<ChessPiece> chessPieces) {
         for (ChessPiece chessPiece : chessPieces) {
-            addActor(new ChessPieceActor(chessPiece));
+            addActor(new ChessPieceActor(chessPiece, controller));
         }
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     @Override

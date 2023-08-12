@@ -17,6 +17,7 @@ public class GameScreen implements Screen {
         this.game = chess;
         ChessboardGroup chessboardGroup = new ChessboardGroup();
         Controller controller = new Controller(chessboardGroup);
+        chessboardGroup.setController(controller);
 
         //przygotowanie elementów graficznych
         camera = new OrthographicCamera();

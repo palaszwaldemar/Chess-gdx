@@ -12,10 +12,12 @@ import com.mygdx.chess.server.ChessPiece;
 class ChessPieceActor extends Actor {
     private final Texture image;
     private final ChessPiece chessPiece;
+    private final Controller controller;
 
-    ChessPieceActor(ChessPiece chessPiece) {
+    ChessPieceActor(ChessPiece chessPiece, Controller controller) {
         image = new Texture(Gdx.files.internal(chessPiece.getStringImage()));
         this.chessPiece = chessPiece;
+        this.controller = controller;
         setBounds(Cords.xToPixels(chessPiece.getX()), Cords.yToPixels(chessPiece.getY()),
                 GuiParams.CHESS_PIECE_WIDTH, GuiParams.CHESS_PIECE_HEIGHT);
         addListener(new DragChessPieceListener());
@@ -46,12 +48,11 @@ class ChessPieceActor extends Actor {
         @Override
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
             Vector2 vector2 = getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-            boolean isWithinParentsBounds = vector2.x >= 0 && vector2.x <= getParent().getWidth() &&
-                    vector2.y >= 0 && vector2.y <= getParent().getHeight();
+            int xPosition = ((int) (vector2.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
+            int yPosition = ((int) (vector2.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
 
-            if (isWithinParentsBounds) {
-                setPosition(((int) (vector2.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH,
-                        ((int) (vector2.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT);
+            if (controller.chessPieceHasCorrectPlacement(xPosition, yPosition, getParent().getWidth(), getParent().getHeight(), chessPiece.getColor())) {
+                setPosition(xPosition, yPosition);
                 chessPiece.setGridPosition(Cords.xToCords((int) getX()), Cords.yToCords((int) getY()));
             } else {
                 setPosition(startPosition.x, startPosition.y);
