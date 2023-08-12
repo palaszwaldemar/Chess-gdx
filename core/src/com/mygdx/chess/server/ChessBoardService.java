@@ -18,22 +18,7 @@ public class ChessBoardService {
         return chessPieces;
     }
 
-    boolean isValidPlacement() {
-        return true;
-    }
-
-    boolean canMoveOnThisPlace(ChessPiece chessPiece) {
-        for (ChessPiece piece : chessPieces) {
-            if (piece.getX() == chessPiece.getX() && piece.getY() == chessPiece.getY()) {
-                if (piece.getColor() == chessPiece.getColor()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public boolean canMoveChessPiece(float x, float y, float widthOfBoard, float heightOfBoard, ChessPieceColor color) {
-        return moveValidator.chessPieceIsOnTheBoard(x, y, widthOfBoard, heightOfBoard) && moveValidator.isItFreePlace(x, y, color);
+    public boolean isValidPosition(float x, float y, ChessPieceColor color, int xCord, int yCord) {
+        return moveValidator.isOnTheBoard(x, y) && moveValidator.isSameColorPieceHere(color, xCord, yCord);
     }
 }

@@ -48,11 +48,13 @@ class ChessPieceActor extends Actor {
         @Override
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
             Vector2 vector2 = getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-            int xPosition = ((int) (vector2.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
-            int yPosition = ((int) (vector2.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
+            int xPixels = ((int) (vector2.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
+            int yPixels = ((int) (vector2.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
+            boolean isValidPosition = controller.checkValidPosition(vector2.x, vector2.y,
+                    chessPiece.getColor(), Cords.xToCords(xPixels), Cords.yToCords(yPixels));
 
-            if (controller.chessPieceHasCorrectPlacement(xPosition, yPosition, getParent().getWidth(), getParent().getHeight(), chessPiece.getColor())) {
-                setPosition(xPosition, yPosition);
+            if (isValidPosition) {
+                setPosition(xPixels, yPixels);
                 chessPiece.setGridPosition(Cords.xToCords((int) getX()), Cords.yToCords((int) getY()));
             } else {
                 setPosition(startPosition.x, startPosition.y);

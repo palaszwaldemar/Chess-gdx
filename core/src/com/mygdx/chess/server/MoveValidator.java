@@ -1,5 +1,7 @@
 package com.mygdx.chess.server;
 
+import com.mygdx.chess.client.GuiParams;
+
 import java.util.List;
 
 public class MoveValidator {
@@ -9,22 +11,20 @@ public class MoveValidator {
         this.chessPieces = chessPieces;
     }
 
-    public boolean chessPieceIsOnTheBoard(float x, float y, float widthOfBoard, float heightOfBoard) {
-        return x >= 0 && x <= widthOfBoard &&
-                y >= 0 && y <= heightOfBoard;
+    public boolean isOnTheBoard(float x, float y) {
+        return x >= 0 && x <= GuiParams.CHESSBOARD_WIDTH &&
+                y >= 0 && y <= GuiParams.CHESSBOARD_HEIGHT;
     }
 
-    public boolean isItFreePlace(float x, float y, ChessPieceColor color) {
-        boolean isItFreePlace = true;
+    boolean isSameColorPieceHere(ChessPieceColor color, int xCord, int yCord) {
+        boolean isSameColorPieceHere = true;
         for (ChessPiece piece : chessPieces) {
-            System.out.println("x = " + x + ", y = " + y);
-            System.out.println("chessPiece z listy: x = " + piece.getX() + ", y = " + piece.getY());
-            if (piece.getX() == x && piece.getY() == y) {
-                if (piece.getColor() == color) {
-                    isItFreePlace = false;
+            if (piece.getX() == xCord && piece.getY() == yCord) {
+                if (piece.getColor().equals(color)) {
+                    isSameColorPieceHere = false;
                 }
             }
         }
-        return isItFreePlace;
+        return isSameColorPieceHere;
     }
 }

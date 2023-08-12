@@ -8,13 +8,17 @@ import com.mygdx.chess.server.ChessPiece;
 
 import java.util.List;
 
-class ChessboardGroup extends Group {
+public class ChessboardGroup extends Group {
     private final Texture boardImage;
     private Controller controller;
 
     ChessboardGroup() {
         setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION, GuiParams.CHESSBOARD_WIDTH, GuiParams.CHESSBOARD_HEIGHT);
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     void createActors(List<ChessPiece> chessPieces) {

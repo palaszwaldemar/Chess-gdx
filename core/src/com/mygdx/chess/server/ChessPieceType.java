@@ -1,6 +1,6 @@
 package com.mygdx.chess.server;
 
-enum ChessPieceType {
+public enum ChessPieceType {
     PAWN("pawn"),
     ROOK("rook"),
     KNIGHT("knight"),
