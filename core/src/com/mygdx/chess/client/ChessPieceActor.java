@@ -36,6 +36,7 @@ class ChessPieceActor extends Actor {
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             startTouchPosition.set(x, y);
             startPosition.set(getX(), getY());
+            toFront();
             return super.touchDown(event, x, y, pointer, button);
         }
 
