@@ -1,0 +1,2 @@
+- spróbować ustawić w klasie enum 'ChessPieceType' zestawu ruchów dla każdego rodzaju figur
+- stworzyć klasę abstrkcyjną dla figur (wstęp do tworzenia zestawu ruchów dla każdego rodzaju figur) ??
