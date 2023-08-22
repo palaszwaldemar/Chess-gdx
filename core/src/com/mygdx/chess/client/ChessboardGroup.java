@@ -27,10 +27,6 @@ public class ChessboardGroup extends Group {
         }
     }
 
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(boardImage, getX(), getY());
