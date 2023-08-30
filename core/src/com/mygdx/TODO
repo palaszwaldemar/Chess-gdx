@@ -1,2 +1,3 @@
-- spróbować ustawić w klasie enum 'ChessPieceType' zestawu ruchów dla każdego rodzaju figur
-- stworzyć klasę abstrkcyjną dla figur (wstęp do tworzenia zestawu ruchów dla każdego rodzaju figur) ??
+- sprawdzenie czy na torze figury nie znajduje się inna figura
+- dodać możliwość przesunięcia pionka na początku o dwa pola
+

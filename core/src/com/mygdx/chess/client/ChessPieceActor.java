@@ -51,8 +51,8 @@ class ChessPieceActor extends Actor {
             Vector2 vector2 = getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
             int xPixels = ((int) (vector2.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
             int yPixels = ((int) (vector2.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
-            boolean isValidPosition = controller.checkValidPosition(vector2.x, vector2.y,
-                    chessPiece.getColor(), Cords.xToCords(xPixels), Cords.yToCords(yPixels));
+            boolean isValidPosition = controller.checkValidPosition(vector2.x, vector2.y, chessPiece.getType(),
+                    chessPiece.getColor(), Cords.xToCords(xPixels), Cords.yToCords(yPixels), chessPiece.getX(), chessPiece.getY());
 
             if (isValidPosition) {
                 setPosition(xPixels, yPixels);

@@ -2,6 +2,7 @@ package com.mygdx.chess.client;
 
 import com.mygdx.chess.server.ChessBoardService;
 import com.mygdx.chess.server.ChessPieceColor;
+import com.mygdx.chess.server.ChessPieceType;
 
 public class Controller {
     private final ChessBoardService service = new ChessBoardService();
@@ -15,7 +16,7 @@ public class Controller {
         chessboardGroup.createActors(service.getChessPieces());
     }
 
-    boolean checkValidPosition(float x, float y, ChessPieceColor color, int xCord, int yCord) {
-        return service.isValidPosition(x, y, color, xCord, yCord);
+    boolean checkValidPosition(float x, float y, ChessPieceType type, ChessPieceColor color, int xCord, int yCord, int chessPieceX, int chessPieceY) {
+        return service.isValidPosition(x, y,type , color, xCord, yCord, chessPieceX, chessPieceY);
     }
 }

@@ -27,4 +27,29 @@ public class MoveValidator {
         }
         return isSameColorPieceHere;
     }
+
+    boolean isCorrectMovement(ChessPieceType type, int chessPieceX, int chessPieceY, int newChessPieceX, int newChessPieceY) {
+        boolean straightLineMoving = chessPieceX == newChessPieceX || chessPieceY == newChessPieceY;
+        boolean diagonallyMoving = Math.abs(chessPieceX - newChessPieceX) == Math.abs(chessPieceY - newChessPieceY);
+        if (type.equals(ChessPieceType.ROOK)) {
+            return straightLineMoving;
+        }
+        if (type.equals(ChessPieceType.RUNNER)) {
+            return diagonallyMoving;
+        }
+        if (type.equals(ChessPieceType.KING)) {
+            return Math.abs(chessPieceX - newChessPieceX) <= 1 && Math.abs(chessPieceY - newChessPieceY) <= 1;
+        }
+        if (type.equals(ChessPieceType.QUEEN)) {
+            return straightLineMoving || diagonallyMoving;
+        }
+        if (type.equals(ChessPieceType.KNIGHT)) {
+            return (Math.abs(chessPieceX - newChessPieceX) == 2 && Math.abs(chessPieceY - newChessPieceY) == 1) ||
+                    (Math.abs(chessPieceY - newChessPieceY) == 2 && Math.abs(chessPieceX - newChessPieceX) == 1);
+        }
+        if (type.equals(ChessPieceType.PAWN)) {
+            return chessPieceX == newChessPieceX && newChessPieceY - chessPieceY == 1;
+        }
+        return false;
+    }
 }
