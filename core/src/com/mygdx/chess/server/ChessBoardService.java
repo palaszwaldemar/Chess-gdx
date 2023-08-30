@@ -19,6 +19,6 @@ public class ChessBoardService {
     }
 
     public boolean isValidPosition(float x, float y,ChessPieceType type, ChessPieceColor color, int xCord, int yCord, int chessPieceX, int chessPieceY) {
-        return moveValidator.isOnTheBoard(x, y) && moveValidator.isSameColorPieceHere(color, xCord, yCord) && moveValidator.isCorrectMovement(type, chessPieceX, chessPieceY, xCord, yCord);
+        return moveValidator.isOnTheBoard(x, y) && moveValidator.isSameColorPieceHere(color, xCord, yCord) && moveValidator.isCorrectMovement(color, type, chessPieceX, chessPieceY, xCord, yCord);
     }
 }

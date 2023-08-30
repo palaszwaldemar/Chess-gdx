@@ -28,7 +28,7 @@ public class MoveValidator {
         return isSameColorPieceHere;
     }
 
-    boolean isCorrectMovement(ChessPieceType type, int chessPieceX, int chessPieceY, int newChessPieceX, int newChessPieceY) {
+    boolean isCorrectMovement(ChessPieceColor color, ChessPieceType type, int chessPieceX, int chessPieceY, int newChessPieceX, int newChessPieceY) {
         boolean straightLineMoving = chessPieceX == newChessPieceX || chessPieceY == newChessPieceY;
         boolean diagonallyMoving = Math.abs(chessPieceX - newChessPieceX) == Math.abs(chessPieceY - newChessPieceY);
         if (type.equals(ChessPieceType.ROOK)) {
@@ -47,9 +47,10 @@ public class MoveValidator {
             return (Math.abs(chessPieceX - newChessPieceX) == 2 && Math.abs(chessPieceY - newChessPieceY) == 1) ||
                     (Math.abs(chessPieceY - newChessPieceY) == 2 && Math.abs(chessPieceX - newChessPieceX) == 1);
         }
-        if (type.equals(ChessPieceType.PAWN)) {
+        if (type.equals(ChessPieceType.PAWN) && color.equals(ChessPieceColor.WHITE)) {
             return chessPieceX == newChessPieceX && newChessPieceY - chessPieceY == 1;
+        } else {
+            return chessPieceX == newChessPieceX && newChessPieceY - chessPieceY == -1;
         }
-        return false;
     }
 }
