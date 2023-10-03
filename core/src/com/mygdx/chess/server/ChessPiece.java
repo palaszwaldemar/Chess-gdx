@@ -3,16 +3,19 @@ package com.mygdx.chess.server;
 public class ChessPiece {
     private int x;
     private int y;
-    private final String stringImage;
     private final ChessPieceColor color;
     private final ChessPieceType type;
 
     public ChessPiece(ChessPieceType type, ChessPieceColor color, int x, int y) {
         this.x = x;
         this.y = y;
-        stringImage = "chess_pieces/" + type.getName() + color.getName() + ".png";
         this.color = color;
         this.type = type;
+    }
+
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public int getX() {
@@ -23,10 +26,6 @@ public class ChessPiece {
         return y;
     }
 
-    public String getStringImage() {
-        return stringImage;
-    }
-
     public ChessPieceColor getColor() {
         return color;
     }
@@ -34,9 +33,6 @@ public class ChessPiece {
     public ChessPieceType getType() {
         return type;
     }
-
-    public void setGridPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
 }
+
+// TODO: 07.09.2023 Klasa ta ma być klasą abstr. Zrobić klasy po niej dziedziczące - typy figur

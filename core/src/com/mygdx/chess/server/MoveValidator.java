@@ -11,46 +11,47 @@ public class MoveValidator {
         this.chessPieces = chessPieces;
     }
 
-    public boolean isOnTheBoard(float x, float y) {
-        return x >= 0 && x <= GuiParams.CHESSBOARD_WIDTH &&
-                y >= 0 && y <= GuiParams.CHESSBOARD_HEIGHT;
+    boolean isCorrectMovement(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) { // TODO: 07.09.2023 do wykasowania
+        boolean straightLineMoving = chessPieceInUse.getX() == xEndPosition || chessPieceInUse.getY() == yEndPosition;
+        boolean diagonallyMoving = Math.abs(chessPieceInUse.getX() - xEndPosition) == Math.abs(chessPieceInUse.getY() - yEndPosition);
+        if (chessPieceInUse.getType().equals(ChessPieceType.ROOK)) {
+            return straightLineMoving;
+        }
+        if (chessPieceInUse.getType().equals(ChessPieceType.RUNNER)) {
+            return diagonallyMoving;
+        }
+        if (chessPieceInUse.getType().equals(ChessPieceType.KING)) {
+            return Math.abs(chessPieceInUse.getX() - xEndPosition) <= 1 && Math.abs(chessPieceInUse.getY() - yEndPosition) <= 1;
+        }
+        if (chessPieceInUse.getType().equals(ChessPieceType.QUEEN)) {
+            return straightLineMoving || diagonallyMoving;
+        }
+        if (chessPieceInUse.getType().equals(ChessPieceType.KNIGHT)) {
+            return (Math.abs(chessPieceInUse.getX() - xEndPosition) == 2 && Math.abs(chessPieceInUse.getY() - yEndPosition) == 1) ||
+                    (Math.abs(chessPieceInUse.getY() - yEndPosition) == 2 && Math.abs(chessPieceInUse.getX() - xEndPosition) == 1);
+        }
+        if (chessPieceInUse.getType().equals(ChessPieceType.PAWN) && chessPieceInUse.getColor().equals(ChessPieceColor.WHITE)) {
+            return chessPieceInUse.getX() == xEndPosition && yEndPosition - chessPieceInUse.getY() == 1;
+        } else {
+            return chessPieceInUse.getX() == xEndPosition && yEndPosition - chessPieceInUse.getY() == -1;
+        }
     }
 
-    boolean isSameColorPieceHere(ChessPieceColor color, int xCord, int yCord) {
-        boolean isSameColorPieceHere = true;
+    public boolean isOnTheBoard(float vectorX, float vectorY) {
+        return vectorX >= 0 && vectorX <= GuiParams.CHESSBOARD_WIDTH &&
+                vectorY >= 0 && vectorY <= GuiParams.CHESSBOARD_HEIGHT;
+    }
+
+    boolean isSameColorPieceHere(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) {
+        ChessPieceColor color = chessPieceInUse.getColor();
+        boolean isNoSameColorPieceHere = true;
         for (ChessPiece piece : chessPieces) {
-            if (piece.getX() == xCord && piece.getY() == yCord) {
+            if (piece.getX() == xEndPosition && piece.getY() == yEndPosition) {
                 if (piece.getColor().equals(color)) {
-                    isSameColorPieceHere = false;
+                    isNoSameColorPieceHere = false;
                 }
             }
         }
-        return isSameColorPieceHere;
-    }
-
-    boolean isCorrectMovement(ChessPieceColor color, ChessPieceType type, int chessPieceX, int chessPieceY, int newChessPieceX, int newChessPieceY) {
-        boolean straightLineMoving = chessPieceX == newChessPieceX || chessPieceY == newChessPieceY;
-        boolean diagonallyMoving = Math.abs(chessPieceX - newChessPieceX) == Math.abs(chessPieceY - newChessPieceY);
-        if (type.equals(ChessPieceType.ROOK)) {
-            return straightLineMoving;
-        }
-        if (type.equals(ChessPieceType.RUNNER)) {
-            return diagonallyMoving;
-        }
-        if (type.equals(ChessPieceType.KING)) {
-            return Math.abs(chessPieceX - newChessPieceX) <= 1 && Math.abs(chessPieceY - newChessPieceY) <= 1;
-        }
-        if (type.equals(ChessPieceType.QUEEN)) {
-            return straightLineMoving || diagonallyMoving;
-        }
-        if (type.equals(ChessPieceType.KNIGHT)) {
-            return (Math.abs(chessPieceX - newChessPieceX) == 2 && Math.abs(chessPieceY - newChessPieceY) == 1) ||
-                    (Math.abs(chessPieceY - newChessPieceY) == 2 && Math.abs(chessPieceX - newChessPieceX) == 1);
-        }
-        if (type.equals(ChessPieceType.PAWN) && color.equals(ChessPieceColor.WHITE)) {
-            return chessPieceX == newChessPieceX && newChessPieceY - chessPieceY == 1;
-        } else {
-            return chessPieceX == newChessPieceX && newChessPieceY - chessPieceY == -1;
-        }
+        return isNoSameColorPieceHere;
     }
 }

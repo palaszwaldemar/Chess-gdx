@@ -7,17 +7,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.ChessPiece;
 
 class ChessPieceActor extends Actor {
-    private final Texture image;
     private final ChessPiece chessPiece;
     private final Controller controller;
+    private final Texture image;
 
     ChessPieceActor(ChessPiece chessPiece, Controller controller) {
-        image = new Texture(Gdx.files.internal(chessPiece.getStringImage()));
         this.chessPiece = chessPiece;
         this.controller = controller;
+        image = new Texture(Gdx.files.internal("chess_pieces/" + chessPiece.getType() + chessPiece.getColor() + ".png"));
         setBounds(Cords.xToPixels(chessPiece.getX()), Cords.yToPixels(chessPiece.getY()),
                 GuiParams.CHESS_PIECE_WIDTH, GuiParams.CHESS_PIECE_HEIGHT);
         addListener(new DragChessPieceListener());
@@ -51,13 +52,10 @@ class ChessPieceActor extends Actor {
             Vector2 vector2 = getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
             int xPixels = ((int) (vector2.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
             int yPixels = ((int) (vector2.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
-            boolean isValidPosition = controller.checkValidPosition(vector2.x, vector2.y, chessPiece.getType(),
-                    chessPiece.getColor(), Cords.xToCords(xPixels), Cords.yToCords(yPixels), chessPiece.getX(), chessPiece.getY());
-
-            if (isValidPosition) {
+            try {
+                controller.move(chessPiece, vector2.x, vector2.y, Cords.xToCords(xPixels), Cords.yToCords(yPixels));
                 setPosition(xPixels, yPixels);
-                chessPiece.setGridPosition(Cords.xToCords((int) getX()), Cords.yToCords((int) getY()));
-            } else {
+            } catch (InvalidMoveException e) {
                 setPosition(startPosition.x, startPosition.y);
             }
             super.touchUp(event, x, y, pointer, button);
