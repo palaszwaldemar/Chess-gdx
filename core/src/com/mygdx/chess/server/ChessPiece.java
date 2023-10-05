@@ -1,6 +1,6 @@
 package com.mygdx.chess.server;
 
-public class ChessPiece {
+public abstract class ChessPiece {
     private int x;
     private int y;
     private final ChessPieceColor color;
@@ -33,6 +33,8 @@ public class ChessPiece {
     public ChessPieceType getType() {
         return type;
     }
+
+    public abstract boolean correctMovement(int xEndPosition, int yEndPosition);
 }
 
 // TODO: 07.09.2023 Klasa ta ma być klasą abstr. Zrobić klasy po niej dziedziczące - typy figur

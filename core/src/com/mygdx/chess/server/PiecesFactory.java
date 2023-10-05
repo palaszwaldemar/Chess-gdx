@@ -18,10 +18,9 @@ class PiecesFactory {
 
     private List<ChessPiece> listOfPawns(ChessPieceColor color) {
         List<ChessPiece> chessPawns = new ArrayList<>();
-        ChessPieceType type = ChessPieceType.PAWN;
         for (int i = 0; i < 8; i++) {
-            ChessPiece chessPiece = new ChessPiece(type, color, i, color.getYPawnsPosition());
-            chessPawns.add(chessPiece);
+            Pawn pawn = new Pawn(color, i, color.getYPawnsPosition());
+            chessPawns.add(pawn);
         }
         return chessPawns;
     }
@@ -29,7 +28,7 @@ class PiecesFactory {
     private List<ChessPiece> listOfRemainingChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            chessPieces.add(new ChessPiece(chessPieceTypes[i], color, i, color.getYFiguresPosition()));
+//            chessPieces.add(new ChessPiece(chessPieceTypes[i], color, i, color.getYFiguresPosition()));
         }
         return chessPieces;
     }

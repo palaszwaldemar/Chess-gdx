@@ -11,7 +11,7 @@ public class MoveValidator {
         this.chessPieces = chessPieces;
     }
 
-    boolean isCorrectMovement(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) { // TODO: 07.09.2023 do wykasowania
+/*    boolean isCorrectMovement(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) { // TODO: 07.09.2023 do wykasowania
         boolean straightLineMoving = chessPieceInUse.getX() == xEndPosition || chessPieceInUse.getY() == yEndPosition;
         boolean diagonallyMoving = Math.abs(chessPieceInUse.getX() - xEndPosition) == Math.abs(chessPieceInUse.getY() - yEndPosition);
         if (chessPieceInUse.getType().equals(ChessPieceType.ROOK)) {
@@ -35,7 +35,7 @@ public class MoveValidator {
         } else {
             return chessPieceInUse.getX() == xEndPosition && yEndPosition - chessPieceInUse.getY() == -1;
         }
-    }
+    }*/
 
     public boolean isOnTheBoard(float vectorX, float vectorY) {
         return vectorX >= 0 && vectorX <= GuiParams.CHESSBOARD_WIDTH &&
