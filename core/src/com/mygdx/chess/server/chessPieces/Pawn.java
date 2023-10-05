@@ -17,8 +17,5 @@ public class Pawn extends ChessPiece {
         } else {
             return getX() == xEndPosition && yEndPosition - getY() == -1;
         }
-        // TODO: 05.10.2023 w tym momencie miejsce białych i czarnych jest ustawione na sztywno (białe na dole,
-        //  czarne na górze. Zmienić tą implementację, kiedy wprowadzona zostanie funkcjonalność: wybór koloru figur
-        //  przez gracza
     }
 }
