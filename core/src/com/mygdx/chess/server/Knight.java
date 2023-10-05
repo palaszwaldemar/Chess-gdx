@@ -1,6 +1,6 @@
 package com.mygdx.chess.server;
 
-public class Knight extends ChessPiece{
+public class Knight extends ChessPiece {
     public Knight(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.KNIGHT, color, x, y);
     }
