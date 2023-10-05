@@ -30,6 +30,8 @@ class PiecesFactory {
         chessPieces.add(new Rook(color, 7, color.getYFiguresPosition()));
         chessPieces.add(new Knight(color, 1, color.getYFiguresPosition()));
         chessPieces.add(new Knight(color, 6, color.getYFiguresPosition()));
+        chessPieces.add(new Runner(color, 2, color.getYFiguresPosition()));
+        chessPieces.add(new Runner(color, 5, color.getYFiguresPosition()));
 //        for (int i = 0; i < 8; i++) {
 //            chessPieces.add(new ChessPiece(chessPieceTypes[i], color, i, color.getYFiguresPosition()));
 //        }
