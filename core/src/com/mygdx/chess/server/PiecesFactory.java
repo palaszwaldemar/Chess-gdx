@@ -35,7 +35,7 @@ class PiecesFactory {
                 chessPieces.add(piece);
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                      IllegalAccessException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
         return chessPieces;
