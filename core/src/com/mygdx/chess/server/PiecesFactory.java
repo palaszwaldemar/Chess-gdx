@@ -1,5 +1,7 @@
 package com.mygdx.chess.server;
 
+import com.mygdx.chess.server.chessPieces.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
