@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.mygdx.chess.exceptions.InvalidMoveException;
-import com.mygdx.chess.server.ChessPiece;
+import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 class ChessPieceActor extends Actor {
     private final ChessPiece chessPiece;

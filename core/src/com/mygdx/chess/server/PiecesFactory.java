@@ -2,6 +2,7 @@ package com.mygdx.chess.server;
 
 import com.mygdx.chess.server.chessPieces.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +25,19 @@ class PiecesFactory {
 
     private List<ChessPiece> listOfRemainingChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
-        chessPieces.add(new Rook(color, 0, color.getYFiguresPosition()));
-        chessPieces.add(new Rook(color, 7, color.getYFiguresPosition()));
-        chessPieces.add(new Knight(color, 1, color.getYFiguresPosition()));
-        chessPieces.add(new Knight(color, 6, color.getYFiguresPosition()));
-        chessPieces.add(new Runner(color, 2, color.getYFiguresPosition()));
-        chessPieces.add(new Runner(color, 5, color.getYFiguresPosition()));
-        chessPieces.add(new Queen(color, 3, color.getYFiguresPosition()));
-        chessPieces.add(new King(color, 4, color.getYFiguresPosition()));
+
+        Class<? extends ChessPiece>[] pieceClasses = new Class[]{Rook.class, Knight.class, Runner.class,
+                Queen.class, King.class, Runner.class, Knight.class, Rook.class};
+        for (int i = 0; i < 8; i++) {
+            try {
+                ChessPiece piece = pieceClasses[i].getDeclaredConstructor(ChessPieceColor.class, int.class, int.class).
+                        newInstance(color, i, color.getYFiguresPosition());
+                chessPieces.add(piece);
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                     IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return chessPieces;
     }
 }

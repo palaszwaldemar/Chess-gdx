@@ -1,4 +1,7 @@
-package com.mygdx.chess.server;
+package com.mygdx.chess.server.chessPieces;
+
+import com.mygdx.chess.server.ChessPieceColor;
+import com.mygdx.chess.server.ChessPieceType;
 
 public abstract class ChessPiece {
     private int x;
@@ -34,5 +37,5 @@ public abstract class ChessPiece {
         return type;
     }
 
-    public abstract boolean correctMovement(int xEndPosition, int yEndPosition);
+    public abstract boolean isCorrectMovement(int xEndPosition, int yEndPosition);
 }

@@ -1,6 +1,7 @@
 package com.mygdx.chess.server;
 
 import com.mygdx.chess.exceptions.InvalidMoveException;
+import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ChessBoardService {
     public void move(ChessPiece chessPieceInUse, float vectorX, float vectorY, int xEndPosition, int yEndPosition) throws InvalidMoveException {
         boolean isCanMove = moveValidator.isOnTheBoard(vectorX, vectorY) &&
                 moveValidator.isSameColorPieceHere(chessPieceInUse, xEndPosition, yEndPosition) &&
-                chessPieceInUse.correctMovement(xEndPosition, yEndPosition);
+                chessPieceInUse.isCorrectMovement(xEndPosition, yEndPosition);
         if (!isCanMove) {
             throw new InvalidMoveException();
         }

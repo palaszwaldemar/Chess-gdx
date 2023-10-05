@@ -2,7 +2,7 @@ package com.mygdx.chess.client;
 
 import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.ChessBoardService;
-import com.mygdx.chess.server.ChessPiece;
+import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 public class Controller {
     private final ChessBoardService service = new ChessBoardService();

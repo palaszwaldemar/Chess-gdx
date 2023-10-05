@@ -1,6 +1,7 @@
 package com.mygdx.chess.server;
 
 import com.mygdx.chess.client.GuiParams;
+import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 import java.util.List;
 
