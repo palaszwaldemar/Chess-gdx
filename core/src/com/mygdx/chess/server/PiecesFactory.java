@@ -5,9 +5,9 @@ import java.util.List;
 
 class PiecesFactory {
 
-    ChessPieceType[] chessPieceTypes = {ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.RUNNER,
+    /*ChessPieceType[] chessPieceTypes = {ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.RUNNER,
             ChessPieceType.QUEEN, ChessPieceType.KING, ChessPieceType.RUNNER,
-            ChessPieceType.KNIGHT, ChessPieceType.ROOK};
+            ChessPieceType.KNIGHT, ChessPieceType.ROOK};*/
 
     List<ChessPiece> getChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
@@ -19,17 +19,18 @@ class PiecesFactory {
     private List<ChessPiece> listOfPawns(ChessPieceColor color) {
         List<ChessPiece> chessPawns = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            Pawn pawn = new Pawn(color, i, color.getYPawnsPosition());
-            chessPawns.add(pawn);
+            chessPawns.add(new Pawn(color, i, color.getYPawnsPosition()));
         }
         return chessPawns;
     }
 
     private List<ChessPiece> listOfRemainingChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
+        chessPieces.add(new Rook(color, 0, color.getYFiguresPosition()));
+        chessPieces.add(new Rook(color, 7, color.getYFiguresPosition()));
+//        for (int i = 0; i < 8; i++) {
 //            chessPieces.add(new ChessPiece(chessPieceTypes[i], color, i, color.getYFiguresPosition()));
-        }
+//        }
         return chessPieces;
     }
 }

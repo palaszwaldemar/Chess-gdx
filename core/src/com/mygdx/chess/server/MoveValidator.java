@@ -11,32 +11,6 @@ public class MoveValidator {
         this.chessPieces = chessPieces;
     }
 
-/*    boolean isCorrectMovement(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) { // TODO: 07.09.2023 do wykasowania
-        boolean straightLineMoving = chessPieceInUse.getX() == xEndPosition || chessPieceInUse.getY() == yEndPosition;
-        boolean diagonallyMoving = Math.abs(chessPieceInUse.getX() - xEndPosition) == Math.abs(chessPieceInUse.getY() - yEndPosition);
-        if (chessPieceInUse.getType().equals(ChessPieceType.ROOK)) {
-            return straightLineMoving;
-        }
-        if (chessPieceInUse.getType().equals(ChessPieceType.RUNNER)) {
-            return diagonallyMoving;
-        }
-        if (chessPieceInUse.getType().equals(ChessPieceType.KING)) {
-            return Math.abs(chessPieceInUse.getX() - xEndPosition) <= 1 && Math.abs(chessPieceInUse.getY() - yEndPosition) <= 1;
-        }
-        if (chessPieceInUse.getType().equals(ChessPieceType.QUEEN)) {
-            return straightLineMoving || diagonallyMoving;
-        }
-        if (chessPieceInUse.getType().equals(ChessPieceType.KNIGHT)) {
-            return (Math.abs(chessPieceInUse.getX() - xEndPosition) == 2 && Math.abs(chessPieceInUse.getY() - yEndPosition) == 1) ||
-                    (Math.abs(chessPieceInUse.getY() - yEndPosition) == 2 && Math.abs(chessPieceInUse.getX() - xEndPosition) == 1);
-        }
-        if (chessPieceInUse.getType().equals(ChessPieceType.PAWN) && chessPieceInUse.getColor().equals(ChessPieceColor.WHITE)) {
-            return chessPieceInUse.getX() == xEndPosition && yEndPosition - chessPieceInUse.getY() == 1;
-        } else {
-            return chessPieceInUse.getX() == xEndPosition && yEndPosition - chessPieceInUse.getY() == -1;
-        }
-    }*/
-
     public boolean isOnTheBoard(float vectorX, float vectorY) {
         return vectorX >= 0 && vectorX <= GuiParams.CHESSBOARD_WIDTH &&
                 vectorY >= 0 && vectorY <= GuiParams.CHESSBOARD_HEIGHT;

@@ -24,7 +24,6 @@ public class ChessBoardService {
         boolean isCanMove = moveValidator.isOnTheBoard(vectorX, vectorY) &&
                 moveValidator.isSameColorPieceHere(chessPieceInUse, xEndPosition, yEndPosition) &&
                 chessPieceInUse.correctMovement(xEndPosition, yEndPosition);
-//                moveValidator.isCorrectMovement(chessPieceInUse, xEndPosition, yEndPosition);
         if (!isCanMove) {
             throw new InvalidMoveException();
         }

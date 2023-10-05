@@ -36,5 +36,3 @@ public abstract class ChessPiece {
 
     public abstract boolean correctMovement(int xEndPosition, int yEndPosition);
 }
-
-// TODO: 07.09.2023 Klasa ta ma być klasą abstr. Zrobić klasy po niej dziedziczące - typy figur
