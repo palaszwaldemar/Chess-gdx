@@ -17,7 +17,7 @@ public class MoveValidator {
                 vectorY >= 0 && vectorY <= GuiParams.CHESSBOARD_HEIGHT;
     }
 
-    boolean isSameColorPieceHere(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) {
+    boolean isNoSameColorPieceHere(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) {
         ChessPieceColor color = chessPieceInUse.getColor();
         boolean isNoSameColorPieceHere = true;
         for (ChessPiece piece : chessPieces) {
