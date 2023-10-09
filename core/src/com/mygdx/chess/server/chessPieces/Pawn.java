@@ -19,7 +19,7 @@ public class Pawn extends ChessPiece {
         } else {
             correctMove = getX() == endCordsVector.x && endCordsVector.y - getY() >= -pawnMoves && endCordsVector.y < getY();
         }
-        if (correctMove) pawnMoves = 1; // TODO: 09.10.2023 czy powinienem dodać tutaj wyjątek InvalidMoveException?
+        if (correctMove) pawnMoves = 1; // CHECK : 09.10.2023 czy powinienem dodać tutaj wyjątek InvalidMoveException?
         return correctMove;
     }
 }
