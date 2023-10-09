@@ -25,7 +25,7 @@ public class ChessBoardService {
     public void move(ChessPiece chessPieceInUse, EndCordsVector endCordsVector, Vector2 mouseDropPosition) throws InvalidMoveException {
         boolean isCanMove = moveValidator.isOnTheBoard(mouseDropPosition) &&
                 moveValidator.isNoSameColorPieceHere(chessPieceInUse.getColor(), endCordsVector) &&
-                moveValidator.isLineClear(chessPieceInUse, endCordsVector) &&
+                moveValidator.isClearLine(chessPieceInUse, endCordsVector) &&
                 chessPieceInUse.isCorrectMovement(endCordsVector);
         if (!isCanMove) {
             throw new InvalidMoveException();

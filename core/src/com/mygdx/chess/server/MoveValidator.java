@@ -14,7 +14,8 @@ public class MoveValidator {
     }
 
     public boolean isOnTheBoard(Vector2 mouseDropPosition) {
-        return mouseDropPosition.x >= 0 && mouseDropPosition.x <= GuiParams.CHESSBOARD_WIDTH && mouseDropPosition.y >= 0 && mouseDropPosition.y <= GuiParams.CHESSBOARD_HEIGHT;
+        return mouseDropPosition.x >= 0 && mouseDropPosition.x <= GuiParams.CHESSBOARD_WIDTH &&
+                mouseDropPosition.y >= 0 && mouseDropPosition.y <= GuiParams.CHESSBOARD_HEIGHT;
     }
 
     boolean isNoSameColorPieceHere(ChessPieceColor color, EndCordsVector endCordsVector) {
@@ -29,90 +30,54 @@ public class MoveValidator {
         return isNoSameColorPieceHere;
     }
 
-    boolean isLineClear(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
+    boolean isClearLine(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
         return checkLineByType(chessPieceInUse, endCordsVector);
     }
 
     private boolean checkLineByType(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
         switch (chessPieceInUse.getType()) {
+            case PAWN:
+                return isCorrectOrFreeField(endCordsVector);
             case ROOK:
-                if (chessPieceInUse.getX() == endCordsVector.x) {
-                    return checkVertically(chessPieceInUse, endCordsVector.y);
-                } else {
-                    return checkHorizontally(chessPieceInUse, endCordsVector.x);
-                }
             case RUNNER:
-                return checkDiagonal(chessPieceInUse, endCordsVector.x, endCordsVector.y);
             case QUEEN:
-                System.out.println("QUEEN");
-                break;
+                return isFreeLine(chessPieceInUse, endCordsVector);
         }
         return true;
     }
 
-    private boolean checkVertically(ChessPiece chessPieceInUse, int yEndPosition) {
+    private boolean isCorrectOrFreeField(EndCordsVector endCordsVector) {
         for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.getX() == chessPieceInUse.getX()) {
-                if (chessPieceInUse.getY() < yEndPosition) {
-                    if (chessPiece.getY() > chessPieceInUse.getY() && chessPiece.getY() < yEndPosition) {
-                        return false;
-                    }
-                } else {
-                    if (chessPiece.getY() < chessPieceInUse.getY() && chessPiece.getY() > yEndPosition) {
-                        return false;
-                    }
-                }
+            if (endCordsVector.x == chessPiece.getX() && endCordsVector.y == chessPiece.getY()) {
+                System.out.println("endCordsVector y = " + endCordsVector.y + ", chessPiece.getY() = " + chessPiece.getY());
+                return false;
+            }
+            // TODO: 09.10.2023 dokończyć
+        }
+        return true;
+    }
+
+    private boolean isFreeLine(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
+        int startX = chessPieceInUse.getX();
+        int startY = chessPieceInUse.getY();
+        int deltaX = endCordsVector.x - startX;
+        int deltaY = endCordsVector.y - startY;
+        for (int i = 1; i < Math.max(Math.abs(deltaX), Math.abs(deltaY)); i++) {
+            int x = startX + i * Integer.signum(deltaX);
+            int y = startY + i * Integer.signum(deltaY);
+            if (isFiledNotFree(x, y)) {
+                return false;
             }
         }
         return true;
     }
 
-    private boolean checkHorizontally(ChessPiece chessPieceInUse, int xEndPosition) {
+    private boolean isFiledNotFree(int x, int y) {
         for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.getY() == chessPieceInUse.getY()) {
-                if (chessPieceInUse.getX() < xEndPosition) {
-                    if (chessPiece.getX() > chessPieceInUse.getX() && chessPiece.getX() < xEndPosition) {
-                        return false;
-                    }
-                } else {
-                    if (chessPiece.getX() < chessPieceInUse.getX() && chessPiece.getX() > xEndPosition) {
-                        return false;
-                    }
-                }
+            if (chessPiece.getX() == x && chessPiece.getY() == y) {
+                return true;
             }
         }
-        return true;
-    }
-
-    private boolean checkDiagonal(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) {// TODO: 09.10.2023 nie działa lewy dół
-        for (int x = (chessPieceInUse.getX() + 1), y = (chessPieceInUse.getY() + 1); x < xEndPosition && y < yEndPosition; x++, y++) {
-            for (ChessPiece chessPiece : chessPieces) {
-                if (chessPiece.getX() == x && chessPiece.getY() == y) {
-                    return false;
-                }
-            }
-        }
-        for (int x = (chessPieceInUse.getX() + 1), y = (chessPieceInUse.getY() - 1); x < xEndPosition && y > yEndPosition; x++, y++) {
-            for (ChessPiece chessPiece : chessPieces) {
-                if (chessPiece.getX() == x && chessPiece.getY() == y) {
-                    return false;
-                }
-            }
-        }
-        for (int x = (chessPieceInUse.getX() - 1), y = (chessPieceInUse.getY() + 1); x > xEndPosition && y < yEndPosition; x++, y++) {
-            for (ChessPiece chessPiece : chessPieces) {
-                if (chessPiece.getX() == x && chessPiece.getY() == y) {
-                    return false;
-                }
-            }
-        }
-        for (int x = (chessPieceInUse.getX() - 1), y = (chessPieceInUse.getY() - 1); x > xEndPosition && y > yEndPosition; x++, y++) {
-            for (ChessPiece chessPiece : chessPieces) {
-                if (chessPiece.getX() == x && chessPiece.getY() == y) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return false;
     }
 }
