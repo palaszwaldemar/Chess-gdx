@@ -29,7 +29,7 @@ public class MoveValidator {
     }
 
     boolean isLineClear(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) {
-        return checkLineByType(chessPieceInUse.getType(),chessPieceInUse.getX(),
+        return checkLineByType(chessPieceInUse.getType(), chessPieceInUse.getX(),
                 chessPieceInUse.getY(), xEndPosition, yEndPosition);
     }
 
@@ -43,8 +43,7 @@ public class MoveValidator {
                     return checkHorizontally(xStartPosition, yStartPosition, xEndPosition);
                 }
             case RUNNER:
-                System.out.println("RUNNER");
-                break;
+                return checkDiagonal(xStartPosition, yStartPosition, xEndPosition, yEndPosition);
             case QUEEN:
                 System.out.println("QUEEN");
                 break;
@@ -80,6 +79,38 @@ public class MoveValidator {
                     if (chessPiece.getX() < xStartPosition && chessPiece.getX() > xEndPosition) {
                         return false;
                     }
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean checkDiagonal(int xStartPosition, int yStartPosition, int xEndPosition, int yEndPosition) {
+        for (int x = (xStartPosition + 1), y = (yStartPosition + 1); x < xEndPosition && y < yEndPosition; x++, y++) {
+            for (ChessPiece chessPiece : chessPieces) {
+                if (chessPiece.getX() == x && chessPiece.getY() == y) {
+                    return false;
+                }
+            }
+        }
+        for (int x = (xStartPosition + 1), y = (yStartPosition - 1); x < xEndPosition && y > yEndPosition; x++, y++) {
+            for (ChessPiece chessPiece : chessPieces) {
+                if (chessPiece.getX() == x && chessPiece.getY() == y) {
+                    return false;
+                }
+            }
+        }
+        for (int x = (xStartPosition - 1), y = (yStartPosition + 1); x > xEndPosition && y < yEndPosition; x++, y++) {
+            for (ChessPiece chessPiece : chessPieces) {
+                if (chessPiece.getX() == x && chessPiece.getY() == y) {
+                    return false;
+                }
+            }
+        }
+        for (int x = (xStartPosition - 1), y = (yStartPosition - 1); x > xEndPosition && y > yEndPosition; x++, y++) {
+            for (ChessPiece chessPiece : chessPieces) {
+                if (chessPiece.getX() == x && chessPiece.getY() == y) {
+                    return false;
                 }
             }
         }
