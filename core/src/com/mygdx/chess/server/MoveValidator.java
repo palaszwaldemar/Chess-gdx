@@ -1,5 +1,6 @@
 package com.mygdx.chess.server;
 
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.chess.client.GuiParams;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
@@ -12,14 +13,14 @@ public class MoveValidator {
         this.chessPieces = chessPieces;
     }
 
-    public boolean isOnTheBoard(float vectorX, float vectorY) {
-        return vectorX >= 0 && vectorX <= GuiParams.CHESSBOARD_WIDTH && vectorY >= 0 && vectorY <= GuiParams.CHESSBOARD_HEIGHT;
+    public boolean isOnTheBoard(Vector2 mouseDropPosition) {
+        return mouseDropPosition.x >= 0 && mouseDropPosition.x <= GuiParams.CHESSBOARD_WIDTH && mouseDropPosition.y >= 0 && mouseDropPosition.y <= GuiParams.CHESSBOARD_HEIGHT;
     }
 
-    boolean isNoSameColorPieceHere(ChessPieceColor color, int xEndPosition, int yEndPosition) {
+    boolean isNoSameColorPieceHere(ChessPieceColor color, EndCordsVector endCordsVector) {
         boolean isNoSameColorPieceHere = true;
         for (ChessPiece piece : chessPieces) {
-            if (piece.getX() == xEndPosition && piece.getY() == yEndPosition) {
+            if (piece.getX() == endCordsVector.x && piece.getY() == endCordsVector.y) {
                 if (piece.getColor().equals(color)) {
                     isNoSameColorPieceHere = false;
                 }
@@ -28,22 +29,20 @@ public class MoveValidator {
         return isNoSameColorPieceHere;
     }
 
-    boolean isLineClear(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) {
-        return checkLineByType(chessPieceInUse.getType(), chessPieceInUse.getX(),
-                chessPieceInUse.getY(), xEndPosition, yEndPosition);
+    boolean isLineClear(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
+        return checkLineByType(chessPieceInUse, endCordsVector);
     }
 
-    private boolean checkLineByType(ChessPieceType type, int xStartPosition,
-                                    int yStartPosition, int xEndPosition, int yEndPosition) {
-        switch (type) {
+    private boolean checkLineByType(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
+        switch (chessPieceInUse.getType()) {
             case ROOK:
-                if (xStartPosition == xEndPosition) {
-                    return checkVertically(xStartPosition, yStartPosition, yEndPosition);
+                if (chessPieceInUse.getX() == endCordsVector.x) {
+                    return checkVertically(chessPieceInUse, endCordsVector.y);
                 } else {
-                    return checkHorizontally(xStartPosition, yStartPosition, xEndPosition);
+                    return checkHorizontally(chessPieceInUse, endCordsVector.x);
                 }
             case RUNNER:
-                return checkDiagonal(xStartPosition, yStartPosition, xEndPosition, yEndPosition);
+                return checkDiagonal(chessPieceInUse, endCordsVector.x, endCordsVector.y);
             case QUEEN:
                 System.out.println("QUEEN");
                 break;
@@ -51,15 +50,15 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean checkVertically(int xStartPosition, int yStartPosition, int yEndPosition) {
+    private boolean checkVertically(ChessPiece chessPieceInUse, int yEndPosition) {
         for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.getX() == xStartPosition) {
-                if (yStartPosition < yEndPosition) {
-                    if (chessPiece.getY() > yStartPosition && chessPiece.getY() < yEndPosition) {
+            if (chessPiece.getX() == chessPieceInUse.getX()) {
+                if (chessPieceInUse.getY() < yEndPosition) {
+                    if (chessPiece.getY() > chessPieceInUse.getY() && chessPiece.getY() < yEndPosition) {
                         return false;
                     }
                 } else {
-                    if (chessPiece.getY() < yStartPosition && chessPiece.getY() > yEndPosition) {
+                    if (chessPiece.getY() < chessPieceInUse.getY() && chessPiece.getY() > yEndPosition) {
                         return false;
                     }
                 }
@@ -68,15 +67,15 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean checkHorizontally(int xStartPosition, int yStartPosition, int xEndPosition) {
+    private boolean checkHorizontally(ChessPiece chessPieceInUse, int xEndPosition) {
         for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.getY() == yStartPosition) {
-                if (xStartPosition < xEndPosition) {
-                    if (chessPiece.getX() > xStartPosition && chessPiece.getX() < xEndPosition) {
+            if (chessPiece.getY() == chessPieceInUse.getY()) {
+                if (chessPieceInUse.getX() < xEndPosition) {
+                    if (chessPiece.getX() > chessPieceInUse.getX() && chessPiece.getX() < xEndPosition) {
                         return false;
                     }
                 } else {
-                    if (chessPiece.getX() < xStartPosition && chessPiece.getX() > xEndPosition) {
+                    if (chessPiece.getX() < chessPieceInUse.getX() && chessPiece.getX() > xEndPosition) {
                         return false;
                     }
                 }
@@ -85,29 +84,29 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean checkDiagonal(int xStartPosition, int yStartPosition, int xEndPosition, int yEndPosition) {
-        for (int x = (xStartPosition + 1), y = (yStartPosition + 1); x < xEndPosition && y < yEndPosition; x++, y++) {
+    private boolean checkDiagonal(ChessPiece chessPieceInUse, int xEndPosition, int yEndPosition) {// TODO: 09.10.2023 nie działa lewy dół
+        for (int x = (chessPieceInUse.getX() + 1), y = (chessPieceInUse.getY() + 1); x < xEndPosition && y < yEndPosition; x++, y++) {
             for (ChessPiece chessPiece : chessPieces) {
                 if (chessPiece.getX() == x && chessPiece.getY() == y) {
                     return false;
                 }
             }
         }
-        for (int x = (xStartPosition + 1), y = (yStartPosition - 1); x < xEndPosition && y > yEndPosition; x++, y++) {
+        for (int x = (chessPieceInUse.getX() + 1), y = (chessPieceInUse.getY() - 1); x < xEndPosition && y > yEndPosition; x++, y++) {
             for (ChessPiece chessPiece : chessPieces) {
                 if (chessPiece.getX() == x && chessPiece.getY() == y) {
                     return false;
                 }
             }
         }
-        for (int x = (xStartPosition - 1), y = (yStartPosition + 1); x > xEndPosition && y < yEndPosition; x++, y++) {
+        for (int x = (chessPieceInUse.getX() - 1), y = (chessPieceInUse.getY() + 1); x > xEndPosition && y < yEndPosition; x++, y++) {
             for (ChessPiece chessPiece : chessPieces) {
                 if (chessPiece.getX() == x && chessPiece.getY() == y) {
                     return false;
                 }
             }
         }
-        for (int x = (xStartPosition - 1), y = (yStartPosition - 1); x > xEndPosition && y > yEndPosition; x++, y++) {
+        for (int x = (chessPieceInUse.getX() - 1), y = (chessPieceInUse.getY() - 1); x > xEndPosition && y > yEndPosition; x++, y++) {
             for (ChessPiece chessPiece : chessPieces) {
                 if (chessPiece.getX() == x && chessPiece.getY() == y) {
                     return false;

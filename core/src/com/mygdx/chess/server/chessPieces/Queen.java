@@ -2,6 +2,7 @@ package com.mygdx.chess.server.chessPieces;
 
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
+import com.mygdx.chess.server.EndCordsVector;
 
 public class Queen extends ChessPiece {
     public Queen(ChessPieceColor color, int x, int y) {
@@ -9,8 +10,8 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    public boolean isCorrectMovement(int xEndPosition, int yEndPosition) {
-        return (getX() == xEndPosition || getY() == yEndPosition) ||
-                (Math.abs(getX() - xEndPosition) == Math.abs(getY() - yEndPosition));
+    public boolean isCorrectMovement(EndCordsVector endCordsVector) {
+        return (getX() == endCordsVector.x || getY() == endCordsVector.y) ||
+                (Math.abs(getX() - endCordsVector.x) == Math.abs(getY() - endCordsVector.y));
     }
 }

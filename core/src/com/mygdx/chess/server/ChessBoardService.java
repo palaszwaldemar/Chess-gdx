@@ -1,5 +1,6 @@
 package com.mygdx.chess.server;
 
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
@@ -21,14 +22,14 @@ public class ChessBoardService {
         return chessPieces;
     }
 
-    public void move(ChessPiece chessPieceInUse, float vectorX, float vectorY, int xEndPosition, int yEndPosition) throws InvalidMoveException {
-        boolean isCanMove = moveValidator.isOnTheBoard(vectorX, vectorY) &&
-                moveValidator.isNoSameColorPieceHere(chessPieceInUse.getColor(), xEndPosition, yEndPosition) &&
-                moveValidator.isLineClear(chessPieceInUse, xEndPosition, yEndPosition) &&
-                chessPieceInUse.isCorrectMovement(xEndPosition, yEndPosition);
+    public void move(ChessPiece chessPieceInUse, EndCordsVector endCordsVector, Vector2 mouseDropPosition) throws InvalidMoveException {
+        boolean isCanMove = moveValidator.isOnTheBoard(mouseDropPosition) &&
+                moveValidator.isNoSameColorPieceHere(chessPieceInUse.getColor(), endCordsVector) &&
+                moveValidator.isLineClear(chessPieceInUse, endCordsVector) &&
+                chessPieceInUse.isCorrectMovement(endCordsVector);
         if (!isCanMove) {
             throw new InvalidMoveException();
         }
-        chessPieceInUse.setPosition(xEndPosition, yEndPosition);
+        chessPieceInUse.setPosition(endCordsVector);
     }
 }

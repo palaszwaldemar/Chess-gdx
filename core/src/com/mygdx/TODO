@@ -1,3 +1,6 @@
-- sprawdzenie czy na torze figury nie znajduje się inna figura
-- dodać możliwość przesunięcia pionka na początku o dwa pola
+1. Sprawdzenie czy na torze ruchu figury nie znajduje się inna figura:
+    - wieża sprawdzenie po prostej
+    - goniec sprawdzenie po ukosie
+    - hetman sparwdzenie po prostej i ukosie
+
 

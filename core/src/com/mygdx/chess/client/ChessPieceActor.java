@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.mygdx.chess.exceptions.InvalidMoveException;
+import com.mygdx.chess.server.EndCordsVector;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 class ChessPieceActor extends Actor {
@@ -49,11 +50,12 @@ class ChessPieceActor extends Actor {
 
         @Override
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-            Vector2 vector2 = getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-            int xPixels = ((int) (vector2.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
-            int yPixels = ((int) (vector2.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
+            Vector2 mouseDropPosition = getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
+            int xPixels = ((int) (mouseDropPosition.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
+            int yPixels = ((int) (mouseDropPosition.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
+            EndCordsVector endCordsVector = new EndCordsVector(Cords.xToCords(xPixels), Cords.yToCords(yPixels));
             try {
-                controller.move(chessPiece, vector2.x, vector2.y, Cords.xToCords(xPixels), Cords.yToCords(yPixels));
+                controller.move(chessPiece, endCordsVector, mouseDropPosition);
                 setPosition(xPixels, yPixels);
             } catch (InvalidMoveException e) {
                 setPosition(startPosition.x, startPosition.y);
