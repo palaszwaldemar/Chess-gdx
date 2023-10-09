@@ -4,6 +4,7 @@ import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
 
 public class Pawn extends ChessPiece {
+    private int pawnMoves = 2;
 
     public Pawn(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.PAWN, color, x, y);
@@ -11,10 +12,13 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean isCorrectMovement(int xEndPosition, int yEndPosition) {
+        boolean correctMove;
         if (getColor().equals(ChessPieceColor.WHITE)) {
-            return getX() == xEndPosition && yEndPosition - getY() == 1;
+            correctMove = getX() == xEndPosition && yEndPosition - getY() <= pawnMoves && yEndPosition > getY();
         } else {
-            return getX() == xEndPosition && yEndPosition - getY() == -1;
+            correctMove = getX() == xEndPosition && yEndPosition - getY() >= -pawnMoves && yEndPosition < getY();
         }
+        if (correctMove) pawnMoves = 1;
+        return correctMove;
     }
 }
