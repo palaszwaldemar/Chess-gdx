@@ -11,7 +11,8 @@ public class Queen extends ChessPiece {
 
     @Override
     public boolean isCorrectMovement(EndCordsVector endCordsVector) {
-        return (getX() == endCordsVector.x || getY() == endCordsVector.y) ||
-                (Math.abs(getX() - endCordsVector.x) == Math.abs(getY() - endCordsVector.y));
+        int deltaX = Math.abs(getX() - endCordsVector.x);
+        int deltaY = Math.abs(getY() - endCordsVector.y);
+        return (getX() == endCordsVector.x || getY() == endCordsVector.y) || (deltaX == deltaY);
     }
 }
