@@ -11,6 +11,8 @@ public class Runner extends ChessPiece {
 
     @Override
     public boolean isCorrectMovement(EndCordsVector endCordsVector) {
-        return Math.abs(getX() - endCordsVector.x) == Math.abs(getY() - endCordsVector.y);
+        int deltaX = Math.abs(getX() - endCordsVector.x);
+        int deltaY = Math.abs(getY() - endCordsVector.y);
+        return deltaX == deltaY;
     }
 }
