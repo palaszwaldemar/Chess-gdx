@@ -14,7 +14,8 @@ public class MoveValidator {
     }
 
     public boolean isOnTheBoard(Vector2 mouseDropPosition) {
-        return mouseDropPosition.x >= 0 && mouseDropPosition.x <= GuiParams.CHESSBOARD_WIDTH && mouseDropPosition.y >= 0 && mouseDropPosition.y <= GuiParams.CHESSBOARD_HEIGHT;
+        return mouseDropPosition.x >= 0 && mouseDropPosition.x <= GuiParams.CHESSBOARD_WIDTH &&
+                mouseDropPosition.y >= 0 && mouseDropPosition.y <= GuiParams.CHESSBOARD_HEIGHT;
     }
 
     boolean isNoSameColorPieceHere(ChessPieceColor color, EndCordsVector endCordsVector) {
