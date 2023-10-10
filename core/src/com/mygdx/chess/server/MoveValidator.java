@@ -37,7 +37,7 @@ public class MoveValidator {
     private boolean checkLineByType(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
         switch (chessPieceInUse.getType()) {
             case PAWN:
-                return isCorrectOrFreeField(endCordsVector);
+                return isCorrectOrFreeField(chessPieceInUse, endCordsVector);
             case ROOK:
             case RUNNER:
             case QUEEN:
@@ -46,15 +46,21 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isCorrectOrFreeField(EndCordsVector endCordsVector) {
-        for (ChessPiece chessPiece : chessPieces) {
-            if (endCordsVector.x == chessPiece.getX() && endCordsVector.y == chessPiece.getY()) {
-                System.out.println("endCordsVector y = " + endCordsVector.y + ", chessPiece.getY() = " + chessPiece.getY());
-                return false;
+    private boolean isCorrectOrFreeField(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
+        int deltaX = endCordsVector.x - chessPieceInUse.getX();
+        int deltaY = endCordsVector.y - chessPieceInUse.getY();
+        if (Math.abs(deltaX) == Math.abs(deltaY)) {
+            boolean isPieceOnTarget = false;
+            for (ChessPiece piece : chessPieces) {
+                if (piece.getX() == endCordsVector.x && piece.getY() == endCordsVector.y) {
+                    isPieceOnTarget = true;
+                    break;
+                }
             }
-            // TODO: 09.10.2023 dokończyć
+            return isPieceOnTarget;
+        } else {
+            return !isFiledNotFree(endCordsVector.x, endCordsVector.y);
         }
-        return true;
     }
 
     private boolean isFreeLine(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
