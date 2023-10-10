@@ -14,8 +14,7 @@ public class MoveValidator {
     }
 
     public boolean isOnTheBoard(Vector2 mouseDropPosition) {
-        return mouseDropPosition.x >= 0 && mouseDropPosition.x <= GuiParams.CHESSBOARD_WIDTH &&
-                mouseDropPosition.y >= 0 && mouseDropPosition.y <= GuiParams.CHESSBOARD_HEIGHT;
+        return mouseDropPosition.x >= 0 && mouseDropPosition.x <= GuiParams.CHESSBOARD_WIDTH && mouseDropPosition.y >= 0 && mouseDropPosition.y <= GuiParams.CHESSBOARD_HEIGHT;
     }
 
     boolean isNoSameColorPieceHere(ChessPieceColor color, EndCordsVector endCordsVector) {
@@ -30,11 +29,7 @@ public class MoveValidator {
         return isNoSameColorPieceHere;
     }
 
-    boolean isClearLine(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
-        return checkLineByType(chessPieceInUse, endCordsVector);
-    }
-
-    private boolean checkLineByType(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
+    boolean isClearLineOrCorrectPawnMove(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
         switch (chessPieceInUse.getType()) {
             case PAWN:
                 return isCorrectOrFreeField(chessPieceInUse, endCordsVector);
