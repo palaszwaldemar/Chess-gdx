@@ -11,7 +11,8 @@ public class Knight extends ChessPiece {
 
     @Override
     public boolean isCorrectMovement(EndCordsVector endCordsVector) {
-        return (Math.abs(getX() - endCordsVector.x) == 2 && Math.abs(getY() - endCordsVector.y) == 1) ||
-                (Math.abs(getY() - endCordsVector.y) == 2 && Math.abs(getX() - endCordsVector.x) == 1);
+        int deltaX = Math.abs(getX() - endCordsVector.x);
+        int deltaY = Math.abs(getY() - endCordsVector.y);
+        return (deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2);
     }
 }
