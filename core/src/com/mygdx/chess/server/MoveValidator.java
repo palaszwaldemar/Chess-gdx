@@ -45,14 +45,7 @@ public class MoveValidator {
         int deltaX = endCordsVector.x - chessPieceInUse.getX();
         int deltaY = endCordsVector.y - chessPieceInUse.getY();
         if (Math.abs(deltaX) == Math.abs(deltaY)) {
-            boolean isPieceOnTarget = false;
-            for (ChessPiece piece : chessPieces) {
-                if (piece.getX() == endCordsVector.x && piece.getY() == endCordsVector.y) {
-                    isPieceOnTarget = true;
-                    break;
-                }
-            }
-            return isPieceOnTarget;
+            return isFiledNotFree(endCordsVector.x, endCordsVector.y);
         } else {
             return !isFiledNotFree(endCordsVector.x, endCordsVector.y);
         }
