@@ -11,6 +11,8 @@ public class King extends ChessPiece {
 
     @Override
     public boolean isCorrectMovement(EndCordsVector endCordsVector) {
-        return Math.abs(getX() - endCordsVector.x) <= 1 && Math.abs(getY() - endCordsVector.y) <= 1;
+        int deltaX = Math.abs(getX() - endCordsVector.x);
+        int deltaY = Math.abs(getY() - endCordsVector.y);
+        return deltaX <= 1 && deltaY <= 1;
     }
 }
