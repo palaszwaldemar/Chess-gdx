@@ -13,13 +13,17 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean isCorrectMovement(EndCordsVector endCordsVector) {
-        int deltaX = Math.abs(endCordsVector.x - getX());
-        int deltaY = Math.abs(endCordsVector.y - getY());
-        if (deltaY == 2 && pawnMoves == 2 && deltaX == 0) {
+        int deltaX = endCordsVector.x - getX();
+        int deltaY = endCordsVector.y - getY();
+        if ((getColor() == ChessPieceColor.WHITE && Integer.signum(deltaY) < 0) ||
+                (getColor() == ChessPieceColor.BLACK && Integer.signum(deltaY) > 0)) { // TODO: 10.10.2023 w tym momencie białe zawsze na dole. Zmienić w przyszłości
+            return false;
+        }
+        if (Math.abs(deltaY) == 2 && pawnMoves == 2 && Math.abs(deltaX) == 0) {
             pawnMoves = 1;
             return true;
         }
-        if (deltaY == 1 && deltaX <= 1) {
+        if (Math.abs(deltaY) == 1 && Math.abs(deltaX) <= 1) {
             pawnMoves = 1;
             return true;
         }
