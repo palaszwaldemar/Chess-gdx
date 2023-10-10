@@ -13,13 +13,16 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean isCorrectMovement(EndCordsVector endCordsVector) {
-        boolean correctMove;
-        if (getColor().equals(ChessPieceColor.WHITE)) {
-            correctMove = getX() == endCordsVector.x && endCordsVector.y - getY() <= pawnMoves && endCordsVector.y > getY();
-        } else {
-            correctMove = getX() == endCordsVector.x && endCordsVector.y - getY() >= -pawnMoves && endCordsVector.y < getY();
+        int deltaX = Math.abs(endCordsVector.x - getX());
+        int deltaY = Math.abs(endCordsVector.y - getY());
+        if (deltaY == 2 && pawnMoves == 2 && deltaX == 0) {
+            pawnMoves = 1;
+            return true;
         }
-        if (correctMove) pawnMoves = 1; // CHECK : 09.10.2023 czy powinienem dodać tutaj wyjątek InvalidMoveException?
-        return correctMove;
+        if (deltaY == 1 && deltaX <= 1) {
+            pawnMoves = 1;
+            return true;
+        }
+        return false;
     }
 }
