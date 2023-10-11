@@ -11,12 +11,12 @@ import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.EndCordsVector;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
-class ChessPieceActor extends Actor {
+public class ChessPieceActor extends Actor {
     private final ChessPiece chessPiece;
     private final Controller controller;
     private final Texture image;
 
-    ChessPieceActor(ChessPiece chessPiece, Controller controller) {
+    public ChessPieceActor(ChessPiece chessPiece, Controller controller) {
         this.chessPiece = chessPiece;
         this.controller = controller;
         image = new Texture(Gdx.files.internal("chess_pieces/" + chessPiece.getType() + chessPiece.getColor() + ".png"));
@@ -28,6 +28,10 @@ class ChessPieceActor extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(image, getX(), getY());
+    }
+
+    public ChessPiece getChessPiece() {
+        return chessPiece;
     }
 
     private class DragChessPieceListener extends DragListener {
