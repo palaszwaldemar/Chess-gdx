@@ -2,11 +2,11 @@ package com.mygdx.chess.server.chessPieces;
 
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
-import com.mygdx.chess.server.EndCordsVector;
+import com.mygdx.chess.server.CordsVector;
 
 public abstract class ChessPiece {
-    private int x;
-    private int y;
+    int x; // CHECK : 17.10.2023 zmieniłem na dostęp pakietowy ale klasy BoardService i MoveValidator nie mają dostępu
+    int y;
     private final ChessPieceColor color;
     private final ChessPieceType type;
 
@@ -17,9 +17,9 @@ public abstract class ChessPiece {
         this.type = type;
     }
 
-    public void setPosition(EndCordsVector endCordsVector) {
-        this.x = endCordsVector.x;
-        this.y = endCordsVector.y;
+    public void setPosition(CordsVector endCordsVector) {
+        x = endCordsVector.x;
+        y = endCordsVector.y;
     }
 
     public int getX() {
@@ -38,5 +38,5 @@ public abstract class ChessPiece {
         return type;
     }
 
-    public abstract boolean isCorrectMovement(EndCordsVector endCordsVector);
+    public abstract boolean isCorrectMovement(CordsVector endCordsVector);
 }

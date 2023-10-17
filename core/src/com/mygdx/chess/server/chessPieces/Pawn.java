@@ -2,7 +2,7 @@ package com.mygdx.chess.server.chessPieces;
 
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
-import com.mygdx.chess.server.EndCordsVector;
+import com.mygdx.chess.server.CordsVector;
 
 public class Pawn extends ChessPiece {
     private int pawnMoves = 2;
@@ -12,9 +12,9 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public boolean isCorrectMovement(EndCordsVector endCordsVector) {
-        int deltaX = endCordsVector.x - getX();
-        int deltaY = endCordsVector.y - getY();
+    public boolean isCorrectMovement(CordsVector endCordsVector) {
+        int deltaX = endCordsVector.x - x;
+        int deltaY = endCordsVector.y - y;
         if ((getColor() == ChessPieceColor.WHITE && Integer.signum(deltaY) < 0) ||
                 (getColor() == ChessPieceColor.BLACK && Integer.signum(deltaY) > 0)) { // TODO: 10.10.2023 w tym momencie białe zawsze na dole. Zmienić w przyszłości
             return false;

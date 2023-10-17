@@ -1,7 +1,5 @@
 package com.mygdx.chess.server;
 
-import com.badlogic.gdx.math.Vector2;
-import com.mygdx.chess.client.GuiParams;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 import java.util.List;
@@ -13,46 +11,66 @@ public class MoveValidator {
         this.chessPieces = chessPieces;
     }
 
-    public boolean isOnTheBoard(Vector2 mouseDropPosition) {
-        return mouseDropPosition.x >= 0 && mouseDropPosition.x <= GuiParams.CHESSBOARD_WIDTH &&
-                mouseDropPosition.y >= 0 && mouseDropPosition.y <= GuiParams.CHESSBOARD_HEIGHT;
+    boolean isCanMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
+        return isOnTheBoard(endCordsVector) &&
+                isOpponentHere(chessPieceInUse, endCordsVector) &&
+                isClearLineOrCorrectPawnMove(chessPieceInUse, endCordsVector) &&
+                chessPieceInUse.isCorrectMovement(endCordsVector);
     }
 
-    boolean isNoSameColorPieceHere(ChessPieceColor color, EndCordsVector endCordsVector) {
-        boolean isNoSameColorPieceHere = true;
-        for (ChessPiece piece : chessPieces) {
+    private boolean isOnTheBoard(CordsVector endCordsVector) {
+        return endCordsVector.x >= 0 && endCordsVector.x <= 7 &&
+                endCordsVector.y >= 0 && endCordsVector.y <= 7;
+    }
+
+    private boolean isOpponentHere(ChessPiece chessPieceInUse, CordsVector endCordsVector) { // CHECK : 17.10.2023 zmieniłem nazwę metody, zmieniem "color" na ChessPiece
+        boolean isOpponentHere = true;
+        for (ChessPiece piece : chessPieces) { //todo okazja do zastosowania Streamów
             if (piece.getX() == endCordsVector.x && piece.getY() == endCordsVector.y) {
-                if (piece.getColor().equals(color)) {
-                    isNoSameColorPieceHere = false;
+                if (piece.getColor().equals(chessPieceInUse.getColor())) {
+                    isOpponentHere = false;
                 }
             }
         }
-        return isNoSameColorPieceHere;
+        return isOpponentHere;
     }
 
-    boolean isClearLineOrCorrectPawnMove(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
+    private boolean isClearLineOrCorrectPawnMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
         switch (chessPieceInUse.getType()) {
             case PAWN:
-                return isCorrectOrFreeField(chessPieceInUse, endCordsVector);
+                return isCorrectPawnMove(chessPieceInUse, endCordsVector);
             case ROOK:
             case RUNNER:
             case QUEEN:
-                return isFreeLine(chessPieceInUse, endCordsVector);
+                return isClearLine(chessPieceInUse, endCordsVector);
         }
         return true;
     }
 
-    private boolean isCorrectOrFreeField(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
-        int deltaX = endCordsVector.x - chessPieceInUse.getX();
-        int deltaY = endCordsVector.y - chessPieceInUse.getY();
-        if (Math.abs(deltaX) == Math.abs(deltaY)) {
-            return isFiledNotFree(endCordsVector.x, endCordsVector.y);
+    private boolean isCorrectPawnMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {// CHECK : 17.10.2023 poprawiono: pionek przy
+        // CHECK : 17.10.2023  pierwszym ruchu o dwa pola nie może zostać przesunięty jeżeli na pierwszym polu jest inny pionek. Czy metoda czytelna?
+        int deltaX = Math.abs(endCordsVector.x - chessPieceInUse.getX());
+        int deltaY = Math.abs(endCordsVector.y - chessPieceInUse.getY());
+
+        if (deltaX == deltaY) {
+            return !isFieldFree(endCordsVector.x, endCordsVector.y);
+        } else if (isClearLine(chessPieceInUse, endCordsVector)) {
+            return isFieldFree(endCordsVector.x, endCordsVector.y);
         } else {
-            return !isFiledNotFree(endCordsVector.x, endCordsVector.y);
+            return false;
         }
     }
 
-    private boolean isFreeLine(ChessPiece chessPieceInUse, EndCordsVector endCordsVector) {
+    private boolean isFieldFree(int x, int y) {
+        for (ChessPiece chessPiece : chessPieces) {
+            if (chessPiece.getX() == x && chessPiece.getY() == y) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isClearLine(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
         int startX = chessPieceInUse.getX();
         int startY = chessPieceInUse.getY();
         int deltaX = endCordsVector.x - startX;
@@ -60,19 +78,10 @@ public class MoveValidator {
         for (int i = 1; i < Math.max(Math.abs(deltaX), Math.abs(deltaY)); i++) {
             int x = startX + i * Integer.signum(deltaX);
             int y = startY + i * Integer.signum(deltaY);
-            if (isFiledNotFree(x, y)) {
+            if (!isFieldFree(x, y)) {
                 return false;
             }
         }
         return true;
-    }
-
-    private boolean isFiledNotFree(int x, int y) {
-        for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.getX() == x && chessPiece.getY() == y) {
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -1,10 +1,10 @@
 package com.mygdx.chess.server;
 
-public class EndCordsVector {
+public class CordsVector {
     public int x;
     public int y;
 
-    public EndCordsVector(int x, int y) {
+    public CordsVector(int x, int y) {
         this.x = x;
         this.y = y;
     }

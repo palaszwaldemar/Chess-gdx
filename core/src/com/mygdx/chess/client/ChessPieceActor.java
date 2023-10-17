@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.mygdx.chess.exceptions.InvalidMoveException;
-import com.mygdx.chess.server.EndCordsVector;
+import com.mygdx.chess.server.CordsVector;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 public class ChessPieceActor extends Actor {
@@ -57,10 +57,11 @@ public class ChessPieceActor extends Actor {
             Vector2 mouseDropPosition = getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
             int xPixels = ((int) (mouseDropPosition.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
             int yPixels = ((int) (mouseDropPosition.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
-            EndCordsVector endCordsVector = new EndCordsVector(Cords.xToCords(xPixels), Cords.yToCords(yPixels));
+            CordsVector endCordsVector = new CordsVector(Cords.xToCords(xPixels), Cords.yToCords(yPixels));
             try {
-                controller.move(chessPiece, endCordsVector, mouseDropPosition);
+                controller.move(chessPiece, endCordsVector);
                 setPosition(xPixels, yPixels);
+                // TODO: 17.10.2023 dodać metodę remove z grupy ChessBoardGroup
             } catch (InvalidMoveException e) {
                 setPosition(startPosition.x, startPosition.y);
             }

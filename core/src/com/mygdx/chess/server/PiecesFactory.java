@@ -2,7 +2,6 @@ package com.mygdx.chess.server;
 
 import com.mygdx.chess.server.chessPieces.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,19 +22,27 @@ class PiecesFactory {
         return chessPawns;
     }
 
-    private List<ChessPiece> listOfRemainingChessPieces(ChessPieceColor color) {
+    private List<ChessPiece> listOfRemainingChessPieces(ChessPieceColor color) {// CHECK : 17.10.2023 poprawiona metoda
         List<ChessPiece> chessPieces = new ArrayList<>();
-
-        Class<? extends ChessPiece>[] pieceClasses = new Class[]{Rook.class, Knight.class, Runner.class,
-                Queen.class, King.class, Runner.class, Knight.class, Rook.class};
-        for (int i = 0; i < 8; i++) {
-            try {
-                ChessPiece piece = pieceClasses[i].getDeclaredConstructor(ChessPieceColor.class, int.class, int.class).
-                        newInstance(color, i, color.getYFiguresPosition());
-                chessPieces.add(piece);
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-                     IllegalAccessException e) {
-                e.printStackTrace();
+        ChessPieceType[] types = {ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.RUNNER,
+                ChessPieceType.QUEEN, ChessPieceType.KING, ChessPieceType.RUNNER, ChessPieceType.KNIGHT, ChessPieceType.ROOK};
+        for (int i = 0; i < types.length; i++) {
+            switch (types[i]) {
+                case ROOK:
+                    chessPieces.add(new Rook(color, i, color.getYFiguresPosition()));
+                    break;
+                case KNIGHT:
+                    chessPieces.add(new Knight(color, i, color.getYFiguresPosition()));
+                    break;
+                case RUNNER:
+                    chessPieces.add(new Runner(color, i, color.getYFiguresPosition()));
+                    break;
+                case QUEEN:
+                    chessPieces.add(new Queen(color, i, color.getYFiguresPosition()));
+                    break;
+                case KING:
+                    chessPieces.add(new King(color, i, color.getYFiguresPosition()));
+                    break;
             }
         }
         return chessPieces;

@@ -1,11 +1,10 @@
 package com.mygdx.chess.client;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.ChessBoardService;
-import com.mygdx.chess.server.EndCordsVector;
+import com.mygdx.chess.server.CordsVector;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 public class Controller {
@@ -20,11 +19,13 @@ public class Controller {
         chessboardGroup.createActors(service.getChessPieces());
     }
 
-    void move(ChessPiece chessPieceInUse, EndCordsVector endCordsVector, Vector2 mouseDropPosition) throws InvalidMoveException {
-        service.move(chessPieceInUse, endCordsVector, mouseDropPosition);
+    void move(ChessPiece chessPieceInUse, CordsVector endCordsVector) throws InvalidMoveException {
+        service.move(chessPieceInUse, endCordsVector);
+        //chessboardGroup.removeActorAt(endCordsVector);
+        // TODO: 17.10.2023 moveRaport tutaj wykonuje działania
     }
 
-    public void removeActor(EndCordsVector endCordsVector) {
+    public void removeActor(ChessPiece chessPieceToRemove) {
         Array<Actor> actors = chessboardGroup.getChildren();
         Array<ChessPieceActor> children = new Array<>();
 
@@ -34,9 +35,13 @@ public class Controller {
             }
         }
         for (ChessPieceActor child : children) {
-            if (child.getChessPiece().getX() == endCordsVector.x && child.getChessPiece().getY() == endCordsVector.y) {
+            if (child.getChessPiece().equals(chessPieceToRemove)) {
                 chessboardGroup.removeActor(child);
             }
         }
+    }
+
+    public void addChessPieceActor(ChessPiece chessPiece) {// TODO: 11.10.2023 napisane na szybko
+        chessboardGroup.addActor(new ChessPieceActor(chessPiece, this));
     }
 }
