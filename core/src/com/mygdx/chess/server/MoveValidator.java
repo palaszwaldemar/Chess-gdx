@@ -23,7 +23,7 @@ public class MoveValidator {
                 endCordsVector.y >= 0 && endCordsVector.y <= 7;
     }
 
-    private boolean isOpponentHere(ChessPiece chessPieceInUse, CordsVector endCordsVector) { // CHECK : 17.10.2023 zmieniłem nazwę metody, zmieniem "color" na ChessPiece
+    private boolean isOpponentHere(ChessPiece chessPieceInUse, CordsVector endCordsVector) { // CHECK : 17.10.2023 zmieniłem nazwę metody, zmieniłem "color" na ChessPiece
         boolean isOpponentHere = true;
         for (ChessPiece piece : chessPieces) { //todo okazja do zastosowania Streamów
             if (piece.getX() == endCordsVector.x && piece.getY() == endCordsVector.y) {
