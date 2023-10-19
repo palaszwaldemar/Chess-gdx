@@ -61,7 +61,6 @@ public class ChessPieceActor extends Actor {
             try {
                 controller.move(chessPiece, endCordsVector);
                 setPosition(xPixels, yPixels);
-                // TODO: 17.10.2023 dodać metodę remove z grupy ChessBoardGroup
             } catch (InvalidMoveException e) {
                 setPosition(startPosition.x, startPosition.y);
             }
