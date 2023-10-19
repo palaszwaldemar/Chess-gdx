@@ -12,18 +12,16 @@ public class MoveValidator {
     }
 
     boolean isCanMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
-        return isOnTheBoard(endCordsVector) &&
-                isOpponentHere(chessPieceInUse, endCordsVector) &&
-                isClearLineOrCorrectPawnMove(chessPieceInUse, endCordsVector) &&
-                chessPieceInUse.isCorrectMovement(endCordsVector);
+        return isOnTheBoard(endCordsVector) && isOpponentHere(chessPieceInUse, endCordsVector) &&
+                isClearLineOrCorrectPawnMove(chessPieceInUse, endCordsVector) && chessPieceInUse.isCorrectMovement(endCordsVector);
     }
 
     private boolean isOnTheBoard(CordsVector endCordsVector) {
-        return endCordsVector.x >= 0 && endCordsVector.x <= 7 &&
-                endCordsVector.y >= 0 && endCordsVector.y <= 7;
+        return endCordsVector.x >= 0 && endCordsVector.x <= 7 && endCordsVector.y >= 0 && endCordsVector.y <= 7;
     }
 
-    private boolean isOpponentHere(ChessPiece chessPieceInUse, CordsVector endCordsVector) { // CHECK : 17.10.2023 zmieniłem nazwę metody, zmieniłem "color" na ChessPiece
+    private boolean isOpponentHere(ChessPiece chessPieceInUse,
+                                   CordsVector endCordsVector) {// CHECK : 17.10.2023 zmieniłem nazwę metody, zmieniłem "color" na ChessPiece
         boolean isOpponentHere = true;
         for (ChessPiece piece : chessPieces) { //todo okazja do zastosowania Streamów
             if (piece.getX() == endCordsVector.x && piece.getY() == endCordsVector.y) {
@@ -47,11 +45,10 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isCorrectPawnMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {// CHECK : 17.10.2023 poprawiono: pionek przy
-        // CHECK : 17.10.2023  pierwszym ruchu o dwa pola nie może zostać przesunięty jeżeli na pierwszym polu jest inny pionek. Czy metoda czytelna?
+    private boolean isCorrectPawnMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
+        // CHECK : 17.10.2023  poprawiono: pionek przy pierwszym ruchu o dwa pola nie może zostać przesunięty jeżeli na pierwszym polu jest inny pionek. Czy metoda czytelna?
         int deltaX = Math.abs(endCordsVector.x - chessPieceInUse.getX());
         int deltaY = Math.abs(endCordsVector.y - chessPieceInUse.getY());
-
         if (deltaX == deltaY) {
             return !isFieldFree(endCordsVector.x, endCordsVector.y);
         } else if (isClearLine(chessPieceInUse, endCordsVector)) {

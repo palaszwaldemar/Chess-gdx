@@ -18,21 +18,17 @@ public class GameScreen implements Screen {
         ChessboardGroup chessboardGroup = new ChessboardGroup();
         Controller controller = new Controller(chessboardGroup);
         chessboardGroup.setController(controller);
-
         //przygotowanie elementów graficznych
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GuiParams.WINDOW_SIZE_WIDTH, GuiParams.WINDOW_SIZE_HEIGHT);
         stage = new Stage(new ScreenViewport(), game.getBatch());
         Gdx.input.setInputProcessor(stage);
-
         stage.addActor(chessboardGroup);
-
         controller.startGame();
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -50,21 +46,17 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
-
     }
 }

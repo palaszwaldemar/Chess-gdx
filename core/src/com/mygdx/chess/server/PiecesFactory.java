@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 class PiecesFactory {
-
     List<ChessPiece> getChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
         chessPieces.addAll(listOfPawns(color));

@@ -31,7 +31,6 @@ public class Controller { // CHECK : 19.10.2023 klasa Controller używana tylko 
     public void removeActor(ChessPiece chessPieceToRemove) {
         Array<Actor> actors = chessboardGroup.getChildren();
         Array<ChessPieceActor> children = new Array<>();
-
         for (Actor actor : actors) {
             if (actor instanceof ChessPieceActor) {
                 children.add((ChessPieceActor) actor);

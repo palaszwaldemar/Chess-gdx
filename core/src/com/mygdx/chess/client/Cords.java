@@ -1,7 +1,6 @@
 package com.mygdx.chess.client;
 
 class Cords {
-
     static int xToPixels(int x) {
         return x * 100;
     }

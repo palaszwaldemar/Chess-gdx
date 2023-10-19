@@ -15,8 +15,8 @@ public class Pawn extends ChessPiece {
     public boolean isCorrectMovement(CordsVector endCordsVector) {
         int deltaX = endCordsVector.x - x;
         int deltaY = endCordsVector.y - y;
-        if ((getColor() == ChessPieceColor.WHITE && Integer.signum(deltaY) < 0) ||
-                (getColor() == ChessPieceColor.BLACK && Integer.signum(deltaY) > 0)) { // TODO: 10.10.2023 w tym momencie białe zawsze na dole. Zmienić w przyszłości
+        if ((getColor() == ChessPieceColor.WHITE && Integer.signum(deltaY) < 0) || // TODO: 10.10.2023 w tym momencie białe zawsze na dole. Zmienić w przyszłości
+                (getColor() == ChessPieceColor.BLACK && Integer.signum(deltaY) > 0)) {
             return false;
         }
         if (Math.abs(deltaY) == 2 && pawnMoves == 2 && Math.abs(deltaX) == 0) {
