@@ -21,7 +21,7 @@ class PiecesFactory {
         return chessPawns;
     }
 
-    private List<ChessPiece> listOfRemainingChessPieces(ChessPieceColor color) {// CHECK : 17.10.2023 poprawiona metoda
+    private List<ChessPiece> listOfRemainingChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
         ChessPieceType[] types = {ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.RUNNER,
                 ChessPieceType.QUEEN, ChessPieceType.KING, ChessPieceType.RUNNER, ChessPieceType.KNIGHT, ChessPieceType.ROOK};

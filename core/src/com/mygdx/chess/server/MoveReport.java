@@ -2,7 +2,7 @@ package com.mygdx.chess.server;
 
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
-public class MoveReport { // CHECK : 19.10.2023 sprawdzić wszystkie użyte obiekty tego typu. Czy są poprawnie użyte, czy w dobrych miejscach
+public class MoveReport {
     private ChessPiece chessPieceToRemove;
     private ChessPiece promotionPawnToRemove;
     private ChessPiece promotionTarget;
@@ -29,5 +29,9 @@ public class MoveReport { // CHECK : 19.10.2023 sprawdzić wszystkie użyte obie
 
     public ChessPiece getPromotionTarget() {
         return promotionTarget;
+    }
+
+    public boolean wasPromotion(){
+        return promotionPawnToRemove != null;
     }
 }

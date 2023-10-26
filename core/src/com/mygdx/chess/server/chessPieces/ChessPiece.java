@@ -5,7 +5,7 @@ import com.mygdx.chess.server.ChessPieceType;
 import com.mygdx.chess.server.CordsVector;
 
 public abstract class ChessPiece {
-    int x; // CHECK : 17.10.2023 zmieniłem na dostęp pakietowy ale klasy BoardService i MoveValidator nie mają dostępu
+    int x;
     int y;
     private final ChessPieceColor color;
     private final ChessPieceType type;

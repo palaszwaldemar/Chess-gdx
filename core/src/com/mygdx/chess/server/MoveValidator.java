@@ -21,7 +21,7 @@ public class MoveValidator {
     }
 
     private boolean isOpponentHere(ChessPiece chessPieceInUse,
-                                   CordsVector endCordsVector) {// CHECK : 17.10.2023 zmieniłem nazwę metody, zmieniłem "color" na ChessPiece
+                                   CordsVector endCordsVector) {
         boolean isOpponentHere = true;
         for (ChessPiece piece : chessPieces) { //todo okazja do zastosowania Streamów
             if (piece.getX() == endCordsVector.x && piece.getY() == endCordsVector.y) {
@@ -46,15 +46,14 @@ public class MoveValidator {
     }
 
     private boolean isCorrectPawnMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
-        // CHECK : 17.10.2023  poprawiono: pionek przy pierwszym ruchu o dwa pola nie może zostać przesunięty jeżeli na pierwszym polu jest inny pionek. Czy metoda czytelna?
+        // TODO: 26.10.2023 wydzielić dwie osobne metody: wyliczenie skosu, poprawność ruchu
         int deltaX = Math.abs(endCordsVector.x - chessPieceInUse.getX());
         int deltaY = Math.abs(endCordsVector.y - chessPieceInUse.getY());
-        if (deltaX == deltaY) {
+        boolean diagonalMove = deltaX == deltaY;
+        if (diagonalMove) {
             return !isFieldFree(endCordsVector.x, endCordsVector.y);
-        } else if (isClearLine(chessPieceInUse, endCordsVector)) {
-            return isFieldFree(endCordsVector.x, endCordsVector.y);
         } else {
-            return false;
+            return isClearLine(chessPieceInUse, endCordsVector) && isFieldFree(endCordsVector.x, endCordsVector.y);
         }
     }
 

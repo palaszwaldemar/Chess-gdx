@@ -8,7 +8,7 @@ import com.mygdx.chess.server.CordsVector;
 import com.mygdx.chess.server.MoveReport;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
-public class Controller { // CHECK : 19.10.2023 klasa Controller używana tylko na froncie
+public class Controller {
     private final ChessBoardService service = new ChessBoardService();
     private final ChessboardGroup chessboardGroup;
 
@@ -23,7 +23,7 @@ public class Controller { // CHECK : 19.10.2023 klasa Controller używana tylko 
     void move(ChessPiece chessPieceInUse, CordsVector endCordsVector) throws InvalidMoveException {
         MoveReport moveReport = service.move(chessPieceInUse, endCordsVector);
         removeActor(moveReport.getChessPieceToRemove());
-        if (moveReport.getPromotionPawnToRemove() != null) {// CHECK : 19.10.2023 czy tak może byc?
+        if (moveReport.wasPromotion()) {
             replaceChessPieceActor(moveReport);
         }
     }
