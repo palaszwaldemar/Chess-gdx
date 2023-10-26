@@ -46,7 +46,6 @@ public class MoveValidator {
     }
 
     private boolean isCorrectPawnMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
-        // TODO: 26.10.2023 wydzielić dwie osobne metody: wyliczenie skosu, poprawność ruchu
         int deltaX = Math.abs(endCordsVector.x - chessPieceInUse.getX());
         int deltaY = Math.abs(endCordsVector.y - chessPieceInUse.getY());
         boolean diagonalMove = deltaX == deltaY;

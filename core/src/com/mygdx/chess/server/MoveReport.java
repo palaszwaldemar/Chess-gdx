@@ -31,7 +31,7 @@ public class MoveReport {
         return promotionTarget;
     }
 
-    public boolean wasPromotion(){
+    public boolean wasPromotion() {
         return promotionPawnToRemove != null;
     }
 }
