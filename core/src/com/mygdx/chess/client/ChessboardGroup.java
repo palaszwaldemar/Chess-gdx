@@ -13,7 +13,8 @@ public class ChessboardGroup extends Group {
     private Controller controller;
 
     ChessboardGroup() {
-        setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION, GuiParams.CHESSBOARD_WIDTH, GuiParams.CHESSBOARD_HEIGHT);
+        setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION,
+                GuiParams.CHESSBOARD_WIDTH, GuiParams.CHESSBOARD_HEIGHT);
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
     }
 

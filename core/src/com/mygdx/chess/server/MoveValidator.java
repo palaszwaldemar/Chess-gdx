@@ -13,11 +13,13 @@ public class MoveValidator {
 
     boolean isCanMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
         return isOnTheBoard(endCordsVector) && isOpponentHere(chessPieceInUse, endCordsVector) &&
-                isClearLineOrCorrectPawnMove(chessPieceInUse, endCordsVector) && chessPieceInUse.isCorrectMovement(endCordsVector);
+                isClearLineOrCorrectPawnMove(chessPieceInUse, endCordsVector) &&
+                chessPieceInUse.isCorrectMovement(endCordsVector);
     }
 
     private boolean isOnTheBoard(CordsVector endCordsVector) {
-        return endCordsVector.x >= 0 && endCordsVector.x <= 7 && endCordsVector.y >= 0 && endCordsVector.y <= 7;
+        return endCordsVector.x >= 0 && endCordsVector.x <= 7 && endCordsVector.y >= 0 &&
+                endCordsVector.y <= 7;
     }
 
     private boolean isOpponentHere(ChessPiece chessPieceInUse,
@@ -33,7 +35,8 @@ public class MoveValidator {
         return isOpponentHere;
     }
 
-    private boolean isClearLineOrCorrectPawnMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
+    private boolean isClearLineOrCorrectPawnMove(ChessPiece chessPieceInUse,
+                                                 CordsVector endCordsVector) {
         switch (chessPieceInUse.getType()) {
             case PAWN:
                 return isCorrectPawnMove(chessPieceInUse, endCordsVector);
@@ -52,7 +55,8 @@ public class MoveValidator {
         if (diagonalMove) {
             return !isFieldFree(endCordsVector.x, endCordsVector.y);
         } else {
-            return isClearLine(chessPieceInUse, endCordsVector) && isFieldFree(endCordsVector.x, endCordsVector.y);
+            return isClearLine(chessPieceInUse, endCordsVector) &&
+                    isFieldFree(endCordsVector.x, endCordsVector.y);
         }
     }
 

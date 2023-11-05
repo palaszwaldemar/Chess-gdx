@@ -19,7 +19,8 @@ public class ChessBoardService {
         moveValidator = new MoveValidator(chessPieces);
     }
 
-    public MoveReport move(ChessPiece chessPieceInUse, CordsVector endCordsVector) throws InvalidMoveException {
+    public MoveReport move(ChessPiece chessPieceInUse, CordsVector endCordsVector)
+            throws InvalidMoveException {
         if (!moveValidator.isCanMove(chessPieceInUse, endCordsVector)) {
             throw new InvalidMoveException();
         }
@@ -34,7 +35,8 @@ public class ChessBoardService {
         Iterator<ChessPiece> iterator = chessPieces.iterator();
         while (iterator.hasNext()) {
             ChessPiece chessPieceToRemove = iterator.next();
-            if (chessPieceToRemove.getX() == endCordsVector.x && chessPieceToRemove.getY() == endCordsVector.y) {
+            if (chessPieceToRemove.getX() == endCordsVector.x &&
+                    chessPieceToRemove.getY() == endCordsVector.y) {
                 moveReport.setChessPieceToRemove(chessPieceToRemove);
                 iterator.remove();
             }
@@ -42,16 +44,20 @@ public class ChessBoardService {
         return moveReport;
     }
 
-    private void pawnPromotion(ChessPiece chessPieceInUse, CordsVector endCordsVector, MoveReport moveReport) {
-        if (chessPieceInUse.getType() == ChessPieceType.PAWN && (endCordsVector.y == 0 || endCordsVector.y == 7)) {
+    private void pawnPromotion(ChessPiece chessPieceInUse, CordsVector endCordsVector,
+                               MoveReport moveReport) {
+        if (chessPieceInUse.getType() == ChessPieceType.PAWN &&
+                (endCordsVector.y == 0 || endCordsVector.y == 7)) {
             moveReport.setPromotionPawnToRemove(chessPieceInUse);
             changePawnToQueen(chessPieceInUse, endCordsVector, moveReport);
         }
     }
 
-    private void changePawnToQueen(ChessPiece chessPieceInUse, CordsVector endCordsVector, MoveReport moveReport) {
+    private void changePawnToQueen(ChessPiece chessPieceInUse, CordsVector endCordsVector,
+                                   MoveReport moveReport) {
         capturePiece(endCordsVector);
-        ChessPiece newQueen = new Queen(chessPieceInUse.getColor(), endCordsVector.x, endCordsVector.y);
+        ChessPiece newQueen =
+                new Queen(chessPieceInUse.getColor(), endCordsVector.x, endCordsVector.y);
         chessPieces.add(newQueen);
         moveReport.setPromotionTarget(newQueen);
     }

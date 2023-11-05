@@ -19,7 +19,9 @@ public class ChessPieceActor extends Actor {
     public ChessPieceActor(ChessPiece chessPiece, Controller controller) {
         this.chessPiece = chessPiece;
         this.controller = controller;
-        image = new Texture(Gdx.files.internal("chess_pieces/" + chessPiece.getType() + chessPiece.getColor() + ".png"));
+        image = new Texture(
+                Gdx.files.internal(
+                        "chess_pieces/" + chessPiece.getType() + chessPiece.getColor() + ".png"));
         setBounds(Cords.xToPixels(chessPiece.getX()), Cords.yToPixels(chessPiece.getY()),
                 GuiParams.CHESS_PIECE_WIDTH, GuiParams.CHESS_PIECE_HEIGHT);
         addListener(new DragChessPieceListener());
@@ -48,16 +50,25 @@ public class ChessPieceActor extends Actor {
 
         @Override
         public void drag(InputEvent event, float x, float y, int pointer) {
-            Vector2 vector2 = getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
+            Vector2 vector2 =
+                    getParent().stageToLocalCoordinates(
+                            new Vector2(event.getStageX(), event.getStageY()));
             setPosition(vector2.x - startTouchPosition.x, vector2.y - startTouchPosition.y);
         }
 
         @Override
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-            Vector2 mouseDropPosition = getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-            int xPixels = ((int) (mouseDropPosition.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
-            int yPixels = ((int) (mouseDropPosition.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
-            CordsVector endCordsVector = new CordsVector(Cords.xToCords(xPixels), Cords.yToCords(yPixels));
+            Vector2 mouseDropPosition =
+                    getParent().stageToLocalCoordinates(
+                            new Vector2(event.getStageX(), event.getStageY()));
+            int xPixels =
+                    ((int) (mouseDropPosition.x / GuiParams.CHESS_PIECE_WIDTH)) *
+                            GuiParams.CHESS_PIECE_WIDTH;
+            int yPixels =
+                    ((int) (mouseDropPosition.y / GuiParams.CHESS_PIECE_HEIGHT)) *
+                            GuiParams.CHESS_PIECE_HEIGHT;
+            CordsVector endCordsVector =
+                    new CordsVector(Cords.xToCords(xPixels), Cords.yToCords(yPixels));
             try {
                 controller.move(chessPiece, endCordsVector);
                 setPosition(xPixels, yPixels);
