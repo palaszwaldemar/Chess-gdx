@@ -5,7 +5,7 @@ import com.mygdx.chess.server.ChessPieceType;
 import com.mygdx.chess.server.CordsVector;
 
 public class Pawn extends ChessPiece {
-    private int pawnMoves = 2;
+    private boolean moved = false;
 
     public Pawn(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.PAWN, color, x, y);
@@ -15,18 +15,32 @@ public class Pawn extends ChessPiece {
     public boolean isCorrectMovement(CordsVector endCordsVector) {
         int deltaX = endCordsVector.x - x;
         int deltaY = endCordsVector.y - y;
-        if ((getColor() == ChessPieceColor.WHITE && Integer.signum(deltaY) < 0) || // TODO: 10.10.2023 w tym momencie białe zawsze na dole. Zmienić w przyszłości
-                (getColor() == ChessPieceColor.BLACK && Integer.signum(deltaY) > 0)) {
+        if (!isMoveForward(deltaY)) {
             return false;
         }
-        if (Math.abs(deltaY) == 2 && pawnMoves == 2 && Math.abs(deltaX) == 0) {
-            pawnMoves = 1;
-            return true;
+        if (moved) {
+            return isOneStep(deltaX, deltaY);
         }
-        if (Math.abs(deltaY) == 1 && Math.abs(deltaX) <= 1) {
-            pawnMoves = 1;
-            return true;
-        }
-        return false;
+        return isOneStep(deltaX, deltaY) || isTwoSteps(deltaX, deltaY);
+    }
+
+    @Override
+    public void move(CordsVector endCordsVector) {
+        super.move(endCordsVector);
+        moved = true;
+    }
+
+    // TODO: 10.10.2023 w tym momencie białe zawsze na dole. Zmienić w przyszłości
+    private boolean isMoveForward(int deltaY) {
+        return (getColor() != ChessPieceColor.WHITE || Integer.signum(deltaY) >= 0) &&
+                (getColor() != ChessPieceColor.BLACK || Integer.signum(deltaY) <= 0);
+    }
+
+    private boolean isOneStep(int deltaX, int deltaY) {
+        return Math.abs(deltaX) <= 1 && Math.abs(deltaY) == 1;
+    }
+
+    private boolean isTwoSteps(int deltaX, int deltaY) {
+        return Math.abs(deltaX) == 0 && Math.abs(deltaY) == 2;
     }
 }

@@ -17,7 +17,7 @@ public abstract class ChessPiece {
         this.type = type;
     }
 
-    public void setPosition(CordsVector endCordsVector) {
+    public void move(CordsVector endCordsVector) {
         x = endCordsVector.x;
         y = endCordsVector.y;
     }

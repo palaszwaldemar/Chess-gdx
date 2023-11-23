@@ -43,6 +43,7 @@ public class MoveValidator {
             case ROOK:
             case RUNNER:
             case QUEEN:
+            case KING:
                 return isClearLine(chessPieceInUse, endCordsVector);
         }
         return true;

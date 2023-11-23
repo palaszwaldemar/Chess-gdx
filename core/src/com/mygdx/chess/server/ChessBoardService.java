@@ -25,7 +25,7 @@ public class ChessBoardService {
             throw new InvalidMoveException();
         }
         MoveReport moveReport = capturePiece(endCordsVector);
-        chessPieceInUse.setPosition(endCordsVector);
+        chessPieceInUse.move(endCordsVector);
         pawnPromotion(chessPieceInUse, endCordsVector, moveReport);
         return moveReport;
     }
