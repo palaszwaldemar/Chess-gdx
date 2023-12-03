@@ -22,17 +22,17 @@ public class MoveValidator {
                 endCordsVector.y <= 7;
     }
 
-    private boolean isOpponentHere(ChessPiece chessPieceInUse,
-                                   CordsVector endCordsVector) {
-        boolean isOpponentHere = true;
+    private boolean isNotSameColorFigureHere(ChessPiece chessPieceInUse,
+                                             CordsVector endCordsVector) {
+        boolean notSameColorFigureHere = true;
         for (ChessPiece piece : chessPieces) { //todo okazja do zastosowania Streamów
             if (piece.getX() == endCordsVector.x && piece.getY() == endCordsVector.y) {
                 if (piece.getColor().equals(chessPieceInUse.getColor())) {
-                    isOpponentHere = false;
+                    notSameColorFigureHere = false;
                 }
             }
         }
-        return isOpponentHere;
+        return notSameColorFigureHere;
     }
 
     private boolean isClearLineOrCorrectPawnMove(ChessPiece chessPieceInUse,
