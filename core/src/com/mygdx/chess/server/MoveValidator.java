@@ -11,10 +11,11 @@ public class MoveValidator {
         this.chessPieces = chessPieces;
     }
 
-    boolean isCanMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
-        return isOnTheBoard(endCordsVector) && isOpponentHere(chessPieceInUse, endCordsVector) &&
-                isClearLineOrCorrectPawnMove(chessPieceInUse, endCordsVector) &&
-                chessPieceInUse.isCorrectMovement(endCordsVector);
+    boolean canMove(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
+        return isOnTheBoard(endCordsVector) &&
+                isNotSameColorFigureHere(chessPieceInUse, endCordsVector) &&
+                chessPieceInUse.isCorrectMovement(endCordsVector) &&
+                isValidMoveForChessPiece(chessPieceInUse, endCordsVector);
     }
 
     private boolean isOnTheBoard(CordsVector endCordsVector) {
