@@ -44,8 +44,9 @@ public class MoveValidator {
             case ROOK:
             case RUNNER:
             case QUEEN:
-            case KING:
                 return isClearLine(chessPieceInUse, endCordsVector);
+            case KING:
+                return isValidCastlingOrNormalMove(chessPieceInUse, endCordsVector);
         }
         return true;
     }
@@ -81,6 +82,74 @@ public class MoveValidator {
             int y = startY + i * Integer.signum(deltaY);
             if (!isFieldFree(x, y)) {
                 return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isValidCastlingOrNormalMove(ChessPiece king,
+                                                CordsVector endCordsVector) {
+        if (!isCastling(king, endCordsVector)) {
+            return true;
+        }
+        if (isKingInCheck(king)) {
+            return false;
+        }
+        if (isRightCastling(king, endCordsVector)) {
+            return isValidCastlingByRook(king, 7) &&
+                    isClearCastlingLine(king, true);
+        } else {
+            return isValidCastlingByRook(king, 0) &&
+                    isClearCastlingLine(king, false);
+        }
+    }
+
+    private boolean isCastling(ChessPiece king, CordsVector endCordsVector) {
+        return Math.abs(king.getX() - endCordsVector.x) == 2;
+    }
+
+    private boolean isKingInCheck(ChessPiece king) {
+        int x = king.getX();
+        int y = king.getY();
+        CordsVector kingCordsVector = new CordsVector(x, y);
+        for (ChessPiece chessPiece : chessPieces) {
+            if (!(chessPiece.getColor() == king.getColor()) &&
+                    chessPiece.isCorrectMovement(kingCordsVector)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isRightCastling(ChessPiece king, CordsVector endCordsVector) {
+        return king.getX() < endCordsVector.x;
+    }
+
+    private boolean isValidCastlingByRook(ChessPiece king, int xRook) {
+        for (ChessPiece chessPiece : chessPieces) {
+            if (chessPiece.getType() == ChessPieceType.ROOK &&
+                    chessPiece.getColor() == king.getColor() && chessPiece.getY() == king.getY() &&
+                    chessPiece.getX() == xRook && !chessPiece.wasMoved()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isClearCastlingLine(ChessPiece king, boolean rightCasting) {
+        int startX = rightCasting ? 5 : 1;
+        int endX = rightCasting ? 7 : 4;
+        int y = king.getColor() == ChessPieceColor.WHITE ? 0 : 7;
+        for (int i = startX; i < endX; i++) {
+            for (ChessPiece chessPiece : chessPieces) {
+                CordsVector cordsVector = new CordsVector(i, y);
+                if (chessPiece.getX() == i && chessPiece.getY() == king.getY()) {
+                    return false;
+                }
+                if (!(chessPiece.getColor() == king.getColor()) &&
+                        canMove(chessPiece, cordsVector)) {
+                    return false;
+                }
             }
         }
         return true;
