@@ -28,7 +28,7 @@ public class Controller {
         }
     }
 
-    public void removeActor(ChessPiece chessPieceToRemove) {
+    private void removeActor(ChessPiece chessPieceToRemove) {
         Array<Actor> actors = chessboardGroup.getChildren();
         Array<ChessPieceActor> children = new Array<>();
         for (Actor actor : actors) {
@@ -43,7 +43,7 @@ public class Controller {
         }
     }
 
-    public void replaceChessPieceActor(MoveReport moveReport) {
+    private void replaceChessPieceActor(MoveReport moveReport) {
         removeActor(moveReport.getPromotionPawnToRemove());
         chessboardGroup.addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
     }
