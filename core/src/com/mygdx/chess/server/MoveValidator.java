@@ -36,8 +36,8 @@ public class MoveValidator {
         return notSameColorFigureHere;
     }
 
-    private boolean isClearLineOrCorrectPawnMove(ChessPiece chessPieceInUse,
-                                                 CordsVector endCordsVector) {
+    private boolean isValidMoveForChessPiece(ChessPiece chessPieceInUse,
+                                             CordsVector endCordsVector) {
         switch (chessPieceInUse.getType()) {
             case PAWN:
                 return isCorrectPawnMove(chessPieceInUse, endCordsVector);
