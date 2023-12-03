@@ -21,7 +21,7 @@ public class ChessBoardService {
 
     public MoveReport move(ChessPiece chessPieceInUse, CordsVector endCordsVector)
             throws InvalidMoveException {
-        if (!moveValidator.isCanMove(chessPieceInUse, endCordsVector)) {
+        if (!moveValidator.canMove(chessPieceInUse, endCordsVector)) {
             throw new InvalidMoveException();
         }
         MoveReport moveReport = capturePiece(endCordsVector);
