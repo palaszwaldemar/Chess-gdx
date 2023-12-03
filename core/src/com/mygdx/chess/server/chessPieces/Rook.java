@@ -13,4 +13,10 @@ public class Rook extends ChessPiece {
     public boolean isCorrectMovement(CordsVector endCordsVector) {
         return x == endCordsVector.x || y == endCordsVector.y;
     }
+
+    @Override
+    public void move(CordsVector endCordsVector) {
+        super.move(endCordsVector);
+        moved = true;
+    }
 }

@@ -5,7 +5,6 @@ import com.mygdx.chess.server.ChessPieceType;
 import com.mygdx.chess.server.CordsVector;
 
 public class King extends ChessPiece {
-    private boolean moved = false;
 
     public King(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.KING, color, x, y);

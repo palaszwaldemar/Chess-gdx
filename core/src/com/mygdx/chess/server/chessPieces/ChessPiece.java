@@ -9,6 +9,7 @@ public abstract class ChessPiece {
     int y;
     private final ChessPieceColor color;
     private final ChessPieceType type;
+    boolean moved;
 
     public ChessPiece(ChessPieceType type, ChessPieceColor color, int x, int y) {
         this.x = x;
@@ -36,6 +37,10 @@ public abstract class ChessPiece {
 
     public ChessPieceType getType() {
         return type;
+    }
+
+    public boolean wasMoved() {
+        return moved;
     }
 
     public abstract boolean isCorrectMovement(CordsVector endCordsVector);

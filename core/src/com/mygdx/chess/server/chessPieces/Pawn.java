@@ -5,7 +5,6 @@ import com.mygdx.chess.server.ChessPieceType;
 import com.mygdx.chess.server.CordsVector;
 
 public class Pawn extends ChessPiece {
-    private boolean moved = false;
 
     public Pawn(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.PAWN, color, x, y);
