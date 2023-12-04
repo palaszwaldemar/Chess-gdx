@@ -95,13 +95,9 @@ public class MoveValidator {
         if (isKingInCheck(king)) {
             return false;
         }
-        if (isRightCastling(king, endCordsVector)) {
-            return isValidCastlingByRook(king, 7) &&
-                    isClearCastlingLine(king, true);
-        } else {
-            return isValidCastlingByRook(king, 0) &&
-                    isClearCastlingLine(king, false);
-        }
+        int xRook = isRightCastling(king, endCordsVector) ? 7 : 0;
+        boolean rightCastling = isRightCastling(king, endCordsVector);
+        return isValidCastlingByRook(king, xRook) && isClearCastlingLine(king, rightCastling);
     }
 
     private boolean isCastling(ChessPiece king, CordsVector endCordsVector) {
@@ -136,9 +132,9 @@ public class MoveValidator {
         return false;
     }
 
-    private boolean isClearCastlingLine(ChessPiece king, boolean rightCasting) {
-        int startX = rightCasting ? 5 : 1;
-        int endX = rightCasting ? 7 : 4;
+    private boolean isClearCastlingLine(ChessPiece king, boolean rightCastling) {
+        int startX = rightCastling ? 5 : 1;
+        int endX = rightCastling ? 7 : 4;
         int y = king.getColor() == ChessPieceColor.WHITE ? 0 : 7;
         for (int i = startX; i < endX; i++) {
             for (ChessPiece chessPiece : chessPieces) {
