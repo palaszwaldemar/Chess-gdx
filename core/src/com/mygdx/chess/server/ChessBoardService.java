@@ -24,14 +24,17 @@ public class ChessBoardService {
         if (!moveValidator.canMove(chessPieceInUse, endCordsVector)) {
             throw new InvalidMoveException();
         }
-        MoveReport moveReport = capturePiece(endCordsVector);
+        MoveReport moveReport = new MoveReport();
+        // CHECK : 04.12.2023 kolejność tych 4 metod ma znaczenie. Czy to błąd?
+        capturePiece(endCordsVector, moveReport);
+        castling(chessPieceInUse, endCordsVector, moveReport);
         chessPieceInUse.move(endCordsVector);
         pawnPromotion(chessPieceInUse, endCordsVector, moveReport);
+        //
         return moveReport;
     }
 
-    private MoveReport capturePiece(CordsVector endCordsVector) {
-        MoveReport moveReport = new MoveReport();
+    private void capturePiece(CordsVector endCordsVector, MoveReport moveReport) {
         Iterator<ChessPiece> iterator = chessPieces.iterator();
         while (iterator.hasNext()) {
             ChessPiece chessPieceToRemove = iterator.next();
@@ -41,13 +44,44 @@ public class ChessBoardService {
                 iterator.remove();
             }
         }
-        return moveReport;
+    }
+
+    private void castling(ChessPiece king, CordsVector endCordsVector, MoveReport moveReport) {
+        if (king.getType() != ChessPieceType.KING) {
+            return;
+        }
+        if (Math.abs(king.getX() - endCordsVector.x) != 2) {
+            return;
+        }
+        boolean isRightCastling = endCordsVector.x == 6;
+        int xRook = isRightCastling ? 7 : 0;
+        int yRook = king.getY();
+        moveRook(king.getColor(), xRook, yRook, isRightCastling, moveReport);
+    }
+
+    private void moveRook(ChessPieceColor color, int xRook, int yRook,
+                          boolean isRightCastling, MoveReport moveReport) {
+        for (ChessPiece chessPiece : chessPieces) {
+            if (chessPiece.getColor() == color && chessPiece.getX() == xRook &&
+                    chessPiece.getY() == yRook) {
+                int newXRook = isRightCastling ? 5 : 3;
+                moveReport.setRookToMove(chessPiece, newXRook, yRook);
+                setRookPosition(chessPiece, newXRook, yRook);
+            }
+        }
+    }
+
+    private void setRookPosition(ChessPiece rook, int x, int y) {
+        CordsVector endCordsVector = new CordsVector(x, y);
+        rook.move(endCordsVector);
     }
 
     private void pawnPromotion(ChessPiece chessPieceInUse, CordsVector endCordsVector,
                                MoveReport moveReport) {
-        if (chessPieceInUse.getType() == ChessPieceType.PAWN &&
-                (endCordsVector.y == 0 || endCordsVector.y == 7)) {
+        if (chessPieceInUse.getType() != ChessPieceType.PAWN) {
+            return;
+        }
+        if (endCordsVector.y == 0 || endCordsVector.y == 7) {
             moveReport.setPromotionPawnToRemove(chessPieceInUse);
             changePawnToQueen(chessPieceInUse, endCordsVector, moveReport);
         }
@@ -55,7 +89,7 @@ public class ChessBoardService {
 
     private void changePawnToQueen(ChessPiece chessPieceInUse, CordsVector endCordsVector,
                                    MoveReport moveReport) {
-        capturePiece(endCordsVector);
+        chessPieces.remove(chessPieceInUse);
         ChessPiece newQueen =
                 new Queen(chessPieceInUse.getColor(), endCordsVector.x, endCordsVector.y);
         chessPieces.add(newQueen);

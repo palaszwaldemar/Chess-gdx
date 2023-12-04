@@ -23,6 +23,7 @@ public class Controller {
     void move(ChessPiece chessPieceInUse, CordsVector endCordsVector) throws InvalidMoveException {
         MoveReport moveReport = service.move(chessPieceInUse, endCordsVector);
         removeActor(moveReport.getChessPieceToRemove());
+        castling(moveReport);
         if (moveReport.wasPromotion()) {
             replaceChessPieceActor(moveReport);
         }
@@ -43,8 +44,33 @@ public class Controller {
         }
     }
 
+    private void castling(MoveReport moveReport) {
+        Array<Actor> actors = chessboardGroup.getChildren();
+        Array<ChessPieceActor> children = new Array<>();
+        for (Actor actor : actors) {
+            if (actor instanceof ChessPieceActor) {
+                children.add((ChessPieceActor) actor);
+            }
+        }
+        for (ChessPieceActor child : children) {
+            if (child.getChessPiece().equals(moveReport.getRookToMove())) {
+                child.setPosition(moveReport.getNewXRook(), moveReport.getNewYRook());
+            }
+        }
+    }
+
     private void replaceChessPieceActor(MoveReport moveReport) {
         removeActor(moveReport.getPromotionPawnToRemove());
         chessboardGroup.addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
+    }
+
+    // TODO: 24.11.2023 do usunięcia. Stworzone na potrzebę testowania roszady
+    void move(ChessPiece chessPieceInUse, int x, int y) throws InvalidMoveException {
+        CordsVector cordsVector = new CordsVector(x, y);
+        MoveReport moveReport = service.move(chessPieceInUse, cordsVector);
+        removeActor(moveReport.getChessPieceToRemove());
+        if (moveReport.wasPromotion()) {
+            replaceChessPieceActor(moveReport);
+        }
     }
 }
