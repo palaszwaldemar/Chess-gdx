@@ -6,6 +6,7 @@ public class MoveReport {
     private ChessPiece chessPieceToRemove;
     private ChessPiece promotionPawnToRemove;
     private ChessPiece promotionTarget;
+    private ChessPiece rookToMove;
 
     public void setChessPieceToRemove(ChessPiece chessPieceToRemove) {
         this.chessPieceToRemove = chessPieceToRemove;
@@ -19,6 +20,10 @@ public class MoveReport {
         this.promotionTarget = promotionTarget;
     }
 
+    public void setRookToMove(ChessPiece rookToMove) {
+        this.rookToMove = rookToMove;
+    }
+
     public ChessPiece getChessPieceToRemove() {
         return chessPieceToRemove;
     }
@@ -29,6 +34,10 @@ public class MoveReport {
 
     public ChessPiece getPromotionTarget() {
         return promotionTarget;
+    }
+
+    public ChessPiece getRookToMove() {
+        return rookToMove;
     }
 
     public boolean wasPromotion() {
