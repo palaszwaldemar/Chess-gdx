@@ -110,7 +110,7 @@ public class MoveValidator {
         CordsVector kingCordsVector = new CordsVector(x, y);
         for (ChessPiece chessPiece : chessPieces) {
             if (!(chessPiece.getColor() == king.getColor()) &&
-                    chessPiece.isCorrectMovement(kingCordsVector)) {
+                    canMove(chessPiece, kingCordsVector)) {
                 return true;
             }
         }
