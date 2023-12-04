@@ -44,4 +44,15 @@ public abstract class ChessPiece {
     }
 
     public abstract boolean isCorrectMovement(CordsVector endCordsVector);
+
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "x=" + x +
+                ", y=" + y +
+                ", color=" + color +
+                ", type=" + type +
+                ", moved=" + moved +
+                '}';
+    }
 }
