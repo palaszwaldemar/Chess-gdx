@@ -44,6 +44,7 @@ public class Controller {
         }
     }
 
+    // CHECK : 05.12.2023 sprawdzić na następnej lekcji
     private void castling(MoveReport moveReport) {
         Array<Actor> actors = chessboardGroup.getChildren();
         Array<ChessPieceActor> children = new Array<>();

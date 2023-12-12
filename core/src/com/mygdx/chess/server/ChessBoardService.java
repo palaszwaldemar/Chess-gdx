@@ -25,12 +25,11 @@ public class ChessBoardService {
             throw new InvalidMoveException();
         }
         MoveReport moveReport = new MoveReport();
-        // CHECK : 04.12.2023 kolejność tych 4 metod ma znaczenie. Czy to błąd?
+        moveReport.setChessPieceInUse(chessPieceInUse);
         capturePiece(endCordsVector, moveReport);
-        castling(chessPieceInUse, endCordsVector, moveReport);
+        moveRookBeforeKing(chessPieceInUse, endCordsVector, moveReport);
         chessPieceInUse.move(endCordsVector);
         pawnPromotion(chessPieceInUse, endCordsVector, moveReport);
-        //
         return moveReport;
     }
 
@@ -39,32 +38,42 @@ public class ChessBoardService {
         while (iterator.hasNext()) {
             ChessPiece chessPieceToRemove = iterator.next();
             if (chessPieceToRemove.getX() == endCordsVector.x &&
-                    chessPieceToRemove.getY() == endCordsVector.y) {
+                    chessPieceToRemove.getY() == endCordsVector.y &&
+                    moveReport.getChessPieceInUse().getColor() != chessPieceToRemove.getColor()) {
                 moveReport.setChessPieceToRemove(chessPieceToRemove);
                 iterator.remove();
             }
         }
     }
 
-    private void castling(ChessPiece king, CordsVector endCordsVector, MoveReport moveReport) {
-        if (king.getType() != ChessPieceType.KING) {
+    private void moveRookBeforeKing(ChessPiece chessPieceInUse, CordsVector endCordsVector,
+                                    MoveReport moveReport) {
+        if (isNotKingOrNotCastling(chessPieceInUse, endCordsVector)) {
             return;
         }
-        if (Math.abs(king.getX() - endCordsVector.x) != 2) {
-            return;
-        }
+        // CHECK : 12.12.2023 osobna metoda? jak?
         boolean isRightCastling = endCordsVector.x == 6;
         int xRook = isRightCastling ? 7 : 0;
-        int yRook = king.getY();
-        moveRook(king.getColor(), xRook, yRook, isRightCastling, moveReport);
+        int yRook = chessPieceInUse.getY();
+        //
+        moveRook(chessPieceInUse.getColor(), xRook, yRook, moveReport);
     }
 
-    private void moveRook(ChessPieceColor color, int xRook, int yRook,
-                          boolean isRightCastling, MoveReport moveReport) {
+    // CHECK : 12.12.2023 wyodrębniono do osobnej metody
+    private boolean isNotKingOrNotCastling(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
+        boolean isNotKingOrNotCastling = !chessPieceInUse.hasType(ChessPieceType.KING); // CHECK : 12.12.2023 czy wszędzie wykorzystać tą metodę?
+        if (Math.abs(chessPieceInUse.getX() - endCordsVector.x) != 2) {
+            isNotKingOrNotCastling = true;
+        }
+        return isNotKingOrNotCastling;
+    }
+
+    private void moveRook(ChessPieceColor color, int xRook, int yRook, MoveReport moveReport) {
         for (ChessPiece chessPiece : chessPieces) {
             if (chessPiece.getColor() == color && chessPiece.getX() == xRook &&
                     chessPiece.getY() == yRook) {
-                int newXRook = isRightCastling ? 5 : 3;
+                int newXRook = xRook == 7 ? 5 : 3; // CHECK : 12.12.2023 przekazywałem wcześniej
+                //check tutaj isRightCastling. Czy tak jak teraz może byc?
                 moveReport.setRookToMove(chessPiece, newXRook, yRook);
                 setRookPosition(chessPiece, newXRook, yRook);
             }
@@ -100,3 +109,5 @@ public class ChessBoardService {
         return chessPieces;
     }
 }
+// Pobieranie ruchu | Opakowanie ruchu | Validacja | Wykonanie | Animowanie
+// CHECK : 05.12.2023 na następnej lekcji prezbudować MoveReport

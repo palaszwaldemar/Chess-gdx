@@ -87,8 +87,7 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isValidCastlingOrNormalMove(ChessPiece king,
-                                                CordsVector endCordsVector) {
+    private boolean isValidCastlingOrNormalMove(ChessPiece king, CordsVector endCordsVector) {
         if (!isCastling(king, endCordsVector)) {
             return true;
         }
@@ -96,8 +95,7 @@ public class MoveValidator {
             return false;
         }
         int xRook = isRightCastling(king, endCordsVector) ? 7 : 0;
-        boolean rightCastling = isRightCastling(king, endCordsVector);
-        return isValidCastlingByRook(king, xRook) && isClearCastlingLine(king, rightCastling);
+        return isValidCastling(king, xRook);
     }
 
     private boolean isCastling(ChessPiece king, CordsVector endCordsVector) {
@@ -109,7 +107,7 @@ public class MoveValidator {
         int y = king.getY();
         CordsVector kingCordsVector = new CordsVector(x, y);
         for (ChessPiece chessPiece : chessPieces) {
-            if (!(chessPiece.getColor() == king.getColor()) &&
+            if (chessPiece.getColor() != king.getColor() &&
                     canMove(chessPiece, kingCordsVector)) {
                 return true;
             }
@@ -121,33 +119,46 @@ public class MoveValidator {
         return king.getX() < endCordsVector.x;
     }
 
+    private boolean isValidCastling(ChessPiece king, int xRook) {
+        return isValidCastlingByRook(king, xRook) && isClearCastlingLine(king, xRook);
+    }
+
     private boolean isValidCastlingByRook(ChessPiece king, int xRook) {
         for (ChessPiece chessPiece : chessPieces) {
             if (chessPiece.getType() == ChessPieceType.ROOK &&
-                    chessPiece.getColor() == king.getColor() && chessPiece.getY() == king.getY() &&
-                    chessPiece.getX() == xRook && !chessPiece.wasMoved()) {
+                    chessPiece.getColor() == king.getColor() && chessPiece.getX() == xRook &&
+                    !chessPiece.wasMoved()) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isClearCastlingLine(ChessPiece king, boolean rightCastling) {
-        int startX = rightCastling ? 5 : 1;
-        int endX = rightCastling ? 7 : 4;
-        int y = king.getColor() == ChessPieceColor.WHITE ? 0 : 7;
-        for (int i = startX; i < endX; i++) {
+    private boolean isClearCastlingLine(ChessPiece king, int xRook) {
+        int startXLineToRight = xRook == 7 ? 5 : 1; // CHECK : 12.12.2023 czy teraz nazwa zmiennej zrozumiała?
+        int endXLineFromLeftSide = xRook == 7 ? 7 : 4; // CHECK : 12.12.2023 czy teraz nazwa zmiennej zrozumiała?
+        for (int i = startXLineToRight; i < endXLineFromLeftSide; i++) {
             for (ChessPiece chessPiece : chessPieces) {
-                CordsVector cordsVector = new CordsVector(i, y);
-                if (chessPiece.getX() == i && chessPiece.getY() == king.getY()) {
+                CordsVector cordsVector = new CordsVector(i, king.getY());
+                if (chessPieceInRoad(chessPiece, king, i)) {
                     return false;
                 }
-                if (!(chessPiece.getColor() == king.getColor()) &&
-                        canMove(chessPiece, cordsVector)) {
+                if (chessPieceAttackField(chessPiece, king, cordsVector)) {
                     return false;
                 }
             }
         }
         return true;
     }
+
+    private boolean chessPieceInRoad(ChessPiece chessPiece, ChessPiece king, int x) {
+        return chessPiece.getX() == x && chessPiece.getY() ==
+                king.getY();
+    }
+
+    private boolean chessPieceAttackField(ChessPiece chessPiece, ChessPiece king,
+                                          CordsVector cordsVector) {
+        return chessPiece.getColor() != king.getColor() && canMove(chessPiece, cordsVector);
+    }
 }
+// TODO: 05.12.2023 stworzyć BoardRepository dla reprezentacji listy. Stworzyć odpowiednie metody potrzebne do przechodzenia po tej liście

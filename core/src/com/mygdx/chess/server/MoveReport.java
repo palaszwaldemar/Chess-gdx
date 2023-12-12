@@ -3,12 +3,18 @@ package com.mygdx.chess.server;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 public class MoveReport {
+    private ChessPiece chessPieceInUse;
     private ChessPiece chessPieceToRemove;
     private ChessPiece promotionPawnToRemove;
     private ChessPiece promotionTarget;
     private ChessPiece rookToMove;
+    // CHECK : 05.12.2023 na następnej lekcji
     private int newXRook; // CHECK : 04.12.2023 znaleźć lepszy sposób?
     private int newYRook;
+
+    public void setChessPieceInUse(ChessPiece chessPieceInUse) {
+        this.chessPieceInUse = chessPieceInUse;
+    }
 
     public void setChessPieceToRemove(ChessPiece chessPieceToRemove) {
         this.chessPieceToRemove = chessPieceToRemove;
@@ -26,6 +32,10 @@ public class MoveReport {
         this.rookToMove = rookToMove;
         this.newXRook = newXRook * 100; // CHECK : 04.12.2023 GuiParams?
         this.newYRook = newYRook * 100;
+    }
+
+    public ChessPiece getChessPieceInUse() {
+        return chessPieceInUse;
     }
 
     public int getNewXRook() {
@@ -55,4 +65,6 @@ public class MoveReport {
     public boolean wasPromotion() {
         return promotionPawnToRemove != null;
     }
+
+    // TODO: 05.12.2023  stworzyć CoordsVector tutaj. Przekazywać wszędzie MoveReport.
 }

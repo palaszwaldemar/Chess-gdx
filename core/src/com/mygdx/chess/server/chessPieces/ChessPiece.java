@@ -45,6 +45,14 @@ public abstract class ChessPiece {
 
     public abstract boolean isCorrectMovement(CordsVector endCordsVector);
 
+    public boolean hasColor(ChessPieceColor color) {
+        return this.color == color;
+    }
+
+    public boolean hasType(ChessPieceType type) {
+        return this.type == type;
+    }
+
     @Override
     public String toString() {
         return "ChessPiece{" +
