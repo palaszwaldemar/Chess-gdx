@@ -1,5 +1,6 @@
 package com.mygdx.chess.server;
-
+// CHECK : 13.12.2023 czy MoveReport powinien być w tym pakiecie?
+import com.mygdx.chess.client.Cords;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 public class MoveReport {
@@ -30,8 +31,8 @@ public class MoveReport {
 
     public void setRookToMove(ChessPiece rookToMove, int newXRook, int newYRook) {
         this.rookToMove = rookToMove;
-        this.newXRook = newXRook * 100; // CHECK : 04.12.2023 GuiParams?
-        this.newYRook = newYRook * 100;
+        this.newXRook = Cords.xToPixels(newXRook);
+        this.newYRook = Cords.yToPixels(newYRook);
     }
 
     public ChessPiece getChessPieceInUse() {

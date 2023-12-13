@@ -1,19 +1,19 @@
 package com.mygdx.chess.client;
 
-class Cords {
-    static int xToPixels(int x) {
+public class Cords {
+    public static int xToPixels(int x) {
         return x * 100;
     }
 
-    static int yToPixels(int y) {
+    public static int yToPixels(int y) {
         return y * 100;
     }
 
-    static int xToCords(int x) {
+    public static int xToCords(int x) {
         return x / 100;
     }
 
-    static int yToCords(int y) {
+    public static int yToCords(int y) {
         return y / 100;
     }
 }
