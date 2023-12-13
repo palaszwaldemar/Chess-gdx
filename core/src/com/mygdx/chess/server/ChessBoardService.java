@@ -39,7 +39,7 @@ public class ChessBoardService {
             ChessPiece chessPieceToRemove = iterator.next();
             if (chessPieceToRemove.getX() == endCordsVector.x &&
                     chessPieceToRemove.getY() == endCordsVector.y &&
-                    moveReport.getChessPieceInUse().getColor() != chessPieceToRemove.getColor()) {
+                    !moveReport.getChessPieceInUse().hasSameColor(chessPieceToRemove)) {
                 moveReport.setChessPieceToRemove(chessPieceToRemove);
                 iterator.remove();
             }
@@ -56,7 +56,7 @@ public class ChessBoardService {
         int xRook = isRightCastling ? 7 : 0;
         int yRook = chessPieceInUse.getY();
         //
-        moveRook(chessPieceInUse.getColor(), xRook, yRook, moveReport);
+        moveRook(chessPieceInUse, xRook, yRook, moveReport);
     }
 
     // CHECK : 12.12.2023 wyodrębniono do osobnej metody
@@ -68,9 +68,9 @@ public class ChessBoardService {
         return isNotKingOrNotCastling;
     }
 
-    private void moveRook(ChessPieceColor color, int xRook, int yRook, MoveReport moveReport) {
+    private void moveRook(ChessPiece rook, int xRook, int yRook, MoveReport moveReport) {
         for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.getColor() == color && chessPiece.getX() == xRook &&
+            if (chessPiece.hasSameColor(rook) && chessPiece.getX() == xRook &&
                     chessPiece.getY() == yRook) {
                 int newXRook = xRook == 7 ? 5 : 3; // CHECK : 12.12.2023 przekazywałem wcześniej
                 //check tutaj isRightCastling. Czy tak jak teraz może byc?
@@ -87,7 +87,7 @@ public class ChessBoardService {
 
     private void pawnPromotion(ChessPiece chessPieceInUse, CordsVector endCordsVector,
                                MoveReport moveReport) {
-        if (chessPieceInUse.getType() != ChessPieceType.PAWN) {
+        if (!chessPieceInUse.hasType(ChessPieceType.PAWN)) {
             return;
         }
         if (endCordsVector.y == 0 || endCordsVector.y == 7) {

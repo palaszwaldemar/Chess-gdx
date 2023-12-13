@@ -45,8 +45,8 @@ public abstract class ChessPiece {
 
     public abstract boolean isCorrectMovement(CordsVector endCordsVector);
 
-    public boolean hasColor(ChessPieceColor color) {
-        return this.color == color;
+    public boolean hasSameColor(ChessPiece chessPiece) {
+        return this.color == chessPiece.getColor();
     }
 
     public boolean hasType(ChessPieceType type) {

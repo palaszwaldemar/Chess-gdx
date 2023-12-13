@@ -28,7 +28,7 @@ public class MoveValidator {
         boolean notSameColorFigureHere = true;
         for (ChessPiece piece : chessPieces) { //todo okazja do zastosowania Streamów
             if (piece.getX() == endCordsVector.x && piece.getY() == endCordsVector.y) {
-                if (piece.getColor().equals(chessPieceInUse.getColor())) {
+                if (piece.hasSameColor(chessPieceInUse)) {
                     notSameColorFigureHere = false;
                 }
             }
@@ -107,8 +107,7 @@ public class MoveValidator {
         int y = king.getY();
         CordsVector kingCordsVector = new CordsVector(x, y);
         for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.getColor() != king.getColor() &&
-                    canMove(chessPiece, kingCordsVector)) {
+            if (!chessPiece.hasSameColor(king) && canMove(chessPiece, kingCordsVector)) {
                 return true;
             }
         }
@@ -125,8 +124,8 @@ public class MoveValidator {
 
     private boolean isValidCastlingByRook(ChessPiece king, int xRook) {
         for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.getType() == ChessPieceType.ROOK &&
-                    chessPiece.getColor() == king.getColor() && chessPiece.getX() == xRook &&
+            if (chessPiece.hasType(ChessPieceType.ROOK) &&
+                    chessPiece.hasSameColor(king) && chessPiece.getX() == xRook &&
                     !chessPiece.wasMoved()) {
                 return true;
             }
@@ -158,7 +157,7 @@ public class MoveValidator {
 
     private boolean chessPieceAttackField(ChessPiece chessPiece, ChessPiece king,
                                           CordsVector cordsVector) {
-        return chessPiece.getColor() != king.getColor() && canMove(chessPiece, cordsVector);
+        return !chessPiece.hasSameColor(king) && canMove(chessPiece, cordsVector);
     }
 }
 // TODO: 05.12.2023 stworzyć BoardRepository dla reprezentacji listy. Stworzyć odpowiednie metody potrzebne do przechodzenia po tej liście
