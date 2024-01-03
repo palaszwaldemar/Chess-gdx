@@ -99,7 +99,7 @@ public class MoveValidator {
     private boolean enemyAttackingChessPiece(ChessPiece captureChessPiece) {
         int x = captureChessPiece.getX();
         int y = captureChessPiece.getY();
-        ChessPieceColor enemyColor = getEnemyColor(captureChessPiece);
+        ChessPieceColor enemyColor = captureChessPiece.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPiecesByColor(enemyColor);
         for (ChessPiece enemyChessPiece : enemyChessPieces) {
             if (canMove(enemyChessPiece, x, y)) {
@@ -107,16 +107,6 @@ public class MoveValidator {
             }
         }
         return false;
-    }
-
-    ChessPieceColor getEnemyColor(ChessPiece chessPiece) {
-        ChessPieceColor enemyColor;
-        if (chessPiece.hasColor(ChessPieceColor.WHITE)) {
-            enemyColor = ChessPieceColor.BLACK;
-        } else {
-            enemyColor = ChessPieceColor.WHITE;
-        }
-        return enemyColor;
     }
 
     private boolean isRightCastling(ChessPiece king, int x) {
@@ -138,7 +128,7 @@ public class MoveValidator {
     }
 
     private boolean isClearCastlingLine(ChessPiece king, int xRook) {
-        ChessPieceColor enemyColor = getEnemyColor(king);
+        ChessPieceColor enemyColor = king.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPiecesByColor(enemyColor);
         int startXLineToRightSide = xRook == 7 ? 5 : 1; // CHECK : 12.12.2023 czy teraz nazwa zmiennej zrozumiała?
         int endXLineFromLeftSide = xRook == 7 ? 7 : 4; // CHECK : 12.12.2023 czy teraz nazwa zmiennej zrozumiała?

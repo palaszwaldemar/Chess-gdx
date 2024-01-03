@@ -48,6 +48,16 @@ public abstract class ChessPiece {
         return color == chessPiece.getColor();
     }
 
+    public ChessPieceColor getEnemyColor() {
+        ChessPieceColor enemyColor;
+        if (hasColor(ChessPieceColor.WHITE)) {
+            enemyColor = ChessPieceColor.BLACK;
+        } else {
+            enemyColor = ChessPieceColor.WHITE;
+        }
+        return enemyColor;
+    }
+
     public boolean hasColor(ChessPieceColor color) {
         return this.color == color;
     }
