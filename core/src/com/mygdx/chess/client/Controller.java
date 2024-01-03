@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.ChessBoardService;
-import com.mygdx.chess.server.CordsVector;
 import com.mygdx.chess.server.MoveReport;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
@@ -20,8 +19,8 @@ public class Controller {
         chessboardGroup.createActors(service.getChessPieces());
     }
 
-    void move(ChessPiece chessPieceInUse, CordsVector endCordsVector) throws InvalidMoveException {
-        MoveReport moveReport = service.move(chessPieceInUse, endCordsVector);
+    void move(ChessPiece chessPieceInUse, int x, int y) throws InvalidMoveException {
+        MoveReport moveReport = service.move(chessPieceInUse, x, y);
         removeActor(moveReport.getChessPieceToRemove());
         castling(moveReport);
         if (moveReport.wasPromotion()) {
@@ -63,15 +62,5 @@ public class Controller {
     private void replaceChessPieceActor(MoveReport moveReport) {
         removeActor(moveReport.getPromotionPawnToRemove());
         chessboardGroup.addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
-    }
-
-    // TODO: 24.11.2023 do usunięcia. Stworzone na potrzebę testowania roszady
-    void move(ChessPiece chessPieceInUse, int x, int y) throws InvalidMoveException {
-        CordsVector cordsVector = new CordsVector(x, y);
-        MoveReport moveReport = service.move(chessPieceInUse, cordsVector);
-        removeActor(moveReport.getChessPieceToRemove());
-        if (moveReport.wasPromotion()) {
-            replaceChessPieceActor(moveReport);
-        }
     }
 }

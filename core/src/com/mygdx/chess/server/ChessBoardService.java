@@ -4,55 +4,50 @@ import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 import com.mygdx.chess.server.chessPieces.Queen;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class ChessBoardService {
+    private final ChessPieceRepository repository;
     private final MoveValidator moveValidator;
-    private final List<ChessPiece> chessPieces = new ArrayList<>();
 
     public ChessBoardService() {
         PiecesFactory piecesFactory = new PiecesFactory();
-        chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.WHITE));
-        chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.BLACK));
-        moveValidator = new MoveValidator(chessPieces);
+        repository = new ChessPieceRepository(piecesFactory);
+        moveValidator = new MoveValidator(repository);
     }
 
-    public MoveReport move(ChessPiece chessPieceInUse, CordsVector endCordsVector)
-            throws InvalidMoveException {
-        if (!moveValidator.canMove(chessPieceInUse, endCordsVector)) {
+    public MoveReport move(ChessPiece chessPieceInUse, int x, int y) throws InvalidMoveException {
+        if (!moveValidator.canMove(chessPieceInUse, x, y)) {
             throw new InvalidMoveException();
         }
         MoveReport moveReport = new MoveReport();
         moveReport.setChessPieceInUse(chessPieceInUse);
-        capturePiece(endCordsVector, moveReport);
-        moveRookBeforeKing(chessPieceInUse, endCordsVector, moveReport);
-        chessPieceInUse.move(endCordsVector);
-        pawnPromotion(chessPieceInUse, endCordsVector, moveReport);
+        capturePiece(x, y, moveReport);
+        moveRookBeforeKing(chessPieceInUse, x, moveReport);
+        chessPieceInUse.move(x, y);
+        pawnPromotion(chessPieceInUse, x, y, moveReport);
         return moveReport;
     }
 
-    private void capturePiece(CordsVector endCordsVector, MoveReport moveReport) {
-        Iterator<ChessPiece> iterator = chessPieces.iterator();
+    private void capturePiece(int x, int y, MoveReport moveReport) {
+        Iterator<ChessPiece> iterator = repository.getChessPieces().iterator();
         while (iterator.hasNext()) {
             ChessPiece chessPieceToRemove = iterator.next();
-            if (chessPieceToRemove.getX() == endCordsVector.x &&
-                    chessPieceToRemove.getY() == endCordsVector.y &&
-                    !moveReport.getChessPieceInUse().hasSameColor(chessPieceToRemove)) {
+            if (chessPieceToRemove.getX() == x && chessPieceToRemove.getY() == y &&
+                !moveReport.getChessPieceInUse().hasSameColor(chessPieceToRemove)) {
                 moveReport.setChessPieceToRemove(chessPieceToRemove);
                 iterator.remove();
             }
         }
     }
 
-    private void moveRookBeforeKing(ChessPiece chessPieceInUse, CordsVector endCordsVector,
-                                    MoveReport moveReport) {
-        if (isNotKingOrNotCastling(chessPieceInUse, endCordsVector)) {
+    private void moveRookBeforeKing(ChessPiece chessPieceInUse, int x, MoveReport moveReport) {
+        if (isNotKingOrNotCastling(chessPieceInUse, x)) {
             return;
         }
         // CHECK : 12.12.2023 osobna metoda? jak?
-        boolean isRightCastling = endCordsVector.x == 6;
+        boolean isRightCastling = x == 6;
         int xRook = isRightCastling ? 7 : 0;
         int yRook = chessPieceInUse.getY();
         //
@@ -60,20 +55,20 @@ public class ChessBoardService {
     }
 
     // CHECK : 12.12.2023 wyodrębniono do osobnej metody
-    private boolean isNotKingOrNotCastling(ChessPiece chessPieceInUse, CordsVector endCordsVector) {
-        boolean isNotKingOrNotCastling = !chessPieceInUse.hasType(ChessPieceType.KING); // CHECK : 12.12.2023 czy wszędzie wykorzystać tą metodę?
-        if (Math.abs(chessPieceInUse.getX() - endCordsVector.x) != 2) {
+    private boolean isNotKingOrNotCastling(ChessPiece chessPieceInUse, int x) {
+        boolean isNotKingOrNotCastling = !chessPieceInUse.hasType(ChessPieceType.KING);
+        if (Math.abs(chessPieceInUse.getX() - x) != 2) {
             isNotKingOrNotCastling = true;
         }
         return isNotKingOrNotCastling;
     }
 
     private void moveRook(ChessPiece rook, int xRook, int yRook, MoveReport moveReport) {
-        for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.hasSameColor(rook) && chessPiece.getX() == xRook &&
-                    chessPiece.getY() == yRook) {
-                int newXRook = xRook == 7 ? 5 : 3; // CHECK : 12.12.2023 przekazywałem wcześniej
-                //check tutaj isRightCastling. Czy tak jak teraz może byc?
+        ChessPieceColor color = rook.getColor();
+        List<ChessPiece> rooksByColor = repository.getRooksByColor(color);
+        for (ChessPiece chessPiece : rooksByColor) {
+            if (chessPiece.getX() == xRook && chessPiece.getY() == yRook) {
+                int newXRook = xRook == 7 ? 5 : 3; // CHECK : 12.12.2023 przekazywałem wcześniej check tutaj isRightCastling. Czy tak jak teraz może byc?
                 moveReport.setRookToMove(chessPiece, newXRook, yRook);
                 setRookPosition(chessPiece, newXRook, yRook);
             }
@@ -81,33 +76,29 @@ public class ChessBoardService {
     }
 
     private void setRookPosition(ChessPiece rook, int x, int y) {
-        CordsVector endCordsVector = new CordsVector(x, y);
-        rook.move(endCordsVector);
+        rook.move(x, y);
     }
 
-    private void pawnPromotion(ChessPiece chessPieceInUse, CordsVector endCordsVector,
-                               MoveReport moveReport) {
+    private void pawnPromotion(ChessPiece chessPieceInUse, int x, int y, MoveReport moveReport) {
         if (!chessPieceInUse.hasType(ChessPieceType.PAWN)) {
             return;
         }
-        if (endCordsVector.y == 0 || endCordsVector.y == 7) {
+        if (y == 0 || y == 7) {
             moveReport.setPromotionPawnToRemove(chessPieceInUse);
-            changePawnToQueen(chessPieceInUse, endCordsVector, moveReport);
+            changePawnToQueen(chessPieceInUse, x, y, moveReport);
         }
     }
 
-    private void changePawnToQueen(ChessPiece chessPieceInUse, CordsVector endCordsVector,
-                                   MoveReport moveReport) {
-        chessPieces.remove(chessPieceInUse);
-        ChessPiece newQueen =
-                new Queen(chessPieceInUse.getColor(), endCordsVector.x, endCordsVector.y);
-        chessPieces.add(newQueen);
+    private void changePawnToQueen(ChessPiece chessPieceInUse, int x, int y, MoveReport moveReport) {
+        repository.getChessPieces().remove(chessPieceInUse);
+        ChessPiece newQueen = new Queen(chessPieceInUse.getColor(), x, y);
+        repository.getChessPieces().add(newQueen);
         moveReport.setPromotionTarget(newQueen);
     }
 
     public List<ChessPiece> getChessPieces() {
-        return chessPieces;
+        return repository.getChessPieces();
     }
 }
-// Pobieranie ruchu | Opakowanie ruchu | Validacja | Wykonanie | Animowanie
-// CHECK : 05.12.2023 na następnej lekcji prezbudować MoveReport
+// Pobieranie ruchu | Opakowanie ruchu | Walidacja | Wykonanie | Animowanie
+// CHECK : 05.12.2023 na następnej lekcji prezbudować MoveReport. Czy muszę przebudowywać MoveReport? Czy teraz jest bardzo źle?

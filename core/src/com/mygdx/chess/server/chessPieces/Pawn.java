@@ -2,18 +2,16 @@ package com.mygdx.chess.server.chessPieces;
 
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
-import com.mygdx.chess.server.CordsVector;
 
 public class Pawn extends ChessPiece {
-
     public Pawn(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.PAWN, color, x, y);
     }
 
     @Override
-    public boolean isCorrectMovement(CordsVector endCordsVector) {
-        int deltaX = endCordsVector.x - x;
-        int deltaY = endCordsVector.y - y;
+    public boolean isCorrectMovement(int newX, int newY) {
+        int deltaX = newX - x;
+        int deltaY = newY - y;
         if (!isMoveForward(deltaY)) {
             return false;
         }
@@ -24,15 +22,15 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public void move(CordsVector endCordsVector) {
-        super.move(endCordsVector);
+    public void move(int x, int y) {
+        super.move(x, y);
         moved = true;
     }
 
     // TODO: 10.10.2023 w tym momencie białe zawsze na dole. Zmienić w przyszłości
     private boolean isMoveForward(int deltaY) {
         return (getColor() != ChessPieceColor.WHITE || Integer.signum(deltaY) >= 0) &&
-                (getColor() != ChessPieceColor.BLACK || Integer.signum(deltaY) <= 0);
+            (getColor() != ChessPieceColor.BLACK || Integer.signum(deltaY) <= 0);
     }
 
     private boolean isOneStep(int deltaX, int deltaY) {

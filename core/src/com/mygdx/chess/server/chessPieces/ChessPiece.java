@@ -2,7 +2,6 @@ package com.mygdx.chess.server.chessPieces;
 
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
-import com.mygdx.chess.server.CordsVector;
 
 public abstract class ChessPiece {
     int x;
@@ -18,9 +17,9 @@ public abstract class ChessPiece {
         this.type = type;
     }
 
-    public void move(CordsVector endCordsVector) {
-        x = endCordsVector.x;
-        y = endCordsVector.y;
+    public void move(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public int getX() {
@@ -43,7 +42,7 @@ public abstract class ChessPiece {
         return moved;
     }
 
-    public abstract boolean isCorrectMovement(CordsVector endCordsVector);
+    public abstract boolean isCorrectMovement(int x, int y);
 
     public boolean hasSameColor(ChessPiece chessPiece) {
         return this.color == chessPiece.getColor();
@@ -56,11 +55,11 @@ public abstract class ChessPiece {
     @Override
     public String toString() {
         return "ChessPiece{" +
-                "x=" + x +
-                ", y=" + y +
-                ", color=" + color +
-                ", type=" + type +
-                ", moved=" + moved +
-                '}';
+            "x=" + x +
+            ", y=" + y +
+            ", color=" + color +
+            ", type=" + type +
+            ", moved=" + moved +
+            '}';
     }
 }

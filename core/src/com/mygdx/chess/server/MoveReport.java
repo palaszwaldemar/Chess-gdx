@@ -66,6 +66,4 @@ public class MoveReport {
     public boolean wasPromotion() {
         return promotionPawnToRemove != null;
     }
-
-    // TODO: 05.12.2023  stworzyć CoordsVector tutaj. Przekazywać wszędzie MoveReport.
 }

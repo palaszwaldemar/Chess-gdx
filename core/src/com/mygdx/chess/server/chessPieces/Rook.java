@@ -2,7 +2,6 @@ package com.mygdx.chess.server.chessPieces;
 
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
-import com.mygdx.chess.server.CordsVector;
 
 public class Rook extends ChessPiece {
     public Rook(ChessPieceColor color, int x, int y) {
@@ -10,13 +9,13 @@ public class Rook extends ChessPiece {
     }
 
     @Override
-    public boolean isCorrectMovement(CordsVector endCordsVector) {
-        return x == endCordsVector.x || y == endCordsVector.y;
+    public boolean isCorrectMovement(int newX, int newY) {
+        return x == newX || y == newY;
     }
 
     @Override
-    public void move(CordsVector endCordsVector) {
-        super.move(endCordsVector);
+    public void move(int x, int y) {
+        super.move(x, y);
         moved = true;
     }
 }

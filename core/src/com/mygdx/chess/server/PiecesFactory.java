@@ -5,11 +5,11 @@ import com.mygdx.chess.server.chessPieces.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class PiecesFactory {
+public class PiecesFactory {
     List<ChessPiece> getChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
         chessPieces.addAll(listOfPawns(color));
-        chessPieces.addAll(listOfRemainingChessPieces(color));
+        chessPieces.addAll(listOfFigures(color));
         return chessPieces;
     }
 
@@ -21,7 +21,7 @@ class PiecesFactory {
         return chessPawns;
     }
 
-    private List<ChessPiece> listOfRemainingChessPieces(ChessPieceColor color) {
+    private List<ChessPiece> listOfFigures(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
         ChessPieceType[] types = {ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.RUNNER,
                 ChessPieceType.QUEEN, ChessPieceType.KING, ChessPieceType.RUNNER,
