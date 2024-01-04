@@ -34,13 +34,22 @@ public class MoveValidator {
     private boolean isValidMoveForChessPiece(ChessPiece chessPieceInUse, int x, int y) {
         switch (chessPieceInUse.getType()) {
             case PAWN:
-                return isCorrectPawnMove(chessPieceInUse, x, y);
+                return isCorrectPawnMove(chessPieceInUse, x, y) && kingNotInCheck(chessPieceInUse);// CHECK : 03.01.2024 rozkminić na lekcji
             case ROOK:
             case RUNNER:
             case QUEEN:
-                return isClearLine(chessPieceInUse, x, y);
+                return isClearLine(chessPieceInUse, x, y) && kingNotInCheck(chessPieceInUse); // CHECK : 03.01.2024 rozkminić na lekcji
             case KING:
                 return isValidCastlingOrNormalMove(chessPieceInUse, x);
+        }
+        return true;
+    }
+
+    private boolean kingNotInCheck(ChessPiece chessPieceInUse) {// CHECK : 03.01.2024 rozkminić na lekcji. W tym momencie wymuszony ruch króla w przypadku szachu
+        for (ChessPiece chessPiece : repository.getChessPiecesByColor(chessPieceInUse.getColor())) {
+            if (chessPiece.hasType(ChessPieceType.KING) && enemyAttackingChessPiece(chessPiece)) {
+                return false;
+            }
         }
         return true;
     }
