@@ -17,7 +17,6 @@ public class GameScreen implements Screen {
         this.game = chess;
         ChessboardGroup chessboardGroup = new ChessboardGroup();
         Controller controller = new Controller(chessboardGroup);
-
         chessboardGroup.setController(controller);
         //przygotowanie elementów graficznych
         camera = new OrthographicCamera();
@@ -28,7 +27,7 @@ public class GameScreen implements Screen {
         controller.startGame();
         // TODO: 24.11.2023 do wykasowania. Stworzone na potrzebę testowania roszady.
         ButtonToCastlingTest buttonToCastlingTest =
-                new ButtonToCastlingTest(chessboardGroup.getChildren(), controller);
+            new ButtonToCastlingTest(chessboardGroup.getChildren(), controller);
         //
         // TODO: 24.11.2023 do wykasowania. Stworzone na potrzebę testowania roszady.
         stage.addActor(buttonToCastlingTest);

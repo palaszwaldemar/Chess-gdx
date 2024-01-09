@@ -1,6 +1,7 @@
 package com.mygdx.chess.server;
 
 import com.mygdx.chess.server.chessPieces.ChessPiece;
+import com.mygdx.chess.server.chessPieces.Pawn;
 import com.mygdx.chess.server.chessPieces.Rook;
 
 import java.util.List;
@@ -97,11 +98,43 @@ public class MoveValidator {
         return isValidCastling(king, x);
     }
 
+    private boolean kingWillBeInCheck(ChessPiece king, int x, int y) {// TODO: 09.01.2024 popracować nad czytelnością metody
+        ChessPieceColor enemyColor = king.getEnemyColor();
+        List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
+        for (ChessPiece enemyChessPiece : enemyChessPieces) {
+            if (enemyChessPiece.getType() == ChessPieceType.PAWN) {
+                Pawn pawn = (Pawn) enemyChessPiece;
+                if (pawn.attackField(x, y)) {
+                    System.out.println("pion atakuje to pole");
+                    return true;
+                }
+            }
+            if (enemyChessPiece.getType() != ChessPieceType.PAWN &&
+                canMove(enemyChessPiece, x, y)) {
+                System.out.println("figura atakuje to pole typ:" + enemyChessPiece.getType());
+                return true;
+            }
+            if (enemyChessPiece.getType() != ChessPieceType.PAWN &&
+                (enemyChessPiece.getX() != x || enemyChessPiece.getY() != y) &&
+                isClearLine(enemyChessPiece, x, y) && enemyChessPiece.isCorrectMovement(x, y)) {
+                System.out.println("po zbiciu tej figury król będzie pod szachem");
+                System.out.println("będzie szachowała figura: typ:" + enemyChessPiece.getType());
+                System.out.println("kolor: " + enemyChessPiece.getColor());
+                System.out.println("wspolrzedne: x = " + enemyChessPiece.getX() + ", y = " +
+                    enemyChessPiece.getY());
+                System.out.println();
+                System.out.println("-----");
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isCastling(ChessPiece king, int x) {
         return Math.abs(king.getX() - x) == 2;
     }
 
-    private boolean enemyAttackingChessPiece(ChessPiece captureChessPiece) {
+    private boolean enemyAttackingChessPiece(ChessPiece captureChessPiece) {// CHECK : 09.01.2024 druga metoda bardzo podobna. Usunąć jedną z nich?
         int x = captureChessPiece.getX();
         int y = captureChessPiece.getY();
         ChessPieceColor enemyColor = captureChessPiece.getEnemyColor();
@@ -113,11 +146,7 @@ public class MoveValidator {
         }
         return false;
     }
-
-    private boolean kingWillBeInCheck(ChessPiece king, int x, int y) {
-        return false;
-    }
-
+    
     /*private boolean isValidCastling(ChessPiece king, int x) {
         Rook rook = repository.getRookByKingMove(x, king.getY()).orElseThrow();
         return !rook.wasMoved() && isClearCastlingLine(king, x);
@@ -132,7 +161,7 @@ public class MoveValidator {
         return false;
     }
 
-    private boolean isClearCastlingLine(ChessPiece king, int x) { // CHECK : 09.01.2024 czy metoda dobrze napisana?
+    private boolean isClearCastlingLine(ChessPiece king, int x) {// CHECK : 09.01.2024 czy metoda dobrze napisana?
         ChessPieceColor enemyColor = king.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         int startXLineToRightSide = x == 6 ? 5 : 1;
@@ -152,6 +181,5 @@ public class MoveValidator {
         return canMove(enemyChessPiece, x, y);
     }
 }
-
 // CHECK : 09.01.2024 król nie może pójść na pole, jeżeli to pole jest szachowane. Problem z pionem. Jak go rozwiązać?
 // CHECK : 09.01.2024 problem z pójściem króla na pole obok innego króla

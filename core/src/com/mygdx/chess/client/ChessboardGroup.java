@@ -14,7 +14,7 @@ public class ChessboardGroup extends Group {
 
     ChessboardGroup() {
         setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION,
-                GuiParams.CHESSBOARD_WIDTH, GuiParams.CHESSBOARD_HEIGHT);
+            GuiParams.CHESSBOARD_WIDTH, GuiParams.CHESSBOARD_HEIGHT);
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
     }
 
