@@ -1,19 +1,47 @@
 package com.mygdx.chess.server;
 
 import com.mygdx.chess.server.chessPieces.ChessPiece;
+import com.mygdx.chess.server.chessPieces.Rook;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ChessPieceRepository {
     private final List<ChessPiece> chessPieces = new ArrayList<>();
 
-    public ChessPieceRepository(PiecesFactory piecesFactory) {
+    public ChessPieceRepository() {
+        PiecesFactory piecesFactory = new PiecesFactory();
         chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.WHITE));
         chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.BLACK));
     }
 
-    public List<ChessPiece> getChessPiecesByColor(ChessPieceColor color) {
+    public Optional<ChessPiece> getChessPiece(int x, int y) {
+        for (ChessPiece chessPiece : chessPieces) {
+            if (chessPiece.getX() == x && chessPiece.getY() == y) {
+                return Optional.of(chessPiece);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Rook> getRookByKingMove(int x, int y) { // CHECK : 05.01.2024 wcześniejsza nazwa metody: getRookByMove
+        int xRook = x == 6 ? 7 : 0;
+        return getRook(xRook, y);
+    }
+
+    private Optional<Rook> getRook(int x, int y) {
+        if (getChessPiece(x, y).isEmpty()) {
+            return Optional.empty();
+        }
+        ChessPiece chessPiece = getChessPiece(x, y).get();
+        if (chessPiece.hasType(ChessPieceType.ROOK)) {
+            return Optional.of((Rook) chessPiece);
+        }
+        return Optional.empty();
+    }
+
+    public List<ChessPiece> getChessPieces(ChessPieceColor color) { // TODO: 04.01.2024 wrócić po przerobieniu Streamów
         List<ChessPiece> chessPiecesByColor = new ArrayList<>();
         for (ChessPiece chessPiece : chessPieces) {
             if (chessPiece.hasColor(color)) {
@@ -21,16 +49,6 @@ public class ChessPieceRepository {
             }
         }
         return chessPiecesByColor;
-    }
-
-    public List<ChessPiece> getRooksByColor(ChessPieceColor color) {
-        List<ChessPiece> rooks = new ArrayList<>();
-        for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.hasColor(color) && chessPiece.hasType(ChessPieceType.ROOK)) {
-                rooks.add(chessPiece);
-            }
-        }
-        return rooks;
     }
 
     List<ChessPiece> getChessPieces() {

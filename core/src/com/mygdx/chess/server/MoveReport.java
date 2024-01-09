@@ -10,7 +10,7 @@ public class MoveReport {
     private ChessPiece promotionTarget;
     private ChessPiece rookToMove;
     // CHECK : 05.12.2023 na następnej lekcji
-    private int newXRook; // CHECK : 04.12.2023 znaleźć lepszy sposób?
+    private int newXRook; // CHECK : 04.12.2023 znaleźć lepszy sposób? Zamiast newXRook i newYRook, poprostu obiekt Rook?
     private int newYRook;
 
     public void setChessPieceInUse(ChessPiece chessPieceInUse) {

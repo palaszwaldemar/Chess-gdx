@@ -1,8 +1,10 @@
 package com.mygdx.chess.server;
 
 import com.mygdx.chess.server.chessPieces.ChessPiece;
+import com.mygdx.chess.server.chessPieces.Rook;
 
 import java.util.List;
+import java.util.Optional;
 
 public class MoveValidator {
     private final ChessPieceRepository repository;
@@ -13,7 +15,8 @@ public class MoveValidator {
 
     boolean canMove(ChessPiece chessPieceInUse, int x, int y) {
         ChessPieceColor color = chessPieceInUse.getColor();
-        return isOnTheBoard(x, y) && friendIsNotHere(color, x, y) && chessPieceInUse.isCorrectMovement(x, y) &&
+        return isOnTheBoard(x, y) && friendIsNotHere(color, x, y) &&
+            chessPieceInUse.isCorrectMovement(x, y) &&
             isValidMoveForChessPiece(chessPieceInUse, x, y);
     }
 
@@ -22,7 +25,7 @@ public class MoveValidator {
     }
 
     private boolean friendIsNotHere(ChessPieceColor color, int x, int y) {
-        List<ChessPiece> chessPieces = repository.getChessPiecesByColor(color);
+        List<ChessPiece> chessPieces = repository.getChessPieces(color);
         for (ChessPiece chessPiece : chessPieces) {
             if (chessPiece.getX() == x && chessPiece.getY() == y) {
                 return false;
@@ -34,22 +37,13 @@ public class MoveValidator {
     private boolean isValidMoveForChessPiece(ChessPiece chessPieceInUse, int x, int y) {
         switch (chessPieceInUse.getType()) {
             case PAWN:
-                return isCorrectPawnMove(chessPieceInUse, x, y) && kingNotInCheck(chessPieceInUse);// CHECK : 03.01.2024 rozkminić na lekcji
+                return isCorrectPawnMove(chessPieceInUse, x, y);
             case ROOK:
             case RUNNER:
             case QUEEN:
-                return isClearLine(chessPieceInUse, x, y) && kingNotInCheck(chessPieceInUse); // CHECK : 03.01.2024 rozkminić na lekcji
+                return isClearLine(chessPieceInUse, x, y);
             case KING:
-                return isValidCastlingOrNormalMove(chessPieceInUse, x);
-        }
-        return true;
-    }
-
-    private boolean kingNotInCheck(ChessPiece chessPieceInUse) {// CHECK : 03.01.2024 rozkminić na lekcji. W tym momencie wymuszony ruch króla w przypadku szachu
-        for (ChessPiece chessPiece : repository.getChessPiecesByColor(chessPieceInUse.getColor())) {
-            if (chessPiece.hasType(ChessPieceType.KING) && enemyAttackingChessPiece(chessPiece)) {
-                return false;
-            }
+                return isValidCastlingOrNormalMove(chessPieceInUse, x, y);
         }
         return true;
     }
@@ -90,15 +84,17 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isValidCastlingOrNormalMove(ChessPiece king, int x) {
+    private boolean isValidCastlingOrNormalMove(ChessPiece king, int x, int y) {
+        if (kingWillBeInCheck(king, x, y)) {
+            return false;
+        }
         if (!isCastling(king, x)) {
             return true;
         }
         if (enemyAttackingChessPiece(king)) {
             return false;
         }
-        int xRook = isRightCastling(king, x) ? 7 : 0;
-        return isValidCastling(king, xRook);
+        return isValidCastling(king, x);
     }
 
     private boolean isCastling(ChessPiece king, int x) {
@@ -109,7 +105,7 @@ public class MoveValidator {
         int x = captureChessPiece.getX();
         int y = captureChessPiece.getY();
         ChessPieceColor enemyColor = captureChessPiece.getEnemyColor();
-        List<ChessPiece> enemyChessPieces = repository.getChessPiecesByColor(enemyColor);
+        List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         for (ChessPiece enemyChessPiece : enemyChessPieces) {
             if (canMove(enemyChessPiece, x, y)) {
                 return true;
@@ -118,29 +114,29 @@ public class MoveValidator {
         return false;
     }
 
-    private boolean isRightCastling(ChessPiece king, int x) {
-        return king.getX() < x;
+    private boolean kingWillBeInCheck(ChessPiece king, int x, int y) {
+        return false;
     }
 
-    private boolean isValidCastling(ChessPiece king, int xRook) {
-        return isValidCastlingByRook(king, xRook) && isClearCastlingLine(king, xRook);
-    }
+    /*private boolean isValidCastling(ChessPiece king, int x) {
+        Rook rook = repository.getRookByKingMove(x, king.getY()).orElseThrow();
+        return !rook.wasMoved() && isClearCastlingLine(king, x);
+    }*/
 
-    private boolean isValidCastlingByRook(ChessPiece king, int xRook) {
-        List<ChessPiece> rooks = repository.getRooksByColor(king.getColor());
-        for (ChessPiece rook : rooks) {
-            if (rook.getX() == xRook && !rook.wasMoved()) {
-                return true;
-            }
+    private boolean isValidCastling(ChessPiece king, int x) { // CHECK : 07.01.2024 czy może być tak zamiast poprzedniej metody?
+        Optional<Rook> optionalRook = repository.getRookByKingMove(x, king.getY());
+        if (optionalRook.isPresent()) {
+            Rook rook = optionalRook.get();
+            return !rook.wasMoved() && isClearCastlingLine(king, x);
         }
         return false;
     }
 
-    private boolean isClearCastlingLine(ChessPiece king, int xRook) {
+    private boolean isClearCastlingLine(ChessPiece king, int x) { // CHECK : 09.01.2024 czy metoda dobrze napisana?
         ChessPieceColor enemyColor = king.getEnemyColor();
-        List<ChessPiece> enemyChessPieces = repository.getChessPiecesByColor(enemyColor);
-        int startXLineToRightSide = xRook == 7 ? 5 : 1; // CHECK : 12.12.2023 czy teraz nazwa zmiennej zrozumiała?
-        int endXLineFromLeftSide = xRook == 7 ? 7 : 4; // CHECK : 12.12.2023 czy teraz nazwa zmiennej zrozumiała?
+        List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
+        int startXLineToRightSide = x == 6 ? 5 : 1;
+        int endXLineFromLeftSide = x == 6 ? 7 : 4;
         int y = king.getY();
         for (int i = startXLineToRightSide; i < endXLineFromLeftSide; i++) {
             for (ChessPiece enemyChessPiece : enemyChessPieces) {
@@ -156,3 +152,6 @@ public class MoveValidator {
         return canMove(enemyChessPiece, x, y);
     }
 }
+
+// CHECK : 09.01.2024 król nie może pójść na pole, jeżeli to pole jest szachowane. Problem z pionem. Jak go rozwiązać?
+// CHECK : 09.01.2024 problem z pójściem króla na pole obok innego króla

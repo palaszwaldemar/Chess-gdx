@@ -8,6 +8,10 @@ public class Rook extends ChessPiece {
         super(ChessPieceType.ROOK, color, x, y);
     }
 
+    public int getCastlingX() {
+        return x == 7 ? 5 : 3;
+    }
+
     @Override
     public boolean isCorrectMovement(int newX, int newY) {
         return x == newX || y == newY;

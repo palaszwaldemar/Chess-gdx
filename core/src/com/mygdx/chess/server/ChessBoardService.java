@@ -3,6 +3,7 @@ package com.mygdx.chess.server;
 import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 import com.mygdx.chess.server.chessPieces.Queen;
+import com.mygdx.chess.server.chessPieces.Rook;
 
 import java.util.Iterator;
 import java.util.List;
@@ -12,8 +13,7 @@ public class ChessBoardService {
     private final MoveValidator moveValidator;
 
     public ChessBoardService() {
-        PiecesFactory piecesFactory = new PiecesFactory();
-        repository = new ChessPieceRepository(piecesFactory);
+        repository = new ChessPieceRepository();
         moveValidator = new MoveValidator(repository);
     }
 
@@ -46,15 +46,10 @@ public class ChessBoardService {
         if (isNotKingOrNotCastling(chessPieceInUse, x)) {
             return;
         }
-        // CHECK : 12.12.2023 osobna metoda? jak?
-        boolean isRightCastling = x == 6;
-        int xRook = isRightCastling ? 7 : 0;
-        int yRook = chessPieceInUse.getY();
-        //
-        moveRook(chessPieceInUse, xRook, yRook, moveReport);
+        Rook rookToMove = repository.getRookByKingMove(x, chessPieceInUse.getY()).orElseThrow();
+        moveRook(rookToMove, moveReport);
     }
 
-    // CHECK : 12.12.2023 wyodrębniono do osobnej metody
     private boolean isNotKingOrNotCastling(ChessPiece chessPieceInUse, int x) {
         boolean isNotKingOrNotCastling = !chessPieceInUse.hasType(ChessPieceType.KING);
         if (Math.abs(chessPieceInUse.getX() - x) != 2) {
@@ -63,16 +58,10 @@ public class ChessBoardService {
         return isNotKingOrNotCastling;
     }
 
-    private void moveRook(ChessPiece rook, int xRook, int yRook, MoveReport moveReport) {
-        ChessPieceColor color = rook.getColor();
-        List<ChessPiece> rooksByColor = repository.getRooksByColor(color);
-        for (ChessPiece chessPiece : rooksByColor) {
-            if (chessPiece.getX() == xRook && chessPiece.getY() == yRook) {
-                int newXRook = xRook == 7 ? 5 : 3; // CHECK : 12.12.2023 przekazywałem wcześniej check tutaj isRightCastling. Czy tak jak teraz może byc?
-                moveReport.setRookToMove(chessPiece, newXRook, yRook);
-                setRookPosition(chessPiece, newXRook, yRook);
-            }
-        }
+    private void moveRook(Rook rookToMove, MoveReport moveReport) {
+        int newXRook = rookToMove.getCastlingX();
+        moveReport.setRookToMove(rookToMove, newXRook, rookToMove.getY());
+        setRookPosition(rookToMove, newXRook, rookToMove.getY());
     }
 
     private void setRookPosition(ChessPiece rook, int x, int y) {
@@ -89,7 +78,8 @@ public class ChessBoardService {
         }
     }
 
-    private void changePawnToQueen(ChessPiece chessPieceInUse, int x, int y, MoveReport moveReport) {
+    private void changePawnToQueen(ChessPiece chessPieceInUse, int x, int y,
+                                   MoveReport moveReport) {
         repository.getChessPieces().remove(chessPieceInUse);
         ChessPiece newQueen = new Queen(chessPieceInUse.getColor(), x, y);
         repository.getChessPieces().add(newQueen);
