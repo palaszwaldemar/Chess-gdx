@@ -86,7 +86,7 @@ public class MoveValidator {
     }
 
     private boolean isValidCastlingOrNormalMove(ChessPiece king, int x, int y) {
-        if (kingWillBeInCheck(king, x, y)) {
+        if (kingWillBeInCheck(king.getEnemyColor(), x, y)) {
             return false;
         }
         if (!isCastling(king, x)) {
@@ -98,11 +98,10 @@ public class MoveValidator {
         return isValidCastling(king, x);
     }
 
-    private boolean kingWillBeInCheck(ChessPiece king, int x, int y) {
-        ChessPieceColor enemyColor = king.getEnemyColor();
+    private boolean kingWillBeInCheck(ChessPieceColor enemyColor, int x, int y) {
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         for (ChessPiece enemyChessPiece : enemyChessPieces) {
-            if (chessPieceNotStayOnAttackingField(enemyChessPiece, x, y) &&
+            if (isNotOnAttackingField(enemyChessPiece, x, y) &&
                 fieldIsDefended(enemyChessPiece, x, y)) {
                 System.out.println("FIGURA BRONI TEGO POLA");
                 System.out.println(
@@ -121,7 +120,7 @@ public class MoveValidator {
         // todo niego zbliżyć na odległość dwóch pól
     }
 
-    private boolean chessPieceNotStayOnAttackingField(ChessPiece enemyChessPiece, int x, int y) {
+    private boolean isNotOnAttackingField(ChessPiece enemyChessPiece, int x, int y) {
         return enemyChessPiece.getX() != x || enemyChessPiece.getY() != y;
     }
 
