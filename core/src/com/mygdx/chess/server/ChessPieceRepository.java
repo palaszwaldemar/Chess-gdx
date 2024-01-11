@@ -25,7 +25,7 @@ public class ChessPieceRepository {
         return Optional.empty();
     }
 
-    public Optional<Rook> getRookByKingMove(int x, int y) { // CHECK : 05.01.2024 wcześniejsza nazwa metody: getRookByMove
+    public Optional<Rook> getRookByKingMove(int x, int y) {
         int xRook = x == 6 ? 7 : 0;
         return getRook(xRook, y);
     }
@@ -41,7 +41,8 @@ public class ChessPieceRepository {
         return Optional.empty();
     }
 
-    public List<ChessPiece> getChessPieces(ChessPieceColor color) { // TODO: 04.01.2024 wrócić po przerobieniu Streamów
+    // TODO: 04.01.2024 wrócić po przerobieniu Streamów
+    public List<ChessPiece> getChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPiecesByColor = new ArrayList<>();
         for (ChessPiece chessPiece : chessPieces) {
             if (chessPiece.hasColor(color)) {

@@ -27,19 +27,14 @@ public class Pawn extends ChessPiece {
         moved = true;
     }
 
-    public boolean attackField(int x, int y) {
+    public boolean isAttackingField(int x, int y) {
         int deltaX = x - this.x;
         int deltaY = y - this.y;
-        // Sprawdzenie kierunku bicia
-        if (isMoveBack(deltaY)) {
-            return false;
-        }
-        // Sprawdzenie czy bicie po diagonali
-        return Math.abs(deltaX) == 1 && Math.abs(deltaY) == 1;
+        return isCorrectMovement(x, y) && Math.abs(deltaX) == 1 && Math.abs(deltaY) == 1;
     }
     // TODO: 10.10.2023 w tym momencie białe zawsze na dole. Zmienić w przyszłości
 
-    private boolean isMoveBack(int deltaY) {// CHECK : 09.01.2024 zmiana nazwy metody?
+    private boolean isMoveBack(int deltaY) {
         return (getColor() == ChessPieceColor.WHITE && Integer.signum(deltaY) < 0) ||
             (getColor() == ChessPieceColor.BLACK && Integer.signum(deltaY) > 0);
     }

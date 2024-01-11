@@ -98,34 +98,46 @@ public class MoveValidator {
         return isValidCastling(king, x);
     }
 
-    private boolean kingWillBeInCheck(ChessPiece king, int x, int y) {// TODO: 09.01.2024 popracować nad czytelnością metody
+    private boolean kingWillBeInCheck(ChessPiece king, int x, int y) {
         ChessPieceColor enemyColor = king.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         for (ChessPiece enemyChessPiece : enemyChessPieces) {
-            if (enemyChessPiece.getType() == ChessPieceType.PAWN) {
-                Pawn pawn = (Pawn) enemyChessPiece;
-                if (pawn.attackField(x, y)) {
-                    System.out.println("pion atakuje to pole");
-                    return true;
-                }
-            }
-            if (enemyChessPiece.getType() != ChessPieceType.PAWN &&
-                canMove(enemyChessPiece, x, y)) {
-                System.out.println("figura atakuje to pole typ:" + enemyChessPiece.getType());
+            if (chessPieceNotStayOnAttackingField(enemyChessPiece, x, y) &&
+                fieldIsDefended(enemyChessPiece, x, y)) {
+                System.out.println("FIGURA BRONI TEGO POLA");
+                System.out.println(
+                    "1. FIGURA: " + enemyChessPiece.getType() + " " + enemyChessPiece.getColor());
+                System.out.println(
+                    "2. WSPÓŁRZĘDNE BRONIĄCEJ FIGURY: x = " + enemyChessPiece.getX() + ", y = " +
+                        enemyChessPiece.getY());
+                System.out.println("-----\n\n");
                 return true;
             }
-            if (enemyChessPiece.getType() != ChessPieceType.PAWN &&
-                (enemyChessPiece.getX() != x || enemyChessPiece.getY() != y) &&
-                isClearLine(enemyChessPiece, x, y) && enemyChessPiece.isCorrectMovement(x, y)) {
-                System.out.println("po zbiciu tej figury król będzie pod szachem");
-                System.out.println("będzie szachowała figura: typ:" + enemyChessPiece.getType());
-                System.out.println("kolor: " + enemyChessPiece.getColor());
-                System.out.println("wspolrzedne: x = " + enemyChessPiece.getX() + ", y = " +
-                    enemyChessPiece.getY());
-                System.out.println();
-                System.out.println("-----");
-                return true;
-            }
+        }
+        return false;
+        // TODO: 11.01.2024 szachowany król może ruszyć na szachowane pole przez tą samą figurę,
+        // todo jeżeli to pole będzie dalej od figury
+        // TODO: 11.01.2024 jeżeli przeciwny król nie zrobił żadnego ruchu to w linii X nie można się do
+        // todo niego zbliżyć na odległość dwóch pól
+    }
+
+    private boolean chessPieceNotStayOnAttackingField(ChessPiece enemyChessPiece, int x, int y) {
+        return enemyChessPiece.getX() != x || enemyChessPiece.getY() != y;
+    }
+
+    private boolean fieldIsDefended(ChessPiece defendingChessPiece, int x, int y) {
+        switch (defendingChessPiece.getType()) {
+            case PAWN:
+                Pawn pawn = (Pawn) defendingChessPiece;
+                return pawn.isAttackingField(x, y);
+            case KNIGHT:
+                return defendingChessPiece.isCorrectMovement(x, y);
+            case ROOK:
+            case RUNNER:
+            case QUEEN:
+            case KING:
+                return defendingChessPiece.isCorrectMovement(x, y) &&
+                    isClearLine(defendingChessPiece, x, y);
         }
         return false;
     }
@@ -134,7 +146,7 @@ public class MoveValidator {
         return Math.abs(king.getX() - x) == 2;
     }
 
-    private boolean enemyAttackingChessPiece(ChessPiece captureChessPiece) {// CHECK : 09.01.2024 druga metoda bardzo podobna. Usunąć jedną z nich?
+    private boolean enemyAttackingChessPiece(ChessPiece captureChessPiece) {
         int x = captureChessPiece.getX();
         int y = captureChessPiece.getY();
         ChessPieceColor enemyColor = captureChessPiece.getEnemyColor();
@@ -146,13 +158,8 @@ public class MoveValidator {
         }
         return false;
     }
-    
-    /*private boolean isValidCastling(ChessPiece king, int x) {
-        Rook rook = repository.getRookByKingMove(x, king.getY()).orElseThrow();
-        return !rook.wasMoved() && isClearCastlingLine(king, x);
-    }*/
 
-    private boolean isValidCastling(ChessPiece king, int x) { // CHECK : 07.01.2024 czy może być tak zamiast poprzedniej metody?
+    private boolean isValidCastling(ChessPiece king, int x) {
         Optional<Rook> optionalRook = repository.getRookByKingMove(x, king.getY());
         if (optionalRook.isPresent()) {
             Rook rook = optionalRook.get();
@@ -161,7 +168,7 @@ public class MoveValidator {
         return false;
     }
 
-    private boolean isClearCastlingLine(ChessPiece king, int x) {// CHECK : 09.01.2024 czy metoda dobrze napisana?
+    private boolean isClearCastlingLine(ChessPiece king, int x) {
         ChessPieceColor enemyColor = king.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         int startXLineToRightSide = x == 6 ? 5 : 1;
@@ -169,17 +176,11 @@ public class MoveValidator {
         int y = king.getY();
         for (int i = startXLineToRightSide; i < endXLineFromLeftSide; i++) {
             for (ChessPiece enemyChessPiece : enemyChessPieces) {
-                if (!isFreeField(i, y) || enemyAttackingField(enemyChessPiece, i, y)) {
+                if (!isFreeField(i, y) || canMove(enemyChessPiece, i, y)) {
                     return false;
                 }
             }
         }
         return true;
     }
-
-    boolean enemyAttackingField(ChessPiece enemyChessPiece, int x, int y) {
-        return canMove(enemyChessPiece, x, y);
-    }
 }
-// CHECK : 09.01.2024 król nie może pójść na pole, jeżeli to pole jest szachowane. Problem z pionem. Jak go rozwiązać?
-// CHECK : 09.01.2024 problem z pójściem króla na pole obok innego króla

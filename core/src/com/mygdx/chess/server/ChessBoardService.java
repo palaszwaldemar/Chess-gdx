@@ -17,6 +17,10 @@ public class ChessBoardService {
         moveValidator = new MoveValidator(repository);
     }
 
+    public List<ChessPiece> getChessPieces() {
+        return repository.getChessPieces();
+    }
+
     public MoveReport move(ChessPiece chessPieceInUse, int x, int y) throws InvalidMoveException {
         if (!moveValidator.canMove(chessPieceInUse, x, y)) {
             throw new InvalidMoveException();
@@ -85,10 +89,6 @@ public class ChessBoardService {
         repository.getChessPieces().add(newQueen);
         moveReport.setPromotionTarget(newQueen);
     }
-
-    public List<ChessPiece> getChessPieces() {
-        return repository.getChessPieces();
-    }
 }
 // Pobieranie ruchu | Opakowanie ruchu | Walidacja | Wykonanie | Animowanie
-// CHECK : 05.12.2023 na następnej lekcji prezbudować MoveReport. Czy muszę przebudowywać MoveReport? Czy teraz jest bardzo źle?
+// CHECK : 11.01.2024 dodatkowa klasa - podserwis - przygotowuje wszystko do ruchu

@@ -1,5 +1,4 @@
 package com.mygdx.chess.server;
-// CHECK : 13.12.2023 czy MoveReport powinien być w tym pakiecie?
 import com.mygdx.chess.client.Cords;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
@@ -11,7 +10,7 @@ public class MoveReport {
     private ChessPiece rookToMove;
     // CHECK : 05.12.2023 na następnej lekcji
     private int newXRook; // CHECK : 04.12.2023 znaleźć lepszy sposób? Zamiast newXRook i newYRook, poprostu obiekt Rook?
-    private int newYRook;
+    private int newYRook; // TODO: 11.01.2024 do usunięcia !!!
 
     public void setChessPieceInUse(ChessPiece chessPieceInUse) {
         this.chessPieceInUse = chessPieceInUse;
@@ -31,8 +30,8 @@ public class MoveReport {
 
     public void setRookToMove(ChessPiece rookToMove, int newXRook, int newYRook) {
         this.rookToMove = rookToMove;
-        this.newXRook = Cords.xToPixels(newXRook);
-        this.newYRook = Cords.yToPixels(newYRook);
+        this.newXRook = Cords.xToPixels(newXRook);// TODO: 11.01.2024 usunąć xToPixels
+        this.newYRook = Cords.yToPixels(newYRook);// TODO: 11.01.2024 to co wyżej
     }
 
     public ChessPiece getChessPieceInUse() {
@@ -40,7 +39,7 @@ public class MoveReport {
     }
 
     public int getNewXRook() {
-        return newXRook;
+        return newXRook;// TODO: 11.01.2024 wykorzystać ruch króla i uzyskać przez to docelowy x wieży
     }
 
     public int getNewYRook() {
@@ -66,4 +65,5 @@ public class MoveReport {
     public boolean wasPromotion() {
         return promotionPawnToRemove != null;
     }
+
 }
