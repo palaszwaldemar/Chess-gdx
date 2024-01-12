@@ -7,6 +7,7 @@ import com.mygdx.chess.server.chessPieces.Rook;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 public class ChessBoardService {
     private final ChessPieceRepository repository;
@@ -50,8 +51,11 @@ public class ChessBoardService {
         if (isNotKingOrNotCastling(chessPieceInUse, x)) {
             return;
         }
-        Rook rookToMove = repository.getRookByKingMove(x, chessPieceInUse.getY()).orElseThrow();
-        moveRook(rookToMove, moveReport);
+        Optional<Rook> rookToMove = repository.getRookByKingMove(x, chessPieceInUse.getY());
+        if (rookToMove.isPresent()) {
+            Rook rook = rookToMove.get();
+            moveRook(rook, moveReport);
+        }
     }
 
     private boolean isNotKingOrNotCastling(ChessPiece chessPieceInUse, int x) {

@@ -44,7 +44,7 @@ public class MoveValidator {
             case QUEEN:
                 return isClearLine(chessPieceInUse, x, y);
             case KING:
-                return isValidCastlingOrNormalMove(chessPieceInUse, x, y);
+                return isValidCastling(chessPieceInUse, x) || isValidNormalMove(chessPieceInUse, x, y);
         }
         return true;
     }
@@ -85,15 +85,28 @@ public class MoveValidator {
         return true;
     }
 
+    private boolean isValidCastling(ChessPiece king, int x) {
+        Optional<Rook> optionalRook = repository.getRookByKingMove(x, king.getY());
+        if (optionalRook.isPresent()) {
+            Rook rook = optionalRook.get();
+            return !rook.wasMoved() && isClearCastlingLine(king, x) && noAttacksFromEnemies(king);
+        }
+        return false;
+    }
+
+    private boolean isValidNormalMove(ChessPiece king, int x, int y) {
+        if (isCastling(king, x)) {
+            return false;
+        }
+        return true;
+    }
+
     private boolean isValidCastlingOrNormalMove(ChessPiece king, int x, int y) {
         if (kingWillBeInCheck(king.getEnemyColor(), x, y)) {
             return false;
         }
         if (!isCastling(king, x)) {
             return true;
-        }
-        if (enemyAttackingChessPiece(king)) {
-            return false;
         }
         return isValidCastling(king, x);
     }
@@ -145,28 +158,6 @@ public class MoveValidator {
         return Math.abs(king.getX() - x) == 2;
     }
 
-    private boolean enemyAttackingChessPiece(ChessPiece captureChessPiece) {
-        int x = captureChessPiece.getX();
-        int y = captureChessPiece.getY();
-        ChessPieceColor enemyColor = captureChessPiece.getEnemyColor();
-        List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
-        for (ChessPiece enemyChessPiece : enemyChessPieces) {
-            if (canMove(enemyChessPiece, x, y)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isValidCastling(ChessPiece king, int x) {
-        Optional<Rook> optionalRook = repository.getRookByKingMove(x, king.getY());
-        if (optionalRook.isPresent()) {
-            Rook rook = optionalRook.get();
-            return !rook.wasMoved() && isClearCastlingLine(king, x);
-        }
-        return false;
-    }
-
     private boolean isClearCastlingLine(ChessPiece king, int x) {
         ChessPieceColor enemyColor = king.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
@@ -178,6 +169,19 @@ public class MoveValidator {
                 if (!isFreeField(i, y) || canMove(enemyChessPiece, i, y)) {
                     return false;
                 }
+            }
+        }
+        return true;
+    }
+
+    private boolean noAttacksFromEnemies(ChessPiece captureChessPiece) {
+        int x = captureChessPiece.getX();
+        int y = captureChessPiece.getY();
+        ChessPieceColor enemyColor = captureChessPiece.getEnemyColor();
+        List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
+        for (ChessPiece enemyChessPiece : enemyChessPieces) {
+            if (canMove(enemyChessPiece, x, y)) {
+                return false;
             }
         }
         return true;
