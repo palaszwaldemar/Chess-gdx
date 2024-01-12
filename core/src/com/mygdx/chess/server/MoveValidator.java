@@ -98,17 +98,10 @@ public class MoveValidator {
         if (isCastling(king, x)) {
             return false;
         }
-        return true;
-    }
-
-    private boolean isValidCastlingOrNormalMove(ChessPiece king, int x, int y) {
         if (kingWillBeInCheck(king.getEnemyColor(), x, y)) {
             return false;
         }
-        if (!isCastling(king, x)) {
-            return true;
-        }
-        return isValidCastling(king, x);
+        return true;
     }
 
     private boolean kingWillBeInCheck(ChessPieceColor enemyColor, int x, int y) {
