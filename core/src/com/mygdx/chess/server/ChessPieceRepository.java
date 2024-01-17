@@ -54,5 +54,14 @@ public class ChessPieceRepository {
         }
         return Optional.empty();
     }
+
+    public Optional<ChessPiece> getKing(ChessPieceColor color) {
+        for (ChessPiece chessPiece : getChessPieces(color)) {
+            if (chessPiece.hasType(ChessPieceType.KING)) {
+                return Optional.of(chessPiece);
+            }
+        }
+        return Optional.empty();
+    }
     // TODO: 04.01.2024 wrócić po przerobieniu Streamów
 }

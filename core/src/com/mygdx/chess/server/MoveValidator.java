@@ -37,18 +37,44 @@ public class MoveValidator {
     private boolean isValidMoveForChessPiece(ChessPiece chessPieceInUse, int x, int y) {
         switch (chessPieceInUse.getType()) {
             case PAWN:
-                return isCorrectPawnMove(chessPieceInUse, x, y);
+                return isValidPawnMove(chessPieceInUse, x, y) && kingWillNotInCheck(chessPieceInUse, x, y);
+            case KNIGHT:
+                return kingWillNotInCheck(chessPieceInUse, x, y);
             case ROOK:
             case RUNNER:
             case QUEEN:
-                return isClearLine(chessPieceInUse, x, y);
+                return isClearLine(chessPieceInUse, x, y) && kingWillNotInCheck(chessPieceInUse, x, y);
             case KING:
-                return isCorrectKingMove(chessPieceInUse, x, y);
+                return isValidKingMove(chessPieceInUse, x, y);
         }
         return true;
     }
 
-    private boolean isCorrectPawnMove(ChessPiece pawn, int x, int y) {
+    private boolean kingWillNotInCheck(ChessPiece chessPieceInUse, int x, int y) {
+        ChessPieceColor enemyColor = chessPieceInUse.getEnemyColor();
+        List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
+        int actualChessPieceX = chessPieceInUse.getX();
+        int actualChessPieceY = chessPieceInUse.getY();
+        Optional<ChessPiece> friendKingOptional = repository.getKing(chessPieceInUse.getColor());
+        if (friendKingOptional.isPresent()) {
+            ChessPiece friendKing = friendKingOptional.get();
+            chessPieceInUse.move(x, y);
+            for (ChessPiece enemyChessPiece : enemyChessPieces) {
+                if (canMove(enemyChessPiece, friendKing.getX(), friendKing.getY())) {//jeżeli figura zasłaniająca
+                    // króla doprowadzi do tego że król będzie pod szachem, to ruch nie jest zezwolony
+                    chessPieceInUse.move(actualChessPieceX, actualChessPieceY);
+                    return false;
+                }
+            }
+            chessPieceInUse.move(actualChessPieceX, actualChessPieceY);
+            return true;
+        }
+        return true;
+        // TODO: 17.01.2024 dodać funkcjonalność - jeżeli król jest pod szachem to inna figura może się ruszyć
+        // todo jeżeli będzie biła szachującą figurę
+    }
+
+    private boolean isValidPawnMove(ChessPiece pawn, int x, int y) {
         int deltaX = Math.abs(x - pawn.getX());
         int deltaY = Math.abs(y - pawn.getY());
         boolean diagonalMove = deltaX == deltaY;
@@ -84,7 +110,7 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isCorrectKingMove(ChessPiece king, int x, int y) {
+    private boolean isValidKingMove(ChessPiece king, int x, int y) {
         return isValidCastling(king, x) || isValidNormalMove(king, x, y);
     }
 
