@@ -16,8 +16,7 @@ public class MoveValidator {
 
     boolean canMove(ChessPiece chessPieceInUse, int x, int y) {
         ChessPieceColor color = chessPieceInUse.getColor();
-        return isOnTheBoard(x, y) && friendIsNotHere(color, x, y) &&
-            chessPieceInUse.isCorrectMovement(x, y) &&
+        return isOnTheBoard(x, y) && friendIsNotHere(color, x, y) && chessPieceInUse.isCorrectMovement(x, y) &&
             isValidMoveForChessPiece(chessPieceInUse, x, y);
     }
 
@@ -44,19 +43,19 @@ public class MoveValidator {
             case QUEEN:
                 return isClearLine(chessPieceInUse, x, y);
             case KING:
-                return isValidCastling(chessPieceInUse, x) || isValidNormalMove(chessPieceInUse, x, y);
+                return isCorrectKingMove(chessPieceInUse, x, y);
         }
         return true;
     }
 
-    private boolean isCorrectPawnMove(ChessPiece chessPieceInUse, int x, int y) {
-        int deltaX = Math.abs(x - chessPieceInUse.getX());
-        int deltaY = Math.abs(y - chessPieceInUse.getY());
+    private boolean isCorrectPawnMove(ChessPiece pawn, int x, int y) {
+        int deltaX = Math.abs(x - pawn.getX());
+        int deltaY = Math.abs(y - pawn.getY());
         boolean diagonalMove = deltaX == deltaY;
         if (diagonalMove) {
             return !isFreeField(x, y);
         } else {
-            return isClearLine(chessPieceInUse, x, y) && isFreeField(x, y);
+            return isClearLine(pawn, x, y) && isFreeField(x, y);
         }
     }
 
@@ -85,6 +84,10 @@ public class MoveValidator {
         return true;
     }
 
+    private boolean isCorrectKingMove(ChessPiece king, int x, int y) {
+        return isValidCastling(king, x) || isValidNormalMove(king, x, y);
+    }
+
     private boolean isValidCastling(ChessPiece king, int x) {
         Optional<Rook> optionalRook = repository.getRookByKingMove(x, king.getY());
         if (optionalRook.isPresent()) {
@@ -98,53 +101,48 @@ public class MoveValidator {
         if (isCastling(king, x)) {
             return false;
         }
-        if (kingWillBeInCheck(king.getEnemyColor(), x, y)) {
-            return false;
+        return notInCheck(king, x, y);
+    }
+
+    private boolean notInCheck(ChessPiece king, int x, int y) {
+        int actualKingX = king.getX();
+        int actualKingY = king.getY();
+        List<ChessPiece> enemyChessPieces = repository.getChessPieces(king.getEnemyColor());
+        enemyChessPieces.removeIf(enemyChessPiece -> enemyChessPiece.getX() == x && enemyChessPiece.getY() == y);
+        king.setX(x);// CHECK : 17.01.2024 czy mogę użyć tutaj setterów?
+        king.setY(y);
+        for (ChessPiece enemyChessPiece : enemyChessPieces) {
+            if (fieldIsDefending(enemyChessPiece, x, y)) {
+                king.setX(actualKingX);
+                king.setY(actualKingY);
+                return false;
+            }
         }
+        king.setX(actualKingX);
+        king.setY(actualKingY);
         return true;
     }
 
-    private boolean kingWillBeInCheck(ChessPieceColor enemyColor, int x, int y) {
-        List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
-        for (ChessPiece enemyChessPiece : enemyChessPieces) {
-            if (isNotOnAttackingField(enemyChessPiece, x, y) &&
-                fieldIsDefended(enemyChessPiece, x, y)) {
-                System.out.println("FIGURA BRONI TEGO POLA");
-                System.out.println(
-                    "1. FIGURA: " + enemyChessPiece.getType() + " " + enemyChessPiece.getColor());
-                System.out.println(
-                    "2. WSPÓŁRZĘDNE BRONIĄCEJ FIGURY: x = " + enemyChessPiece.getX() + ", y = " +
-                        enemyChessPiece.getY());
-                System.out.println("-----\n\n");
-                return true;
-            }
-        }
-        return false;
-        // TODO: 11.01.2024 szachowany król może ruszyć na szachowane pole przez tą samą figurę,
-        // todo jeżeli to pole będzie dalej od figury
-        // TODO: 11.01.2024 jeżeli przeciwny król nie zrobił żadnego ruchu to w linii X nie można się do
-        // todo niego zbliżyć na odległość dwóch pól
-    }
-
-    private boolean isNotOnAttackingField(ChessPiece enemyChessPiece, int x, int y) {
-        return enemyChessPiece.getX() != x || enemyChessPiece.getY() != y;
-    }
-
-    private boolean fieldIsDefended(ChessPiece defendingChessPiece, int x, int y) {
+    private boolean fieldIsDefending(ChessPiece defendingChessPiece, int x, int y) {
         switch (defendingChessPiece.getType()) {
             case PAWN:
                 Pawn pawn = (Pawn) defendingChessPiece;
                 return pawn.isAttackingField(x, y);
             case KNIGHT:
-                return defendingChessPiece.isCorrectMovement(x, y);
             case ROOK:
             case RUNNER:
             case QUEEN:
+                return defendingChessPiece.isCorrectMovement(x, y) && isClearLine(defendingChessPiece, x, y);
             case KING:
-                return defendingChessPiece.isCorrectMovement(x, y) &&
-                    isClearLine(defendingChessPiece, x, y);
+                return kingDefendingField(defendingChessPiece, x, y);
         }
         return false;
+    }
+
+    private boolean kingDefendingField(ChessPiece king, int x, int y) {
+        int deltaX = Math.abs(king.getX() - x);
+        int deltaY = Math.abs(king.getY() - y);
+        return (deltaX == 1 && deltaY == 0) || (deltaX == 0 && deltaY == 1) || (deltaX == 1 && deltaY == 1);
     }
 
     private boolean isCastling(ChessPiece king, int x) {
@@ -154,7 +152,7 @@ public class MoveValidator {
     private boolean isClearCastlingLine(ChessPiece king, int x) {
         ChessPieceColor enemyColor = king.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
-        int startXLineToRightSide = x == 6 ? 5 : 1;
+        int startXLineToRightSide = x == 6 ? 5 : 2;
         int endXLineFromLeftSide = x == 6 ? 7 : 4;
         int y = king.getY();
         for (int i = startXLineToRightSide; i < endXLineFromLeftSide; i++) {

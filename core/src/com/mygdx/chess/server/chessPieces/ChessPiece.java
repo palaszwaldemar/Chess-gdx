@@ -66,6 +66,14 @@ public abstract class ChessPiece {
         return this.type == type;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     @Override
     public String toString() {
         return "ChessPiece{" +
