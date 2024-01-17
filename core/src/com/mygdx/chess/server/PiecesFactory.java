@@ -23,9 +23,9 @@ public class PiecesFactory {
 
     private List<ChessPiece> listOfFigures(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
-        ChessPieceType[] types = {ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.RUNNER,
-            ChessPieceType.QUEEN, ChessPieceType.KING, ChessPieceType.RUNNER, ChessPieceType.KNIGHT,
-            ChessPieceType.ROOK};
+        ChessPieceType[] types =
+            {ChessPieceType.ROOK, ChessPieceType.KNIGHT, ChessPieceType.RUNNER, ChessPieceType.QUEEN,
+                ChessPieceType.KING, ChessPieceType.RUNNER, ChessPieceType.KNIGHT, ChessPieceType.ROOK};
         for (int i = 0; i < types.length; i++) {
             switch (types[i]) {
                 case ROOK:
