@@ -38,8 +38,8 @@ public abstract class ChessPiece {
         return type;
     }
 
-    public boolean wasMoved() {
-        return moved;
+    public boolean wasNotMoved() {
+        return !moved;
     }
 
     public abstract boolean isCorrectMovement(int x, int y);
@@ -64,14 +64,6 @@ public abstract class ChessPiece {
 
     public boolean hasType(ChessPieceType type) {
         return this.type == type;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     @Override

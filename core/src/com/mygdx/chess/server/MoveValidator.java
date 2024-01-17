@@ -92,7 +92,7 @@ public class MoveValidator {
         Optional<Rook> optionalRook = repository.getRookByKingMove(x, king.getY());
         if (optionalRook.isPresent()) {
             Rook rook = optionalRook.get();
-            return !rook.wasMoved() && !king.wasMoved() && isClearCastlingLine(king, x) &&
+            return rook.wasNotMoved() && king.wasNotMoved() && isClearCastlingLine(king, x) &&
                 noAttacksFromEnemies(king);
         }
         return false;
@@ -110,22 +110,15 @@ public class MoveValidator {
         int actualKingY = king.getY();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(king.getEnemyColor());
         enemyChessPieces.removeIf(enemyChessPiece -> enemyChessPiece.getX() == x && enemyChessPiece.getY() == y);
-        setKingCords(king, x, y);
+        king.move(x, y); // CHECK : 17.01.2024 czy mogę tutaj wywołać tą metodę?
         for (ChessPiece enemyChessPiece : enemyChessPieces) {
             if (fieldIsDefending(enemyChessPiece, x, y)) {
-                king.setX(actualKingX);
-                king.setY(actualKingY);
+                king.move(actualKingX, actualKingY);
                 return false;
             }
         }
-        setKingCords(king, actualKingX, actualKingY);
+        king.move(actualKingX, actualKingY);
         return true;
-    }
-
-    private void setKingCords(ChessPiece king, int x, int y) {
-        // CHECK : 17.01.2024 czy mogę w tej klasie użyć setterów?
-        king.setX(x);
-        king.setY(y);
     }
 
     private boolean fieldIsDefending(ChessPiece defendingChessPiece, int x, int y) {
