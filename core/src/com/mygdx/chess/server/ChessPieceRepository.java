@@ -43,6 +43,7 @@ public class ChessPieceRepository {
         int xRook = x == 6 ? 7 : 0;
         return getRook(xRook, y);
     }
+
     private Optional<Rook> getRook(int x, int y) {
         if (getChessPiece(x, y).isEmpty()) {
             return Optional.empty();
@@ -53,6 +54,5 @@ public class ChessPieceRepository {
         }
         return Optional.empty();
     }
-
     // TODO: 04.01.2024 wrócić po przerobieniu Streamów
 }
