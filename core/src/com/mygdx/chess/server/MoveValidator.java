@@ -85,8 +85,6 @@ public class MoveValidator {
     }
 
     private boolean isCorrectKingMove(ChessPiece king, int x, int y) {
-        System.out.println("isValidCastling: " + isValidCastling(king, x));
-        System.out.println("isValidNormalMove: " + isValidNormalMove(king, x, y));
         return isValidCastling(king, x) || isValidNormalMove(king, x, y);
     }
 
