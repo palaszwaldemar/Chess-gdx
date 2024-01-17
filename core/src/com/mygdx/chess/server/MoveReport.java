@@ -1,4 +1,5 @@
 package com.mygdx.chess.server;
+
 import com.mygdx.chess.client.Cords;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
@@ -65,5 +66,4 @@ public class MoveReport {
     public boolean wasPromotion() {
         return promotionPawnToRemove != null;
     }
-
 }
