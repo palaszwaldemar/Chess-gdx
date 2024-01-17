@@ -110,8 +110,7 @@ public class MoveValidator {
         int actualKingY = king.getY();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(king.getEnemyColor());
         enemyChessPieces.removeIf(enemyChessPiece -> enemyChessPiece.getX() == x && enemyChessPiece.getY() == y);
-        king.setX(x);// CHECK : 17.01.2024 czy mogę użyć tutaj setterów?
-        king.setY(y);
+        setKingCords(king, x, y);
         for (ChessPiece enemyChessPiece : enemyChessPieces) {
             if (fieldIsDefending(enemyChessPiece, x, y)) {
                 king.setX(actualKingX);
@@ -119,9 +118,14 @@ public class MoveValidator {
                 return false;
             }
         }
-        king.setX(actualKingX);
-        king.setY(actualKingY);
+        setKingCords(king, actualKingX, actualKingY);
         return true;
+    }
+
+    private void setKingCords(ChessPiece king, int x, int y) {
+        // CHECK : 17.01.2024 czy mogę w tej klasie użyć setterów?
+        king.setX(x);
+        king.setY(y);
     }
 
     private boolean fieldIsDefending(ChessPiece defendingChessPiece, int x, int y) {
