@@ -85,6 +85,8 @@ public class MoveValidator {
     }
 
     private boolean isCorrectKingMove(ChessPiece king, int x, int y) {
+        System.out.println("isValidCastling: " + isValidCastling(king, x));
+        System.out.println("isValidNormalMove: " + isValidNormalMove(king, x, y));
         return isValidCastling(king, x) || isValidNormalMove(king, x, y);
     }
 
@@ -92,7 +94,8 @@ public class MoveValidator {
         Optional<Rook> optionalRook = repository.getRookByKingMove(x, king.getY());
         if (optionalRook.isPresent()) {
             Rook rook = optionalRook.get();
-            return !rook.wasMoved() && isClearCastlingLine(king, x) && noAttacksFromEnemies(king);
+            return !rook.wasMoved() && !king.wasMoved() && isClearCastlingLine(king, x) &&
+                noAttacksFromEnemies(king);
         }
         return false;
     }
