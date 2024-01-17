@@ -86,8 +86,7 @@ public class ChessBoardService {
         }
     }
 
-    private void changePawnToQueen(ChessPiece chessPieceInUse, int x, int y,
-                                   MoveReport moveReport) {
+    private void changePawnToQueen(ChessPiece chessPieceInUse, int x, int y, MoveReport moveReport) {
         repository.getChessPieces().remove(chessPieceInUse);
         ChessPiece newQueen = new Queen(chessPieceInUse.getColor(), x, y);
         repository.getChessPieces().add(newQueen);
