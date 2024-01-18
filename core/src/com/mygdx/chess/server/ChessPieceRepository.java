@@ -16,7 +16,7 @@ public class ChessPieceRepository {
         chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.BLACK));
     }
 
-    public Optional<ChessPiece> getChessPiece(int x, int y) {
+    Optional<ChessPiece> getChessPiece(int x, int y) {
         for (ChessPiece chessPiece : chessPieces) {
             if (chessPiece.getX() == x && chessPiece.getY() == y) {
                 return Optional.of(chessPiece);
@@ -29,7 +29,7 @@ public class ChessPieceRepository {
         return chessPieces;
     }
 
-    public List<ChessPiece> getChessPieces(ChessPieceColor color) {
+    List<ChessPiece> getChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPiecesByColor = new ArrayList<>();
         for (ChessPiece chessPiece : chessPieces) {
             if (chessPiece.hasColor(color)) {
@@ -39,7 +39,26 @@ public class ChessPieceRepository {
         return chessPiecesByColor;
     }
 
-    public Optional<Rook> getRookByKingMove(int x, int y) {
+    List<ChessPiece> getChessPiecesAfterMove(ChessPiece chessPieceInUse, int x, int y) {
+        List<ChessPiece> chessPiecesAfterMove = getDeepCopyOfChessPiece();
+        chessPiecesAfterMove.removeIf(chessPiece -> chessPiece.getX() == x && chessPiece.getY() == y);
+        for (ChessPiece chessPiece : chessPiecesAfterMove) {
+            if (chessPieceInUse.equals(chessPiece)) {
+                chessPiece.move(x, y); // CHECK : 18.01.2024 czy tutaj mogę wywołać tą metodę?
+            }
+        }
+        return chessPiecesAfterMove;
+    }
+
+    private List<ChessPiece> getDeepCopyOfChessPiece() {
+        List<ChessPiece> deepCopyOfChessPiece = new ArrayList<>();
+        for (ChessPiece chessPiece : chessPieces) {
+            deepCopyOfChessPiece.add(chessPiece.clone()); // CHECK : 18.01.2024 takie rozwiązanie okej?
+        }
+        return deepCopyOfChessPiece;
+    }
+
+    Optional<Rook> getRookByKingMove(int x, int y) {
         int xRook = x == 6 ? 7 : 0;
         return getRook(xRook, y);
     }
@@ -55,9 +74,9 @@ public class ChessPieceRepository {
         return Optional.empty();
     }
 
-    public Optional<ChessPiece> getKing(ChessPieceColor color) {
-        for (ChessPiece chessPiece : getChessPieces(color)) {
-            if (chessPiece.hasType(ChessPieceType.KING)) {
+    Optional<ChessPiece> getKing(List<ChessPiece> chessPieces, ChessPieceColor color) {
+        for (ChessPiece chessPiece : chessPieces) {
+            if (chessPiece.hasType(ChessPieceType.KING) && chessPiece.hasColor(color)) {
                 return Optional.of(chessPiece);
             }
         }

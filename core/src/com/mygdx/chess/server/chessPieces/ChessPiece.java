@@ -3,7 +3,7 @@ package com.mygdx.chess.server.chessPieces;
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
 
-public abstract class ChessPiece {
+public abstract class ChessPiece implements Cloneable {
     int x;
     int y;
     private final ChessPieceColor color;
@@ -75,5 +75,23 @@ public abstract class ChessPiece {
             ", type=" + type +
             ", moved=" + moved +
             '}';
+    }
+
+    @Override
+    public boolean equals(Object o) { // CHECK : 18.01.2024 nadpisałem equals. Wykorzystuję to tylko raz. Okej?
+        if (this == o) return true;
+        if (!(o instanceof ChessPiece)) return false;
+        ChessPiece that = (ChessPiece) o;
+        return getX() == that.getX() && getY() == that.getY() && moved == that.moved &&
+            getColor() == that.getColor() && getType() == that.getType();
+    }
+
+    @Override
+    public ChessPiece clone() {
+        try {
+            return (ChessPiece) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
