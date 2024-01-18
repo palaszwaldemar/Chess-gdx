@@ -137,7 +137,7 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isValidKingMove(ChessPiece king, int x) {
+    private boolean isValidKingMove(ChessPiece king, int x) { // CHECK : 18.01.2024 na pewno dobrze napisane?
         return isValidCastling(king, x) || isValidNormalMove(king, x);
     }
 
