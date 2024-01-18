@@ -55,14 +55,9 @@ public class MoveValidator {
 
     private boolean kingWillBeInCheck(ChessPiece chessPieceInUse, int x, int y) {
         List<ChessPiece> chessPiecesAfterMove = repository.getChessPiecesAfterMove(chessPieceInUse, x, y);
-        List<ChessPiece> enemyChessPiecesAfterMove = new ArrayList<>();
-        for (ChessPiece chessPiece : chessPiecesAfterMove) {
-            if (chessPiece.hasColor(chessPieceInUse.getEnemyColor())) {
-                enemyChessPiecesAfterMove.add(chessPiece);
-            }
-        }
-        ChessPiece friendKing =
-            repository.getKing(chessPiecesAfterMove, chessPieceInUse.getColor()).orElseThrow();
+        List<ChessPiece> enemyChessPiecesAfterMove =
+            getEnemiesAfterMove(chessPieceInUse.getEnemyColor(), chessPiecesAfterMove);
+        ChessPiece friendKing = repository.getKing(chessPiecesAfterMove, chessPieceInUse.getColor()).orElseThrow();
         int kingX = friendKing.getX();
         int kingY = friendKing.getY();
         for (ChessPiece chessPiece : enemyChessPiecesAfterMove) {
@@ -73,20 +68,30 @@ public class MoveValidator {
         return false;
     }
 
-    private boolean isCheck(ChessPiece attackingChessPiece, int x, int y, List<ChessPiece> chessPieces) {
-        switch (attackingChessPiece.getType()) {
+    private List<ChessPiece> getEnemiesAfterMove(ChessPieceColor enemyColor, List<ChessPiece> chessPiecesAfterMove) {
+        List<ChessPiece> enemiesAfterMove = new ArrayList<>();
+        for (ChessPiece chessPiece : chessPiecesAfterMove) {
+            if (chessPiece.hasColor(enemyColor)) {
+                enemiesAfterMove.add(chessPiece);
+            }
+        }
+        return enemiesAfterMove;
+    }
+
+    private boolean isCheck(ChessPiece defendingChessPiece, int x, int y, List<ChessPiece> chessPieces) {
+        switch (defendingChessPiece.getType()) {
             case PAWN:
-                Pawn pawn = (Pawn) attackingChessPiece;
+                Pawn pawn = (Pawn) defendingChessPiece;
                 return pawn.isAttackingField(x, y);
             case KNIGHT:
-                return attackingChessPiece.isCorrectMovement(x, y);
+                return defendingChessPiece.isCorrectMovement(x, y);
             case ROOK:
             case RUNNER:
             case QUEEN:
-                return isClearLine(attackingChessPiece, x, y, chessPieces) &&
-                    attackingChessPiece.isCorrectMovement(x, y);
+                return isClearLine(defendingChessPiece, x, y, chessPieces) &&
+                    defendingChessPiece.isCorrectMovement(x, y);
             case KING:
-                return kingDefendingFiled(attackingChessPiece, x, y);
+                return kingDefendingFiled(defendingChessPiece, x, y);
         }
         return false;
     }
