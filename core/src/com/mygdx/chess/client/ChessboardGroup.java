@@ -2,8 +2,10 @@ package com.mygdx.chess.client;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
 import java.util.List;
@@ -27,6 +29,16 @@ public class ChessboardGroup extends Group {
             addActor(new ChessPieceActor(chessPiece, controller));
         }
     }
+
+    SnapshotArray<ChessPieceActor> getChessPieceActors() { // CHECK : 19.01.2024 czy może być tak?
+        SnapshotArray<ChessPieceActor> chessPieceActors = new SnapshotArray<>();
+        for (Actor actor : getChildren())
+            if (actor instanceof ChessPieceActor) {
+                chessPieceActors.add((ChessPieceActor) actor);
+            }
+        return chessPieceActors;
+    }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {

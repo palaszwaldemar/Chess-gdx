@@ -1,7 +1,6 @@
 package com.mygdx.chess.client;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.ChessBoardService;
 import com.mygdx.chess.server.MoveReport;
@@ -29,32 +28,19 @@ public class Controller {
     }
 
     private void removeActor(ChessPiece chessPieceToRemove) {
-        Array<Actor> actors = chessboardGroup.getChildren();
-        Array<ChessPieceActor> children = new Array<>();
-        for (Actor actor : actors) {
-            if (actor instanceof ChessPieceActor) {
-                children.add((ChessPieceActor) actor);
-            }
-        }
-        for (ChessPieceActor child : children) {
-            if (child.getChessPiece().equals(chessPieceToRemove)) {
-                chessboardGroup.removeActor(child);
+        SnapshotArray<ChessPieceActor> chessPieceActors = chessboardGroup.getChessPieceActors();
+        for (ChessPieceActor chessPieceActor : chessPieceActors) {
+            if (chessPieceActor.getChessPiece().equals(chessPieceToRemove)) {
+                chessboardGroup.removeActor(chessPieceActor);
             }
         }
     }
 
-    // CHECK : 05.12.2023 sprawdzić na następnej lekcji
     private void castling(MoveReport moveReport) {
-        Array<Actor> actors = chessboardGroup.getChildren();
-        Array<ChessPieceActor> children = new Array<>();
-        for (Actor actor : actors) {
-            if (actor instanceof ChessPieceActor) {
-                children.add((ChessPieceActor) actor);
-            }
-        }
-        for (ChessPieceActor child : children) {
-            if (child.getChessPiece().equals(moveReport.getRookToMove())) {
-                child.setPosition(moveReport.getNewXRook(), moveReport.getNewYRook());
+        SnapshotArray<ChessPieceActor> chessPieceActors = chessboardGroup.getChessPieceActors();
+        for (ChessPieceActor chessPieceActor : chessPieceActors) {
+            if (chessPieceActor.getChessPiece().equals(moveReport.getRookToMove())) {
+                chessPieceActor.setPosition(moveReport.getNewXRook(), moveReport.getNewYRook());
             }
         }
     }
