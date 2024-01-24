@@ -21,7 +21,7 @@ public class MoveValidator {
     boolean canMove(ChessPiece chessPieceInUse, int x, int y) {
         this.x = x;
         this.y = y;
-        this.chessPieceInUse = chessPieceInUse;
+        this.chessPieceInUse = chessPieceInUse; // TODO: 24.01.2024 problem z ustawianiem chessPieceInUse.
         return isOnTheBoard() && friendIsNotHere() && chessPieceInUse.isCorrectMovement(x, y) &&
             kingWillNotBeInCheck() && isValidMoveByChessPieceType();
     }
@@ -49,7 +49,8 @@ public class MoveValidator {
             case QUEEN:
                 return isClearLineForChessPieceInUse();
             case KING:
-                return isValidKingMove();
+                ChessPiece king = chessPieceInUse;
+                return isValidKingMove(king);
         }
         return true;
     }
@@ -128,7 +129,7 @@ public class MoveValidator {
         return isClearLineForChessPiece(chessPieceInUse, x, y, repository.getChessPieces());
     }
 
-    private boolean isClearLineForChessPiece(ChessPiece chessPiece, int x , int y, List<ChessPiece> chessPieces) {
+    private boolean isClearLineForChessPiece(ChessPiece chessPiece, int x, int y, List<ChessPiece> chessPieces) {
         int startX = chessPiece.getX();
         int startY = chessPiece.getY();
         int deltaX = x - startX;
@@ -143,16 +144,16 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isValidKingMove() {
-        return !isCastling() || isValidCastling();
+    private boolean isValidKingMove(ChessPiece king) {
+        return !isCastling() || isValidCastling(king);
     }
 
-    private boolean isValidCastling() {
+    private boolean isValidCastling(ChessPiece king) {
         Optional<Rook> optionalRook = repository.getRookByKingMove(x, chessPieceInUse.getY());
         if (optionalRook.isPresent()) {
             Rook rook = optionalRook.get();
             return rook.wasNotMoved() && chessPieceInUse.wasNotMoved() && isClearCastlingLine() &&
-                noAttacksFromEnemies();
+                noAttacksFromEnemies(king);
         }
         return false;
     }
@@ -178,10 +179,13 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean noAttacksFromEnemies() {
-        int x = chessPieceInUse.getX();
-        int y = chessPieceInUse.getY();
-        ChessPieceColor enemyColor = chessPieceInUse.getEnemyColor();
+    // CHECK : 24.01.2024 czy tak może być?
+    /*miałem nie przekazywać argumentów ale z racji tego że metoda canMove() jest wykorzystywana
+    również w tej klasie pole chessPieceInUse nie zawsze jest tym które jest aktualnie w użyciu*/
+    private boolean noAttacksFromEnemies(ChessPiece king) {
+        int x = king.getX();
+        int y = king.getY();
+        ChessPieceColor enemyColor = king.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         for (ChessPiece enemyChessPiece : enemyChessPieces) {
             if (canMove(enemyChessPiece, x, y)) {
