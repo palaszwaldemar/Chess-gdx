@@ -10,23 +10,28 @@ import java.util.Optional;
 
 public class MoveValidator {
     private final ChessPieceRepository repository;
+    private int x;
+    private int y;
+    private ChessPiece chessPieceInUse;
 
     public MoveValidator(ChessPieceRepository repository) {
         this.repository = repository;
     }
 
     boolean canMove(ChessPiece chessPieceInUse, int x, int y) {
-        ChessPieceColor color = chessPieceInUse.getColor();
-        return isOnTheBoard(x, y) && friendIsNotHere(color, x, y) && chessPieceInUse.isCorrectMovement(x, y) &&
-            isValidMoveForChessPiece(chessPieceInUse, x, y);
+        this.x = x;
+        this.y = y;
+        this.chessPieceInUse = chessPieceInUse;
+        return isOnTheBoard() && friendIsNotHere() && chessPieceInUse.isCorrectMovement(x, y) &&
+            kingWillNotBeInCheck() && isValidMoveByChessPieceType();
     }
 
-    private boolean isOnTheBoard(int x, int y) {
+    private boolean isOnTheBoard() {
         return x >= 0 && x <= 7 && y >= 0 && y <= 7;
     }
 
-    private boolean friendIsNotHere(ChessPieceColor color, int x, int y) {
-        List<ChessPiece> chessPieces = repository.getChessPieces(color);
+    private boolean friendIsNotHere() {
+        List<ChessPiece> chessPieces = repository.getChessPieces(chessPieceInUse.getColor());
         for (ChessPiece chessPiece : chessPieces) {
             if (chessPiece.getX() == x && chessPiece.getY() == y) {
                 return false;
@@ -35,25 +40,21 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isValidMoveForChessPiece(ChessPiece chessPieceInUse, int x, int y) {
-        if (kingWillBeInCheck(chessPieceInUse, x, y)) {
-            return false;
-        }
-        List<ChessPiece> chessPieces = repository.getChessPieces();
+    private boolean isValidMoveByChessPieceType() {
         switch (chessPieceInUse.getType()) {
             case PAWN:
-                return isValidPawnMove(chessPieceInUse, x, y, chessPieces);
+                return isValidPawnMove();
             case ROOK:
             case RUNNER:
             case QUEEN:
-                return isClearLine(chessPieceInUse, x, y, chessPieces);
+                return isClearLineForChessPieceInUse();
             case KING:
-                return isValidKingMove(chessPieceInUse, x);
+                return isValidKingMove();
         }
         return true;
     }
 
-    private boolean kingWillBeInCheck(ChessPiece chessPieceInUse, int x, int y) {
+    private boolean kingWillNotBeInCheck() {
         List<ChessPiece> chessPiecesAfterMove = repository.getChessPiecesAfterMove(chessPieceInUse, x, y);
         List<ChessPiece> enemyChessPiecesAfterMove =
             getEnemiesAfterMove(chessPieceInUse.getEnemyColor(), chessPiecesAfterMove);
@@ -62,10 +63,10 @@ public class MoveValidator {
         int kingY = friendKing.getY();
         for (ChessPiece chessPiece : enemyChessPiecesAfterMove) {
             if (isCheck(chessPiece, kingX, kingY, chessPiecesAfterMove)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     private List<ChessPiece> getEnemiesAfterMove(ChessPieceColor enemyColor, List<ChessPiece> chessPiecesAfterMove) {
@@ -78,38 +79,39 @@ public class MoveValidator {
         return enemiesAfterMove;
     }
 
-    private boolean isCheck(ChessPiece defendingChessPiece, int x, int y, List<ChessPiece> chessPieces) {
+    private boolean isCheck(ChessPiece defendingChessPiece, int kingX, int kingY, List<ChessPiece> chessPieces) {
         switch (defendingChessPiece.getType()) {
             case PAWN:
                 Pawn pawn = (Pawn) defendingChessPiece;
-                return pawn.isAttackingField(x, y);
+                return pawn.isAttackingField(kingX, kingY);
             case KNIGHT:
-                return defendingChessPiece.isCorrectMovement(x, y);
+                return defendingChessPiece.isCorrectMovement(kingX, kingY);
             case ROOK:
             case RUNNER:
             case QUEEN:
-                return isClearLine(defendingChessPiece, x, y, chessPieces) &&
-                    defendingChessPiece.isCorrectMovement(x, y);
+                return isClearLineForChessPiece(defendingChessPiece, kingX, kingY, chessPieces) &&
+                    defendingChessPiece.isCorrectMovement(kingX, kingY);
             case KING:
-                return kingDefendingFiled(defendingChessPiece, x, y);
+                return kingDefendingFiled(defendingChessPiece, kingX, kingY);
         }
         return false;
     }
 
-    private boolean kingDefendingFiled(ChessPiece enemyKing, int x, int y) {
-        int deltaX = Math.abs(enemyKing.getX() - x);
-        int deltaY = Math.abs(enemyKing.getY() - y);
+    private boolean kingDefendingFiled(ChessPiece enemyKing, int kingX, int kingY) {
+        int deltaX = Math.abs(enemyKing.getX() - kingX);
+        int deltaY = Math.abs(enemyKing.getY() - kingY);
         return (deltaX == 1 && deltaY == 0) || (deltaX == 0 && deltaY == 1) || (deltaX == 1 && deltaY == 1);
     }
 
-    private boolean isValidPawnMove(ChessPiece pawn, int x, int y, List<ChessPiece> chessPieces) {
-        int deltaX = Math.abs(x - pawn.getX());
-        int deltaY = Math.abs(y - pawn.getY());
+    private boolean isValidPawnMove() {
+        List<ChessPiece> chessPieces = repository.getChessPieces();
+        int deltaX = Math.abs(x - chessPieceInUse.getX());
+        int deltaY = Math.abs(y - chessPieceInUse.getY());
         boolean diagonalMove = deltaX == deltaY;
         if (diagonalMove) {
             return !isFreeField(x, y, chessPieces);
         } else {
-            return isClearLine(pawn, x, y, chessPieces) && isFreeField(x, y, chessPieces);
+            return isClearLineForChessPieceInUse() && isFreeField(x, y, chessPieces);
         }
     }
 
@@ -122,9 +124,13 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isClearLine(ChessPiece chessPieceInUse, int x, int y, List<ChessPiece> chessPieces) {
-        int startX = chessPieceInUse.getX();
-        int startY = chessPieceInUse.getY();
+    private boolean isClearLineForChessPieceInUse() {
+        return isClearLineForChessPiece(chessPieceInUse, x, y, repository.getChessPieces());
+    }
+
+    private boolean isClearLineForChessPiece(ChessPiece chessPiece, int x , int y, List<ChessPiece> chessPieces) {
+        int startX = chessPiece.getX();
+        int startY = chessPiece.getY();
         int deltaX = x - startX;
         int deltaY = y - startY;
         for (int i = 1; i < Math.max(Math.abs(deltaX), Math.abs(deltaY)); i++) {
@@ -137,35 +143,31 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isValidKingMove(ChessPiece king, int x) { // CHECK : 18.01.2024 na pewno dobrze napisane?
-        return isValidCastling(king, x) || isValidNormalMove(king, x);
+    private boolean isValidKingMove() { // CHECK : 18.01.2024 na pewno dobrze napisane?
+        return !isCastling() || isValidCastling();
     }
 
-    private boolean isValidCastling(ChessPiece king, int x) {
-        Optional<Rook> optionalRook = repository.getRookByKingMove(x, king.getY());
+    private boolean isValidCastling() {
+        Optional<Rook> optionalRook = repository.getRookByKingMove(x, chessPieceInUse.getY());
         if (optionalRook.isPresent()) {
             Rook rook = optionalRook.get();
-            return rook.wasNotMoved() && king.wasNotMoved() && isClearCastlingLine(king, x) &&
-                noAttacksFromEnemies(king);
+            return rook.wasNotMoved() && chessPieceInUse.wasNotMoved() && isClearCastlingLine() &&
+                noAttacksFromEnemies();
         }
         return false;
     }
 
-    private boolean isValidNormalMove(ChessPiece king, int x) {
-        return !isCastling(king, x);
+    private boolean isCastling() {
+        return Math.abs(chessPieceInUse.getX() - x) == 2;
     }
 
-    private boolean isCastling(ChessPiece king, int x) {
-        return Math.abs(king.getX() - x) == 2;
-    }
-
-    private boolean isClearCastlingLine(ChessPiece king, int x) {
-        ChessPieceColor enemyColor = king.getEnemyColor();
+    private boolean isClearCastlingLine() {
+        ChessPieceColor enemyColor = chessPieceInUse.getEnemyColor();
         List<ChessPiece> chessPieces = repository.getChessPieces();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         int startXLineToRightSide = x == 6 ? 5 : 1;
         int endXLineFromLeftSide = x == 6 ? 7 : 4;
-        int y = king.getY();
+        int y = chessPieceInUse.getY();
         for (int i = startXLineToRightSide; i < endXLineFromLeftSide; i++) {
             for (ChessPiece enemyChessPiece : enemyChessPieces) {
                 if (!isFreeField(i, y, chessPieces) || canMove(enemyChessPiece, i, y)) {
@@ -176,10 +178,10 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean noAttacksFromEnemies(ChessPiece captureChessPiece) {
-        int x = captureChessPiece.getX();
-        int y = captureChessPiece.getY();
-        ChessPieceColor enemyColor = captureChessPiece.getEnemyColor();
+    private boolean noAttacksFromEnemies() {
+        int x = chessPieceInUse.getX();
+        int y = chessPieceInUse.getY();
+        ChessPieceColor enemyColor = chessPieceInUse.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         for (ChessPiece enemyChessPiece : enemyChessPieces) {
             if (canMove(enemyChessPiece, x, y)) {
