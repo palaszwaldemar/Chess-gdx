@@ -68,12 +68,8 @@ public class ChessBoardService {
 
     private void moveRook(Rook rookToMove, MoveReport moveReport) {
         int newXRook = rookToMove.getCastlingX();
-        moveReport.setRookToMove(rookToMove, newXRook, rookToMove.getY());
-        setRookPosition(rookToMove, newXRook, rookToMove.getY());
-    }
-
-    private void setRookPosition(ChessPiece rook, int x, int y) {
-        rook.move(x, y);
+        moveReport.setRookToMove(rookToMove);
+        rookToMove.move(newXRook, rookToMove.getY());
     }
 
     private void pawnPromotion(ChessPiece chessPieceInUse, int x, int y, MoveReport moveReport) {
