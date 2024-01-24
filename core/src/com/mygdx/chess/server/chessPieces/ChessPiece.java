@@ -3,6 +3,8 @@ package com.mygdx.chess.server.chessPieces;
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
 
+import java.util.Objects;
+
 public abstract class ChessPiece implements Cloneable {
     int x;
     int y;
@@ -78,12 +80,17 @@ public abstract class ChessPiece implements Cloneable {
     }
 
     @Override
-    public boolean equals(Object o) { // CHECK : 18.01.2024 nadpisałem equals. Wykorzystuję to tylko raz. Okej?
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ChessPiece)) return false;
         ChessPiece that = (ChessPiece) o;
         return getX() == that.getX() && getY() == that.getY() && moved == that.moved &&
             getColor() == that.getColor() && getType() == that.getType();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getX(), getY(), getColor(), getType(), moved);
     }
 
     @Override
