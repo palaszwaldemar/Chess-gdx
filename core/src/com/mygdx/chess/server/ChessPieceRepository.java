@@ -44,7 +44,7 @@ public class ChessPieceRepository {
         chessPiecesAfterMove.removeIf(chessPiece -> chessPiece.getX() == x && chessPiece.getY() == y);
         for (ChessPiece chessPiece : chessPiecesAfterMove) {
             if (chessPieceInUse.equals(chessPiece)) {
-                chessPiece.move(x, y); // CHECK : 18.01.2024 czy tutaj mogę wywołać tą metodę?
+                chessPiece.move(x, y);
             }
         }
         return chessPiecesAfterMove;
@@ -53,7 +53,7 @@ public class ChessPieceRepository {
     private List<ChessPiece> getDeepCopyOfChessPiece() {
         List<ChessPiece> deepCopyOfChessPiece = new ArrayList<>();
         for (ChessPiece chessPiece : chessPieces) {
-            deepCopyOfChessPiece.add(chessPiece.clone()); // CHECK : 18.01.2024 takie rozwiązanie okej?
+            deepCopyOfChessPiece.add(chessPiece.clone());
         }
         return deepCopyOfChessPiece;
     }
