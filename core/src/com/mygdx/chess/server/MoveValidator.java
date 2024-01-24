@@ -18,10 +18,11 @@ public class MoveValidator {
         this.repository = repository;
     }
 
-    boolean canMove(ChessPiece chessPieceInUse, int x, int y) {
+    boolean canMove(ChessPiece chessPieceInUse, int x, int y) { // CHECK : 24.01.2024 wykorzystanie tej metody
+        //check wewnątrz tej klasy jest poprawne?
         this.x = x;
         this.y = y;
-        this.chessPieceInUse = chessPieceInUse; // TODO: 24.01.2024 problem z ustawianiem chessPieceInUse.
+        this.chessPieceInUse = chessPieceInUse;
         return isOnTheBoard() && friendIsNotHere() && chessPieceInUse.isCorrectMovement(x, y) &&
             kingWillNotBeInCheck() && isValidMoveByChessPieceType();
     }
