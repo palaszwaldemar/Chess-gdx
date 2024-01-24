@@ -34,7 +34,7 @@ public class Controller {
             if (chessPieceActor.getChessPiece().equals(moveReport.getRookToMove())) {
                 float newXRook = Cords.xToPixels(moveReport.getNewXRook());
                 float newYRook = Cords.yToPixels(moveReport.getNewYRook());
-                chessPieceActor.setPosition(newXRook, newYRook); // CHECK : 23.01.2024 problem z newXRook
+                chessPieceActor.setPosition(newXRook, newYRook);
             }
         }
     }

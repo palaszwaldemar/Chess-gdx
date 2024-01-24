@@ -143,7 +143,7 @@ public class MoveValidator {
         return true;
     }
 
-    private boolean isValidKingMove() { // CHECK : 18.01.2024 na pewno dobrze napisane?
+    private boolean isValidKingMove() {
         return !isCastling() || isValidCastling();
     }
 
