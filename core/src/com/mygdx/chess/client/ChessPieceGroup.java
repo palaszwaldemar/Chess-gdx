@@ -5,16 +5,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.SnapshotArray;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ChessboardGroup extends Group {
+public class ChessPieceGroup extends Group {
     private final Texture boardImage;
     private Controller controller;
 
-    ChessboardGroup() {
+    ChessPieceGroup() {
         setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION, GuiParams.CHESSBOARD_WIDTH,
             GuiParams.CHESSBOARD_HEIGHT);
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
@@ -30,15 +30,22 @@ public class ChessboardGroup extends Group {
         }
     }
 
-    SnapshotArray<ChessPieceActor> getChessPieceActors() { // CHECK : 19.01.2024 czy może być tak?
-        SnapshotArray<ChessPieceActor> chessPieceActors = new SnapshotArray<>();
-        for (Actor actor : getChildren())
-            if (actor instanceof ChessPieceActor) {
-                chessPieceActors.add((ChessPieceActor) actor);
-            }
+    List<ChessPieceActor> getChessPieceActors() {
+        List<ChessPieceActor> chessPieceActors = new ArrayList<>();
+        for (Actor actor : getChildren()) {
+            chessPieceActors.add((ChessPieceActor) actor);
+        }
         return chessPieceActors;
     }
 
+    void removeActorBy(ChessPiece chessPieceToRemove) {
+        List<ChessPieceActor> chessPieceActors = getChessPieceActors();
+        for (ChessPieceActor chessPieceActor : chessPieceActors) { // todo stream
+            if (chessPieceActor.getChessPiece().equals(chessPieceToRemove)) {
+                removeActor(chessPieceActor);
+            }
+        }
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {

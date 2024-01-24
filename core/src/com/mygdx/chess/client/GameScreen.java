@@ -15,19 +15,19 @@ public class GameScreen implements Screen {
 
     GameScreen(Chess chess) {
         this.game = chess;
-        ChessboardGroup chessboardGroup = new ChessboardGroup();
-        Controller controller = new Controller(chessboardGroup);
-        chessboardGroup.setController(controller);
+        ChessPieceGroup chessPieceGroup = new ChessPieceGroup();
+        Controller controller = new Controller(chessPieceGroup);
+        chessPieceGroup.setController(controller);
         //przygotowanie elementów graficznych
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GuiParams.WINDOW_SIZE_WIDTH, GuiParams.WINDOW_SIZE_HEIGHT);
         stage = new Stage(new ScreenViewport(), game.getBatch());
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(chessboardGroup);
+        stage.addActor(chessPieceGroup);
         controller.startGame();
         // TODO: 24.11.2023 do wykasowania. Stworzone na potrzebę testowania roszady.
         ButtonToCastlingTest buttonToCastlingTest =
-            new ButtonToCastlingTest(chessboardGroup.getChildren(), controller);
+            new ButtonToCastlingTest(chessPieceGroup.getChildren(), controller);
         //
         // TODO: 24.11.2023 do wykasowania. Stworzone na potrzebę testowania roszady.
         stage.addActor(buttonToCastlingTest);
