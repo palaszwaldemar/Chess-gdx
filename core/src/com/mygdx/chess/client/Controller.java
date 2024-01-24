@@ -32,7 +32,9 @@ public class Controller {
         List<ChessPieceActor> chessPieceActors = chessPieceGroup.getChessPieceActors();
         for (ChessPieceActor chessPieceActor : chessPieceActors) {
             if (chessPieceActor.getChessPiece().equals(moveReport.getRookToMove())) {
-                chessPieceActor.setPosition(moveReport.getNewXRook(), moveReport.getNewYRook());
+                float newXRook = Cords.xToPixels(moveReport.getNewXRook());
+                float newYRook = Cords.yToPixels(moveReport.getNewYRook());
+                chessPieceActor.setPosition(newXRook, newYRook); // CHECK : 23.01.2024 problem z newXRook
             }
         }
     }
