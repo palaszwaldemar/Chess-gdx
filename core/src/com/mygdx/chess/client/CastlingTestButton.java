@@ -10,12 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.chess.exceptions.InvalidMoveException;
 
-public class ButtonToCastlingTest extends Actor {
+public class CastlingTestButton extends Actor {
     private final Texture image;
     private final Array<ChessPieceActor> myChessPieceActors = new Array<>();
     private final Controller controller;
 
-    public ButtonToCastlingTest(Array<Actor> chessPieceActors, Controller controller) {
+    public CastlingTestButton(Array<Actor> chessPieceActors, Controller controller) {
         image = new Texture(Gdx.files.internal("castlingTest/castlingTest.png"));
         for (Actor chessPieceActor : chessPieceActors) {
             if (chessPieceActor instanceof ChessPieceActor) {

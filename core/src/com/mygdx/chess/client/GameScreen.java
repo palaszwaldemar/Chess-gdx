@@ -26,11 +26,11 @@ public class GameScreen implements Screen {
         stage.addActor(chessPieceGroup);
         controller.startGame();
         // TODO: 24.11.2023 do wykasowania. Stworzone na potrzebę testowania roszady.
-        ButtonToCastlingTest buttonToCastlingTest =
-            new ButtonToCastlingTest(chessPieceGroup.getChildren(), controller);
+        CastlingTestButton castlingTestButton =
+            new CastlingTestButton(chessPieceGroup.getChildren(), controller);
         //
         // TODO: 24.11.2023 do wykasowania. Stworzone na potrzebę testowania roszady.
-        stage.addActor(buttonToCastlingTest);
+        stage.addActor(castlingTestButton);
         //
     }
 
