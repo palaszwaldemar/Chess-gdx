@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+// CHECK : 26.01.2024 zrobiłem to samo co w klasie MoveValidator. Wyodrębnienie argumentów do pól
 public class ChessBoardService {
     private final ChessPieceRepository repository;
     private final MoveValidator moveValidator;
@@ -26,6 +27,7 @@ public class ChessBoardService {
         return repository.getChessPieces();
     }
 
+    // CHECK : 26.01.2024 czy ustawienie pól może być tutaj?
     public MoveReport move(ChessPiece chessPieceInUse, int x, int y) throws InvalidMoveException {
         this.chessPieceInUse = chessPieceInUse;
         this.x = x;
