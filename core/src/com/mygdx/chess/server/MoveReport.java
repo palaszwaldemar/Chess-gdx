@@ -4,7 +4,7 @@ import com.mygdx.chess.server.chessPieces.ChessPiece;
 import com.mygdx.chess.server.chessPieces.Rook;
 
 public class MoveReport {
-    private ChessPiece chessPieceInUse;
+    private final ChessPiece chessPieceInUse;
     private ChessPiece chessPieceToRemove;
     private ChessPiece promotionPawnToRemove;
     private ChessPiece promotionTarget;
@@ -12,7 +12,7 @@ public class MoveReport {
     // CHECK : 23.01.2024 usunąłem int newXRook, newYRook, zostawiłem rookToMove i z tego obiektu korzystam do
     //check przesuwania figurą w Controller
 
-    public void setChessPieceInUse(ChessPiece chessPieceInUse) {
+    public MoveReport(ChessPiece chessPieceInUse) {
         this.chessPieceInUse = chessPieceInUse;
     }
 

@@ -12,6 +12,10 @@ import java.util.Optional;
 public class ChessBoardService {
     private final ChessPieceRepository repository;
     private final MoveValidator moveValidator;
+    private MoveReport moveReport;
+    private ChessPiece chessPieceInUse;
+    private int x;
+    private int y;
 
     public ChessBoardService() {
         repository = new ChessPieceRepository();
@@ -23,19 +27,21 @@ public class ChessBoardService {
     }
 
     public MoveReport move(ChessPiece chessPieceInUse, int x, int y) throws InvalidMoveException {
+        this.chessPieceInUse = chessPieceInUse;
+        this.x = x;
+        this.y = y;
+        moveReport = new MoveReport(chessPieceInUse);
         if (!moveValidator.canMove(chessPieceInUse, x, y)) {
             throw new InvalidMoveException();
         }
-        MoveReport moveReport = new MoveReport();
-        moveReport.setChessPieceInUse(chessPieceInUse);
-        capturePiece(x, y, moveReport);
-        moveRookBeforeKing(chessPieceInUse, x, moveReport);
+        capturePiece();
+        moveRookBeforeKing();
         chessPieceInUse.move(x, y);
-        pawnPromotion(chessPieceInUse, x, y, moveReport);
+        pawnPromotion();
         return moveReport;
     }
 
-    private void capturePiece(int x, int y, MoveReport moveReport) {
+    private void capturePiece() {
         Iterator<ChessPiece> iterator = repository.getChessPieces().iterator();
         while (iterator.hasNext()) {
             ChessPiece chessPieceToRemove = iterator.next();
@@ -47,18 +53,18 @@ public class ChessBoardService {
         }
     }
 
-    private void moveRookBeforeKing(ChessPiece chessPieceInUse, int x, MoveReport moveReport) {
-        if (isNotKingOrNotCastling(chessPieceInUse, x)) {
+    private void moveRookBeforeKing() {
+        if (isNotKingOrNotCastling()) {
             return;
         }
         Optional<Rook> rookToMove = repository.getRookByKingMove(x, chessPieceInUse.getY());
         if (rookToMove.isPresent()) {
             Rook rook = rookToMove.get();
-            moveRook(rook, moveReport);
+            moveRook(rook);
         }
     }
 
-    private boolean isNotKingOrNotCastling(ChessPiece chessPieceInUse, int x) {
+    private boolean isNotKingOrNotCastling() {
         boolean isNotKingOrNotCastling = !chessPieceInUse.hasType(ChessPieceType.KING);
         if (Math.abs(chessPieceInUse.getX() - x) != 2) {
             isNotKingOrNotCastling = true;
@@ -66,23 +72,23 @@ public class ChessBoardService {
         return isNotKingOrNotCastling;
     }
 
-    private void moveRook(Rook rookToMove, MoveReport moveReport) {
+    private void moveRook(Rook rookToMove) {
         int newXRook = rookToMove.getCastlingX();
         moveReport.setRookToMove(rookToMove);
         rookToMove.move(newXRook, rookToMove.getY());
     }
 
-    private void pawnPromotion(ChessPiece chessPieceInUse, int x, int y, MoveReport moveReport) {
+    private void pawnPromotion() {
         if (!chessPieceInUse.hasType(ChessPieceType.PAWN)) {
             return;
         }
         if (y == 0 || y == 7) {
             moveReport.setPromotionPawnToRemove(chessPieceInUse);
-            changePawnToQueen(chessPieceInUse, x, y, moveReport);
+            changePawnToQueen();
         }
     }
 
-    private void changePawnToQueen(ChessPiece chessPieceInUse, int x, int y, MoveReport moveReport) {
+    private void changePawnToQueen() {
         repository.getChessPieces().remove(chessPieceInUse);
         ChessPiece newQueen = new Queen(chessPieceInUse.getColor(), x, y);
         repository.getChessPieces().add(newQueen);
