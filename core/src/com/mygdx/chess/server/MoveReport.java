@@ -9,8 +9,7 @@ public class MoveReport {
     private ChessPiece promotionPawnToRemove;
     private ChessPiece promotionTarget;
     private Rook rookToMove;
-    // CHECK : 23.01.2024 usunąłem int newXRook, newYRook, zostawiłem rookToMove i z tego obiektu korzystam do
-    //check przesuwania figurą w Controller
+    private boolean valid;
 
     public MoveReport(ChessPiece chessPieceInUse) {
         this.chessPieceInUse = chessPieceInUse;
@@ -32,7 +31,11 @@ public class MoveReport {
         this.rookToMove = rookToMove;
     }
 
-    public int getNewXRook() { // CHECK : 24.01.2024 czy tak może być?
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public int getNewXRook() {
         return chessPieceInUse.getX() == 6 ? 5 : 3;
     }
 
@@ -62,5 +65,9 @@ public class MoveReport {
 
     public boolean wasPromotion() {
         return promotionPawnToRemove != null;
+    }
+
+    public boolean isValid() {
+        return valid;
     }
 }

@@ -1,8 +1,7 @@
 package com.mygdx.chess.server;
 
 public enum ChessPieceColor {
-    BLACK(7, 6),
-    WHITE(0, 1);
+    BLACK(7, 6), WHITE(0, 1);
     private final int yFiguresPosition;
     private final int yPawnsPosition;
 
@@ -17,5 +16,9 @@ public enum ChessPieceColor {
 
     public int getYPawnsPosition() {
         return yPawnsPosition;
+    }
+
+    public ChessPieceColor getEnemyColor() {
+        return this == BLACK ? WHITE : BLACK;
     }
 }

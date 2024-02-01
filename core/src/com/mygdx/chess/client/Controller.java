@@ -1,7 +1,7 @@
 package com.mygdx.chess.client;
 
-import com.mygdx.chess.exceptions.InvalidMoveException;
 import com.mygdx.chess.server.ChessBoardService;
+import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.MoveReport;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
@@ -19,13 +19,17 @@ public class Controller {
         chessPieceGroup.createActors(service.getChessPieces());
     }
 
-    void move(ChessPiece chessPieceInUse, int x, int y) throws InvalidMoveException {
+    MoveReport move(ChessPiece chessPieceInUse, int x, int y) {
         MoveReport moveReport = service.move(chessPieceInUse, x, y);
+        if (!moveReport.isValid()) {
+            return moveReport;
+        }
         chessPieceGroup.removeActorBy(moveReport.getChessPieceToRemove());
         castling(moveReport);
         if (moveReport.wasPromotion()) {
             replaceChessPieceActor(moveReport);
         }
+        return moveReport;
     }
 
     private void castling(MoveReport moveReport) {
@@ -42,5 +46,9 @@ public class Controller {
     private void replaceChessPieceActor(MoveReport moveReport) {
         chessPieceGroup.removeActorBy(moveReport.getPromotionPawnToRemove());
         chessPieceGroup.addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
+    }
+
+    public ChessPieceColor whichColorTurn() {
+        return service.whichColorTurn();
     }
 }
