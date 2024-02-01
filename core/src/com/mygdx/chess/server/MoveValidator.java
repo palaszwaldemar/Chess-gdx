@@ -18,8 +18,7 @@ public class MoveValidator {
         this.repository = repository;
     }
 
-    boolean canMove(ChessPiece chessPieceInUse, int x, int y) { // CHECK : 24.01.2024 wykorzystanie tej metody
-        //check wewnątrz tej klasy jest poprawne?
+    boolean canMove(ChessPiece chessPieceInUse, int x, int y) {
         this.x = x;
         this.y = y;
         this.chessPieceInUse = chessPieceInUse;
@@ -180,13 +179,10 @@ public class MoveValidator {
         return true;
     }
 
-    // CHECK : 24.01.2024 czy tak może być?
-    /*miałem nie przekazywać argumentów ale z racji tego że metoda canMove() jest wykorzystywana
-    również w tej klasie pole chessPieceInUse nie zawsze jest tym które jest aktualnie w użyciu*/
-    private boolean noAttacksFromEnemies(ChessPiece king) {
-        int x = king.getX();
-        int y = king.getY();
-        ChessPieceColor enemyColor = king.getEnemyColor();
+    private boolean noAttacksFromEnemies(ChessPiece target) {
+        int x = target.getX();
+        int y = target.getY();
+        ChessPieceColor enemyColor = target.getEnemyColor();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         for (ChessPiece enemyChessPiece : enemyChessPieces) {
             if (canMove(enemyChessPiece, x, y)) {

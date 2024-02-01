@@ -25,13 +25,6 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(chessPieceGroup);
         controller.startGame();
-        // TODO: 24.11.2023 do wykasowania. Stworzone na potrzebę testowania roszady.
-        CastlingTestButton castlingTestButton =
-            new CastlingTestButton(chessPieceGroup.getChildren(), controller);
-        //
-        // TODO: 24.11.2023 do wykasowania. Stworzone na potrzebę testowania roszady.
-        stage.addActor(castlingTestButton);
-        //
     }
 
     @Override

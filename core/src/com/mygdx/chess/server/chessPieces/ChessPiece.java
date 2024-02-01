@@ -69,23 +69,12 @@ public abstract class ChessPiece implements Cloneable {
     }
 
     @Override
-    public String toString() {
-        return "ChessPiece{" +
-            "x=" + x +
-            ", y=" + y +
-            ", color=" + color +
-            ", type=" + type +
-            ", moved=" + moved +
-            '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ChessPiece)) return false;
         ChessPiece that = (ChessPiece) o;
-        return getX() == that.getX() && getY() == that.getY() && moved == that.moved &&
-            getColor() == that.getColor() && getType() == that.getType();
+        return getX() == that.getX() && getY() == that.getY() && moved == that.moved && getColor() == that.getColor() &&
+            getType() == that.getType();
     }
 
     @Override
