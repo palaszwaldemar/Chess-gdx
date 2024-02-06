@@ -1,5 +1,6 @@
 package com.mygdx.chess.client;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.chess.server.ChessBoardService;
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.MoveReport;
@@ -10,9 +11,11 @@ import java.util.List;
 public class Controller {
     private final ChessBoardService service = new ChessBoardService();
     private final ChessPieceGroup chessPieceGroup;
+    private final Stage stage;
 
-    public Controller(ChessPieceGroup chessPieceGroup) {
+    public Controller(Stage stage, ChessPieceGroup chessPieceGroup) {
         this.chessPieceGroup = chessPieceGroup;
+        this.stage = stage;
     }
 
     void startGame() {
@@ -27,6 +30,8 @@ public class Controller {
         chessPieceGroup.removeActorBy(moveReport.getChessPieceToRemove());
         castling(moveReport);
         if (moveReport.wasPromotion()) {
+            PromotionWindow promotionWindow = new PromotionWindow(chessPieceInUse);
+            stage.addActor(promotionWindow);
             replaceChessPieceActor(moveReport);
         }
         return moveReport;

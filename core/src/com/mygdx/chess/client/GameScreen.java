@@ -16,12 +16,12 @@ public class GameScreen implements Screen {
     GameScreen(Chess chess) {
         this.game = chess;
         ChessPieceGroup chessPieceGroup = new ChessPieceGroup();
-        Controller controller = new Controller(chessPieceGroup);
-        chessPieceGroup.setController(controller);
         //przygotowanie elementów graficznych
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GuiParams.WINDOW_SIZE_WIDTH, GuiParams.WINDOW_SIZE_HEIGHT);
         stage = new Stage(new ScreenViewport(), game.getBatch());
+        Controller controller = new Controller(stage, chessPieceGroup);
+        chessPieceGroup.setController(controller);
         Gdx.input.setInputProcessor(stage);
         stage.addActor(chessPieceGroup);
         controller.startGame();
