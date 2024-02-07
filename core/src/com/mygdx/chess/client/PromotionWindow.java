@@ -3,10 +3,10 @@ package com.mygdx.chess.client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.chess.server.chessPieces.ChessPiece;
 
-public class PromotionWindow extends Group {
+public class PromotionWindow extends Actor {
     private Texture texture;
 
     public PromotionWindow(ChessPiece chessPieceInUse) {
