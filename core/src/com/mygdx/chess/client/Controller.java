@@ -1,10 +1,8 @@
 package com.mygdx.chess.client;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.chess.server.ChessBoardService;
 import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.MoveReport;
@@ -34,30 +32,25 @@ public class Controller {
         chessPieceGroup.removeActorBy(moveReport.getChessPieceToRemove());
         castling(moveReport);
         if (moveReport.wasPromotion()) {
-            PromotionWindow promotionWindow = new PromotionWindow(chessPieceInUse);
+            PromotionWindow promotionWindow = new PromotionWindow(chessPieceInUse, moveReport, this);
             stage.addActor(promotionWindow);
+            setActorFocus(promotionWindow, true);
+        }
+        return moveReport;
+    }
 
-
-            // TODO: 07.02.2024 wyłącz nasłuch dla wszystkich aktorów oprócz promotionWindow
+    void setActorFocus(Actor focusedActor, boolean enable) {
+        if (enable) {
             for (Actor actor : stage.getActors()) {
-                if (actor != promotionWindow) {
+                if (actor != focusedActor) {
                     actor.setTouchable(Touchable.disabled);
                 }
             }
-
-            promotionWindow.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    // TODO: 07.02.2024 włącz nasłuch dla wszystkich aktorów
-                    replaceChessPieceActor(moveReport);
-                    for (Actor actor : stage.getActors()) {
-                            actor.setTouchable(Touchable.enabled);
-                    }
-                    super.clicked(event, x, y);
-                }
-            });
+            return;
         }
-        return moveReport;
+        for (Actor actor : stage.getActors()) {
+            actor.setTouchable(Touchable.enabled);
+        }
     }
 
     private void castling(MoveReport moveReport) {
@@ -70,12 +63,17 @@ public class Controller {
             }
         }
     }
-    private void replaceChessPieceActor(MoveReport moveReport) {
+
+    void replaceChessPieceActor(MoveReport moveReport) {
         chessPieceGroup.removeActorBy(moveReport.getPromotionPawnToRemove());
         chessPieceGroup.addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
     }
 
     public ChessPieceColor whichColorTurn() {
         return service.whichColorTurn();
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

@@ -21,6 +21,7 @@ public class ChessBoardService {
 
     public MoveReport move(ChessPiece chessPieceInUse, int x, int y) {
         // TODO: 01.02.2024 ponowne sprawdzenie
+        // CHECK : 07.02.2024 co jest do ponownego sprawdzenia?
         MoveReport moveReport = moveService.move(chessPieceInUse, x, y);
         if (moveReport.isValid()) {
             activeColor = chessPieceInUse.getColor().getEnemyColor();
