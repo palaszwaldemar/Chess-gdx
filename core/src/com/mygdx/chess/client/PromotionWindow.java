@@ -14,21 +14,18 @@ class PromotionWindow extends Actor {
     private Texture texture;
     private final MoveReport moveReport;
     private final Controller controller;
-    private final Stage stage;
 
     PromotionWindow(MoveReport moveReport, Controller controller) {
         setBounds(GuiParams.PROMOTION_WINDOW_X_POSITION, GuiParams.PROMOTION_WINDOW_Y_POSITION,
             GuiParams.PROMOTION_WINDOW_WIDTH, GuiParams.PROMOTION_WINDOW_HEIGHT);
-        setTexture(chessPieceInUse);
+        setDisplay(moveReport.getChessPieceInUse().getColor());
         this.moveReport = moveReport;
         this.controller = controller;
-        stage = controller.getStage();
-        addListener(new PromotionWindowListener(this));
+        addListener(new PromotionWindowListener());
     }
 
-    private void setTexture(ChessPiece chessPieceInUse) {
-        String color = chessPieceInUse.getColor().toString();
-        texture = new Texture(Gdx.files.internal("promotion/" + color + "_promotion.png"));
+    private void setDisplay(ChessPieceColor color) {
+        texture = new Texture(Gdx.files.internal("promotion/" + color.toString() + "_promotion.png"));
     }
 
     @Override
@@ -38,18 +35,12 @@ class PromotionWindow extends Actor {
     }
 
     private class PromotionWindowListener extends ClickListener {
-        private final PromotionWindow promotionWindow;
-
-        private PromotionWindowListener(PromotionWindow promotionWindow) {
-            this.promotionWindow = promotionWindow;
-        }
-
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            controller.replaceChessPieceActor(moveReport);
-            controller.setActorFocus(promotionWindow, false);
-            promotionWindow.clearListeners();
-            stage.getRoot().removeActor(promotionWindow);
+            ChessPieceType type = ChessPieceType.QUEEN; //todo
+            controller.promotionChessPieceSelected(type, moveReport);
+            controller.lockChessboard(false);
+            controller.removeActor(PromotionWindow.this);
             super.clicked(event, x, y);
         }
     }

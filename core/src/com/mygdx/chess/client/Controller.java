@@ -28,26 +28,8 @@ class Controller {
         }
         chessPieceGroup.removeActorBy(moveReport.getChessPieceToRemove());
         castling(moveReport);
-        if (moveReport.wasPromotion()) {
-            PromotionWindow promotionWindow = new PromotionWindow(chessPieceInUse, moveReport, this);
-            stage.addActor(promotionWindow);
-            setActorFocus(promotionWindow, true);
-        }
+        promotion(moveReport);
         return moveReport;
-    }
-
-    void setActorFocus(Actor focusedActor, boolean enable) {
-        if (enable) {
-            for (Actor actor : stage.getActors()) {
-                if (actor != focusedActor) {
-                    actor.setTouchable(Touchable.disabled);
-                }
-            }
-            return;
-        }
-        for (Actor actor : stage.getActors()) {
-            actor.setTouchable(Touchable.enabled);
-        }
     }
 
     private void castling(MoveReport moveReport) {
@@ -61,16 +43,37 @@ class Controller {
         }
     }
 
-    void replaceChessPieceActor(MoveReport moveReport) {
+    private void promotion(MoveReport moveReport) {
+        if (moveReport.wasPromotion()) {
+            PromotionWindow promotionWindow = new PromotionWindow(moveReport, this);
+            stage.addActor(promotionWindow);
+            lockChessboard(true);
+        }
+    }
+
+    void lockChessboard(boolean enable) {
+        if (enable) {
+            chessPieceGroup.setTouchable(Touchable.disabled);
+            return;
+        }
+        chessPieceGroup.setTouchable(Touchable.enabled);
+    }
+
+    void promotionChessPieceSelected(ChessPieceType type, MoveReport moveReport) {
+        replaceChessPieceActor(moveReport);
+        lockChessboard(false);
+    }
+
+    private void replaceChessPieceActor(MoveReport moveReport) {
         chessPieceGroup.removeActorBy(moveReport.getPromotionPawnToRemove());
         chessPieceGroup.addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
     }
 
-    public ChessPieceColor whichColorTurn() {
-        return service.whichColorTurn();
+    void removeActor(Actor actor) {
+        stage.getRoot().removeActor(actor);
     }
 
-    public Stage getStage() {
-        return stage;
+    ChessPieceColor whichColorTurn() {
+        return service.whichColorTurn();
     }
 }
