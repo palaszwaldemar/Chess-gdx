@@ -1,10 +1,7 @@
-package com.mygdx.chess.server.chessPieces;
+package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.ChessPieceColor;
-import com.mygdx.chess.server.ChessPieceType;
-
-public class Runner extends ChessPiece {
-    public Runner(ChessPieceColor color, int x, int y) {
+class Runner extends ChessPiece {
+    Runner(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.RUNNER, color, x, y);
     }
 

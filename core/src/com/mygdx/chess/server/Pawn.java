@@ -1,10 +1,7 @@
-package com.mygdx.chess.server.chessPieces;
+package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.ChessPieceColor;
-import com.mygdx.chess.server.ChessPieceType;
-
-public class Pawn extends ChessPiece {
-    public Pawn(ChessPieceColor color, int x, int y) {
+class Pawn extends ChessPiece {
+    Pawn(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.PAWN, color, x, y);
     }
 
@@ -22,17 +19,16 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public void move(int x, int y) {
+    void move(int x, int y) {
         super.move(x, y);
         moved = true;
     }
 
-    public boolean isAttackingField(int x, int y) {
+    boolean isAttackingField(int x, int y) {
         int deltaX = x - this.x;
         int deltaY = y - this.y;
         return isCorrectMovement(x, y) && Math.abs(deltaX) == 1 && Math.abs(deltaY) == 1;
     }
-    // TODO: 10.10.2023 w tym momencie białe zawsze na dole. Zmienić w przyszłości
 
     private boolean isMoveBack(int deltaY) {
         return (getColor() == ChessPieceColor.WHITE && Integer.signum(deltaY) < 0) ||

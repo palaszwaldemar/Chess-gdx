@@ -1,10 +1,7 @@
-package com.mygdx.chess.server.chessPieces;
+package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.ChessPieceColor;
-import com.mygdx.chess.server.ChessPieceType;
-
-public class Queen extends ChessPiece {
-    public Queen(ChessPieceColor color, int x, int y) {
+class Queen extends ChessPiece {
+    Queen(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.QUEEN, color, x, y);
     }
 

@@ -5,18 +5,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.chess.server.ChessPieceColor;
+import com.mygdx.chess.server.ChessPieceType;
 import com.mygdx.chess.server.MoveReport;
-import com.mygdx.chess.server.chessPieces.ChessPiece;
 
-public class PromotionWindow extends Actor {
+class PromotionWindow extends Actor {
     private Texture texture;
     private final MoveReport moveReport;
     private final Controller controller;
     private final Stage stage;
 
-    public PromotionWindow(ChessPiece chessPieceInUse, MoveReport moveReport, Controller controller) {
+    PromotionWindow(MoveReport moveReport, Controller controller) {
         setBounds(GuiParams.PROMOTION_WINDOW_X_POSITION, GuiParams.PROMOTION_WINDOW_Y_POSITION,
             GuiParams.PROMOTION_WINDOW_WIDTH, GuiParams.PROMOTION_WINDOW_HEIGHT);
         setTexture(chessPieceInUse);

@@ -8,14 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.mygdx.chess.server.MoveReport;
-import com.mygdx.chess.server.chessPieces.ChessPiece;
+import com.mygdx.chess.server.ChessPiece;
 
-public class ChessPieceActor extends Actor {
+class ChessPieceActor extends Actor {
     private final ChessPiece chessPiece;
     private final Controller controller;
     private final Texture image;
 
-    public ChessPieceActor(ChessPiece chessPiece, Controller controller) {
+    ChessPieceActor(ChessPiece chessPiece, Controller controller) {
         this.chessPiece = chessPiece;
         this.controller = controller;
         image =
@@ -30,7 +30,7 @@ public class ChessPieceActor extends Actor {
         batch.draw(image, getX(), getY());
     }
 
-    public ChessPiece getChessPiece() {
+    ChessPiece getChessPiece() {
         return chessPiece;
     }
 

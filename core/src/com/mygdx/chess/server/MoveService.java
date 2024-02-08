@@ -1,13 +1,9 @@
 package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.chessPieces.ChessPiece;
-import com.mygdx.chess.server.chessPieces.Queen;
-import com.mygdx.chess.server.chessPieces.Rook;
-
 import java.util.Iterator;
 import java.util.Optional;
 
-public class MoveService {
+class MoveService {
     private final MoveValidator moveValidator;
     private final ChessPieceRepository repository;
     private MoveReport moveReport;
@@ -15,12 +11,12 @@ public class MoveService {
     private int x;
     private int y;
 
-    public MoveService(ChessPieceRepository repository) {
+    MoveService(ChessPieceRepository repository) {
         this.repository = repository;
         this.moveValidator = new MoveValidator(repository);
     }
 
-    public MoveReport move(ChessPiece chessPieceInUse, int x, int y) {
+    MoveReport move(ChessPiece chessPieceInUse, int x, int y) {
         this.chessPieceInUse = chessPieceInUse;
         this.x = x;
         this.y = y;
@@ -28,7 +24,7 @@ public class MoveService {
         if (!moveReport.isValid() && !moveValidator.canMove(chessPieceInUse, x, y)) {
             return moveReport;
         }
-        moveReport.setValid(true);
+        moveReport.setValid();
         capturePiece();
         moveRookBeforeKing();
         chessPieceInUse.move(x, y);

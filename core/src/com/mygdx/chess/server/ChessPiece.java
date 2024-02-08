@@ -1,7 +1,4 @@
-package com.mygdx.chess.server.chessPieces;
-
-import com.mygdx.chess.server.ChessPieceColor;
-import com.mygdx.chess.server.ChessPieceType;
+package com.mygdx.chess.server;
 
 import java.util.Objects;
 
@@ -12,14 +9,14 @@ public abstract class ChessPiece implements Cloneable {
     private final ChessPieceType type;
     boolean moved;
 
-    public ChessPiece(ChessPieceType type, ChessPieceColor color, int x, int y) {
+    ChessPiece(ChessPieceType type, ChessPieceColor color, int x, int y) {
         this.x = x;
         this.y = y;
         this.color = color;
         this.type = type;
     }
 
-    public void move(int x, int y) {
+    void move(int x, int y) {
         this.x = x;
         this.y = y;
     }

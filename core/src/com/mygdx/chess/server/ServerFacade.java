@@ -1,15 +1,13 @@
 package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.chessPieces.ChessPiece;
-
 import java.util.List;
 
-public class ChessBoardService {
+public class ServerFacade {
     private final ChessPieceRepository repository;
     private final MoveService moveService;
     private ChessPieceColor activeColor;
 
-    public ChessBoardService() {
+    public ServerFacade() {
         repository = new ChessPieceRepository();
         moveService = new MoveService(repository);
         activeColor = ChessPieceColor.WHITE;

@@ -1,11 +1,9 @@
 package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.chessPieces.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class PiecesFactory {
+class PiecesFactory {
     List<ChessPiece> getChessPieces(ChessPieceColor color) {
         List<ChessPiece> chessPieces = new ArrayList<>();
         chessPieces.addAll(listOfPawns(color));

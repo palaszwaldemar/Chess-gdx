@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class GameScreen implements Screen {
+class GameScreen implements Screen {
     private final Chess game;
     private final OrthographicCamera camera;
     private final Stage stage;
@@ -16,7 +16,6 @@ public class GameScreen implements Screen {
     GameScreen(Chess chess) {
         this.game = chess;
         ChessPieceGroup chessPieceGroup = new ChessPieceGroup();
-        //przygotowanie elementów graficznych
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GuiParams.WINDOW_SIZE_WIDTH, GuiParams.WINDOW_SIZE_HEIGHT);
         stage = new Stage(new ScreenViewport(), game.getBatch());

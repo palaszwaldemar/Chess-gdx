@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.mygdx.chess.server.chessPieces.ChessPiece;
+import com.mygdx.chess.server.ChessPiece;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChessPieceGroup extends Group {
+class ChessPieceGroup extends Group {
     private final Texture boardImage;
     private Controller controller;
 
@@ -20,7 +20,7 @@ public class ChessPieceGroup extends Group {
         boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
     }
 
-    public void setController(Controller controller) {
+    void setController(Controller controller) {
         this.controller = controller;
     }
 

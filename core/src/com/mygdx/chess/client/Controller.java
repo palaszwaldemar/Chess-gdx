@@ -3,19 +3,16 @@ package com.mygdx.chess.client;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.mygdx.chess.server.ChessBoardService;
-import com.mygdx.chess.server.ChessPieceColor;
-import com.mygdx.chess.server.MoveReport;
-import com.mygdx.chess.server.chessPieces.ChessPiece;
+import com.mygdx.chess.server.*;
 
 import java.util.List;
 
-public class Controller {
-    private final ChessBoardService service = new ChessBoardService();
+class Controller {
+    private final ServerFacade service = new ServerFacade();
     private final ChessPieceGroup chessPieceGroup;
     private final Stage stage;
 
-    public Controller(Stage stage, ChessPieceGroup chessPieceGroup) {
+    Controller(Stage stage, ChessPieceGroup chessPieceGroup) {
         this.chessPieceGroup = chessPieceGroup;
         this.stage = stage;
     }

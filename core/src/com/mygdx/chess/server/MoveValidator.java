@@ -1,20 +1,16 @@
 package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.chessPieces.ChessPiece;
-import com.mygdx.chess.server.chessPieces.Pawn;
-import com.mygdx.chess.server.chessPieces.Rook;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MoveValidator {
+class MoveValidator {
     private final ChessPieceRepository repository;
     private int x;
     private int y;
     private ChessPiece chessPieceInUse;
 
-    public MoveValidator(ChessPieceRepository repository) {
+    MoveValidator(ChessPieceRepository repository) {
         this.repository = repository;
     }
 

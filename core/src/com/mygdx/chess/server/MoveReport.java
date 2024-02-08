@@ -1,8 +1,5 @@
 package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.chessPieces.ChessPiece;
-import com.mygdx.chess.server.chessPieces.Rook;
-
 public class MoveReport {
     private final ChessPiece chessPieceInUse;
     private ChessPiece chessPieceToRemove;
@@ -11,28 +8,28 @@ public class MoveReport {
     private Rook rookToMove;
     private boolean valid;
 
-    public MoveReport(ChessPiece chessPieceInUse) {
+    MoveReport(ChessPiece chessPieceInUse) {
         this.chessPieceInUse = chessPieceInUse;
     }
 
-    public void setChessPieceToRemove(ChessPiece chessPieceToRemove) {
+    void setChessPieceToRemove(ChessPiece chessPieceToRemove) {
         this.chessPieceToRemove = chessPieceToRemove;
     }
 
-    public void setPromotionPawnToRemove(ChessPiece promotionPawnToRemove) {
+    void setPromotionPawnToRemove(ChessPiece promotionPawnToRemove) {
         this.promotionPawnToRemove = promotionPawnToRemove;
     }
 
-    public void setPromotionTarget(ChessPiece promotionTarget) {
+    public void setPromotionTarget(ChessPiece promotionTarget) {// TODO: 08.02.2024
         this.promotionTarget = promotionTarget;
     }
 
-    public void setRookToMove(Rook rookToMove) {
+    void setRookToMove(Rook rookToMove) {
         this.rookToMove = rookToMove;
     }
 
-    public void setValid(boolean valid) {
-        this.valid = valid;
+    void setValid() {
+        valid = true;
     }
 
     public int getNewXRook() {

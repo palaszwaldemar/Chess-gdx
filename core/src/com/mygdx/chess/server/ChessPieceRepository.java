@@ -1,16 +1,13 @@
 package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.chessPieces.ChessPiece;
-import com.mygdx.chess.server.chessPieces.Rook;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ChessPieceRepository {
+class ChessPieceRepository {
     private final List<ChessPiece> chessPieces = new ArrayList<>();
 
-    public ChessPieceRepository() {
+    ChessPieceRepository() {
         PiecesFactory piecesFactory = new PiecesFactory();
         chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.WHITE));
         chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.BLACK));

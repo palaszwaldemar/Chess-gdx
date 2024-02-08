@@ -1,10 +1,7 @@
-package com.mygdx.chess.server.chessPieces;
+package com.mygdx.chess.server;
 
-import com.mygdx.chess.server.ChessPieceColor;
-import com.mygdx.chess.server.ChessPieceType;
-
-public class King extends ChessPiece {
-    public King(ChessPieceColor color, int x, int y) {
+class King extends ChessPiece {
+    King(ChessPieceColor color, int x, int y) {
         super(ChessPieceType.KING, color, x, y);
     }
 
@@ -21,7 +18,7 @@ public class King extends ChessPiece {
     }
 
     @Override
-    public void move(int x, int y) {
+    void move(int x, int y) {
         super.move(x, y);
         moved = true;
     }
