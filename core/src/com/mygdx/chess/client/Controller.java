@@ -26,7 +26,7 @@ class Controller {
         if (!moveReport.isValid()) {
             return moveReport;
         }
-        chessPieceGroup.removeActorBy(moveReport.getChessPieceToRemove());
+        chessPieceGroup.removeActor(moveReport.getChessPieceToRemove());
         castling(moveReport);
         promotion(moveReport);
         return moveReport;
@@ -65,7 +65,7 @@ class Controller {
     }
 
     private void replaceChessPieceActor(MoveReport moveReport) {
-        chessPieceGroup.removeActorBy(moveReport.getPromotionPawnToRemove());
+        chessPieceGroup.removeActor(moveReport.getPromotionPawnToRemove());
         chessPieceGroup.addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
     }
 
