@@ -45,3 +45,4 @@ class PromotionWindow extends Actor {
         }
     }
 }
+/*TEST*/
