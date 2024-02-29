@@ -21,15 +21,30 @@ class Controller {
         chessPieceGroup.createActors(service.getChessPieces());
     }
 
-    MoveReport move(ChessPiece chessPieceInUse, int x, int y) {
-        MoveReport moveReport = service.move(chessPieceInUse, x, y);
+    boolean move(MoveDto move) {
+        if (service.isPromotion(move)) {
+            showPromotionWindow(move);
+            return true;
+        } else {
+            return continueMove(move);
+        }
+    }
+
+    private void showPromotionWindow(MoveDto move) {
+        PromotionWindow promotionWindow = new PromotionWindow(move, this);
+        stage.addActor(promotionWindow);
+        lockChessboard(true);
+    }
+
+    boolean continueMove(MoveDto move) {
+        MoveReport moveReport = service.move(move);
         if (!moveReport.isValid()) {
-            return moveReport;
+            return false;
         }
         chessPieceGroup.removeActor(moveReport.getChessPieceToRemove());
         castling(moveReport);
         promotion(moveReport);
-        return moveReport;
+        return moveReport.isValid();
     }
 
     private void castling(MoveReport moveReport) {
@@ -43,14 +58,6 @@ class Controller {
         }
     }
 
-    private void promotion(MoveReport moveReport) {
-        if (moveReport.wasPromotion()) {
-            PromotionWindow promotionWindow = new PromotionWindow(moveReport, this);
-            stage.addActor(promotionWindow);
-            lockChessboard(true);
-        }
-    }
-
     void lockChessboard(boolean enable) {
         if (enable) {
             chessPieceGroup.setTouchable(Touchable.disabled);
@@ -59,21 +66,16 @@ class Controller {
         chessPieceGroup.setTouchable(Touchable.enabled);
     }
 
-    void promotionChessPieceSelected(ChessPieceType type, MoveReport moveReport) {
-        replaceChessPieceActor(moveReport);
+    private void promotion(MoveReport moveReport) {
+        if (!moveReport.wasPromotion()) {
+            return;
+        }
         lockChessboard(false);
-    }
-
-    private void replaceChessPieceActor(MoveReport moveReport) {
         chessPieceGroup.removeActor(moveReport.getPromotionPawnToRemove());
         chessPieceGroup.addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
     }
 
     void removeActor(Actor actor) {
         stage.getRoot().removeActor(actor);
-    }
-
-    ChessPieceColor whichColorTurn() {
-        return service.whichColorTurn();
     }
 }

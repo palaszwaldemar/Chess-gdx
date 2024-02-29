@@ -5,29 +5,36 @@ import java.util.List;
 public class ServerFacade {
     private final ChessPieceRepository repository;
     private final MoveService moveService;
+    private final ChessPieceFactory chessPieceFactory;
     private ChessPieceColor activeColor;
 
     public ServerFacade() {
         repository = new ChessPieceRepository();
-        moveService = new MoveService(repository);
+        chessPieceFactory = new ChessPieceFactory();
+        moveService = new MoveService(repository, chessPieceFactory);
         activeColor = ChessPieceColor.WHITE;
+        initBoard();
+    }
+
+    private void initBoard() {
+        repository.addAll(chessPieceFactory.createStartingPieces(ChessPieceColor.WHITE));
+        repository.addAll(chessPieceFactory.createStartingPieces(ChessPieceColor.BLACK));
     }
 
     public List<ChessPiece> getChessPieces() {
         return repository.getChessPieces();
     }
 
-    public MoveReport move(ChessPiece chessPieceInUse, int x, int y) {
-        // TODO: 01.02.2024 ponowne sprawdzenie
-        // CHECK : 07.02.2024 co jest do ponownego sprawdzenia?
-        MoveReport moveReport = moveService.move(chessPieceInUse, x, y);
+    public MoveReport move(MoveDto moveRequest) {
+        MoveReport moveReport = moveService.move(moveRequest);
+        //todo report
         if (moveReport.isValid()) {
-            activeColor = chessPieceInUse.getColor().getEnemyColor();
+            activeColor = moveRequest.inUse().getColor().getEnemyColor();
         }
         return moveReport;
     }
 
-    public ChessPieceColor whichColorTurn() {
-        return activeColor;
+    public boolean isPromotion(MoveDto move) {
+        return moveService.isPromotion(move);
     }
 }

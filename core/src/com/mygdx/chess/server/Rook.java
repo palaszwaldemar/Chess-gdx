@@ -1,8 +1,8 @@
 package com.mygdx.chess.server;
 
 class Rook extends ChessPiece {
-    Rook(ChessPieceColor color, int x, int y) {
-        super(ChessPieceType.ROOK, color, x, y);
+    Rook(ChessPieceDto chessPieceDto) {
+        super(chessPieceDto);
     }
 
     int getCastlingX() {

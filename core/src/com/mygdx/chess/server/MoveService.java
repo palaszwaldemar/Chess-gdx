@@ -6,28 +6,27 @@ import java.util.Optional;
 class MoveService {
     private final MoveValidator moveValidator;
     private final ChessPieceRepository repository;
-    private MoveReport moveReport;
-    private ChessPiece chessPieceInUse;
-    private int x;
-    private int y;
+    private final ChessPieceFactory chessPieceFactory;
 
-    MoveService(ChessPieceRepository repository) {
+    private MoveDto move;
+    private  MoveReport moveReport;
+
+    MoveService(ChessPieceRepository repository, ChessPieceFactory chessPieceFactory) {
         this.repository = repository;
         this.moveValidator = new MoveValidator(repository);
+        this.chessPieceFactory = chessPieceFactory;
     }
 
-    MoveReport move(ChessPiece chessPieceInUse, int x, int y) {
-        this.chessPieceInUse = chessPieceInUse;
-        this.x = x;
-        this.y = y;
-        moveReport = new MoveReport(chessPieceInUse);
-        if (!moveReport.isValid() && !moveValidator.canMove(chessPieceInUse, x, y)) {
+    MoveReport move(MoveDto move) {
+       this.move = move;
+        moveReport = new MoveReport(move.inUse());
+        if ( !moveValidator.canMove(move)) {
             return moveReport;
         }
         moveReport.setValid();
         capturePiece();
         moveRookBeforeKing();
-        chessPieceInUse.move(x, y);
+        move.inUse().move(move.x(), move.y()); //todo ?
         pawnPromotion();
         return moveReport;
     }
@@ -36,7 +35,7 @@ class MoveService {
         Iterator<ChessPiece> iterator = repository.getChessPieces().iterator();
         while (iterator.hasNext()) {
             ChessPiece chessPieceToRemove = iterator.next();
-            if (chessPieceToRemove.getX() == x && chessPieceToRemove.getY() == y &&
+            if (chessPieceToRemove.getX() == move.x() && chessPieceToRemove.getY() == move.y() &&
                 !moveReport.getChessPieceInUse().hasSameColor(chessPieceToRemove)) {
                 moveReport.setChessPieceToRemove(chessPieceToRemove);
                 iterator.remove();
@@ -48,7 +47,7 @@ class MoveService {
         if (isNotKingOrNotCastling()) {
             return;
         }
-        Optional<Rook> rookToMove = repository.getRookByKingMove(x, chessPieceInUse.getY());
+        Optional<Rook> rookToMove = repository.getRookByKingMove(move.x(), move.inUse().getY());
         if (rookToMove.isPresent()) {
             Rook rook = rookToMove.get();
             moveRook(rook);
@@ -56,8 +55,8 @@ class MoveService {
     }
 
     private boolean isNotKingOrNotCastling() {
-        boolean isNotKingOrNotCastling = !chessPieceInUse.hasType(ChessPieceType.KING);
-        if (Math.abs(chessPieceInUse.getX() - x) != 2) {
+        boolean isNotKingOrNotCastling = !move.inUse().hasType(ChessPieceType.KING);
+        if (Math.abs(move.inUse().getX() - move.x()) != 2) {
             isNotKingOrNotCastling = true;
         }
         return isNotKingOrNotCastling;
@@ -70,19 +69,24 @@ class MoveService {
     }
 
     private void pawnPromotion() {
-        if (!chessPieceInUse.hasType(ChessPieceType.PAWN)) {
+        if (!move.inUse().hasType(ChessPieceType.PAWN)) {
             return;
         }
-        if (y == 0 || y == 7) {
-            moveReport.setPromotionPawnToRemove(chessPieceInUse);
-            changePawnToQueen();
+        if (move.y() == 0 || move.y() == 7) {
+            moveReport.setPromotionPawnToRemove();
+            changePawnToFigure();
         }
     }
 
-    private void changePawnToQueen() {
-        repository.getChessPieces().remove(chessPieceInUse);
-        ChessPiece newQueen = new Queen(chessPieceInUse.getColor(), x, y);
-        repository.getChessPieces().add(newQueen);
-        moveReport.setPromotionTarget(newQueen);
+    private void changePawnToFigure() {
+        ChessPiece newFigure = chessPieceFactory.createPromotionFigure(move);
+        repository.remove(move.inUse());
+        repository.add(newFigure);
+        moveReport.setPromotionTarget(newFigure);
+    }
+
+    boolean isPromotion(MoveDto moveDto) {
+        return moveDto.inUse().hasType(ChessPieceType.PAWN) && (moveDto.y() == 0 || moveDto.y() == 7) &&
+            moveValidator.canMove(moveDto);
     }
 }

@@ -1,8 +1,8 @@
 package com.mygdx.chess.server;
 
 class Knight extends ChessPiece {
-    Knight(ChessPieceColor color, int x, int y) {
-        super(ChessPieceType.KNIGHT, color, x, y);
+    Knight(ChessPieceDto chessPieceDto) {
+        super(chessPieceDto);
     }
 
     @Override

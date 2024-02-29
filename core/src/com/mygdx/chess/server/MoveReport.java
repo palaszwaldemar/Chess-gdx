@@ -5,10 +5,11 @@ public class MoveReport {
     private ChessPiece chessPieceToRemove;
     private ChessPiece promotionPawnToRemove;
     private ChessPiece promotionTarget;
+    private ChessPieceType promotionFigureType;
     private Rook rookToMove;
     private boolean valid;
 
-    MoveReport(ChessPiece chessPieceInUse) {
+    public MoveReport(ChessPiece chessPieceInUse) {
         this.chessPieceInUse = chessPieceInUse;
     }
 
@@ -16,12 +17,16 @@ public class MoveReport {
         this.chessPieceToRemove = chessPieceToRemove;
     }
 
-    void setPromotionPawnToRemove(ChessPiece promotionPawnToRemove) {
-        this.promotionPawnToRemove = promotionPawnToRemove;
+    void setPromotionPawnToRemove() {
+        this.promotionPawnToRemove = chessPieceInUse;
     }
 
-    public void setPromotionTarget(ChessPiece promotionTarget) {// TODO: 08.02.2024
+    void setPromotionTarget(ChessPiece promotionTarget) {
         this.promotionTarget = promotionTarget;
+    }
+
+    public void setPromotionFigureType (ChessPieceType type) { // CHECK : 15.02.2024 modyfikator dostępu public?
+        promotionFigureType = type;
     }
 
     void setRookToMove(Rook rookToMove) {
@@ -54,6 +59,10 @@ public class MoveReport {
 
     public ChessPiece getPromotionTarget() {
         return promotionTarget;
+    }
+
+    public ChessPieceType getPromotionFigureType() {
+        return promotionFigureType;
     }
 
     public ChessPiece getRookToMove() {

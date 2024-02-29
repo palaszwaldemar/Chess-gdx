@@ -9,11 +9,11 @@ public abstract class ChessPiece implements Cloneable {
     private final ChessPieceType type;
     boolean moved;
 
-    ChessPiece(ChessPieceType type, ChessPieceColor color, int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.type = type;
+    ChessPiece(ChessPieceDto chessPieceDto){
+        x = chessPieceDto.x();
+        y = chessPieceDto.y();
+        color = chessPieceDto.color();
+        type = chessPieceDto.type();
     }
 
     void move(int x, int y) {
@@ -68,8 +68,7 @@ public abstract class ChessPiece implements Cloneable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ChessPiece)) return false;
-        ChessPiece that = (ChessPiece) o;
+        if (!(o instanceof ChessPiece that)) return false;
         return getX() == that.getX() && getY() == that.getY() && moved == that.moved && getColor() == that.getColor() &&
             getType() == that.getType();
     }

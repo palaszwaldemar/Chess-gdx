@@ -1,8 +1,8 @@
 package com.mygdx.chess.server;
 
 class Queen extends ChessPiece {
-    Queen(ChessPieceColor color, int x, int y) {
-        super(ChessPieceType.QUEEN, color, x, y);
+    Queen(ChessPieceDto chessPieceDto) {
+        super(chessPieceDto);
     }
 
     @Override

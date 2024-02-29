@@ -7,10 +7,9 @@ import java.util.Optional;
 class ChessPieceRepository {
     private final List<ChessPiece> chessPieces = new ArrayList<>();
 
-    ChessPieceRepository() {
-        PiecesFactory piecesFactory = new PiecesFactory();
-        chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.WHITE));
-        chessPieces.addAll(piecesFactory.getChessPieces(ChessPieceColor.BLACK));
+
+    void addAll(List<ChessPiece> chessPiecesToAdd){
+        chessPieces.addAll(chessPiecesToAdd);
     }
 
     Optional<ChessPiece> getChessPiece(int x, int y) {
@@ -78,6 +77,14 @@ class ChessPieceRepository {
             }
         }
         return Optional.empty();
+    }
+
+    void remove(ChessPiece chessPiece) {
+        chessPieces.remove(chessPiece);
+    }
+
+    void add(ChessPiece newFigure) {
+        chessPieces.add(newFigure);
     }
     // TODO: 04.01.2024 wrócić po przerobieniu Streamów
 }

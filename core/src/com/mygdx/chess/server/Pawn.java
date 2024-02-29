@@ -1,8 +1,8 @@
 package com.mygdx.chess.server;
 
 class Pawn extends ChessPiece {
-    Pawn(ChessPieceColor color, int x, int y) {
-        super(ChessPieceType.PAWN, color, x, y);
+    Pawn(ChessPieceDto chessPieceDto) {
+        super(chessPieceDto);
     }
 
     @Override

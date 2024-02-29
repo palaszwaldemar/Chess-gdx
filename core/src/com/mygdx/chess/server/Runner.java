@@ -1,8 +1,8 @@
 package com.mygdx.chess.server;
 
 class Runner extends ChessPiece {
-    Runner(ChessPieceColor color, int x, int y) {
-        super(ChessPieceType.RUNNER, color, x, y);
+    Runner(ChessPieceDto chessPieceDto) {
+        super(chessPieceDto);
     }
 
     @Override

@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.mygdx.chess.server.MoveReport;
 import com.mygdx.chess.server.ChessPiece;
+import com.mygdx.chess.server.MoveDto;
 
 class ChessPieceActor extends Actor {
     private final ChessPiece chessPiece;
@@ -40,9 +40,9 @@ class ChessPieceActor extends Actor {
 
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            if (controller.whichColorTurn() != chessPiece.getColor()) {
+            /*if (controller.whichColorTurn() != chessPiece.getColor()) {
                 return false;
-            }
+            }*/
             startTouchPosition.set(x, y);
             startPosition.set(getX(), getY());
             toFront();
@@ -63,8 +63,10 @@ class ChessPieceActor extends Actor {
             int yPixels = ((int) (mouseDropPosition.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
             int xCords = Cords.xToCords(xPixels);
             int yCords = Cords.yToCords(yPixels);
-            MoveReport moveReport = controller.move(chessPiece, xCords, yCords);
-            if (moveReport.isValid()) {
+
+            boolean valid = controller.move(MoveDto.create(chessPiece,xCords,yCords));
+
+            if (valid) {
                 setPosition(xPixels, yPixels);
             } else {
                 setPosition(startPosition.x, startPosition.y);

@@ -6,21 +6,19 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.chess.server.ChessPieceColor;
-import com.mygdx.chess.server.ChessPieceType;
-import com.mygdx.chess.server.MoveReport;
+import com.mygdx.chess.server.*;
 
 class PromotionWindow extends Actor {
     private Texture texture;
-    private final MoveReport moveReport;
     private final Controller controller;
+    private final MoveDto move;
 
-    PromotionWindow(MoveReport moveReport, Controller controller) {
+    PromotionWindow(MoveDto move, Controller controller) {
         setBounds(GuiParams.PROMOTION_WINDOW_X_POSITION, GuiParams.PROMOTION_WINDOW_Y_POSITION,
             GuiParams.PROMOTION_WINDOW_WIDTH, GuiParams.PROMOTION_WINDOW_HEIGHT);
-        setDisplay(moveReport.getChessPieceInUse().getColor());
-        this.moveReport = moveReport;
+        setDisplay(move.inUse().getColor());
         this.controller = controller;
+        this.move = move;
         addListener(new PromotionWindowListener());
     }
 
@@ -37,12 +35,10 @@ class PromotionWindow extends Actor {
     private class PromotionWindowListener extends ClickListener {
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            ChessPieceType type = ChessPieceType.QUEEN; //todo
-            controller.promotionChessPieceSelected(type, moveReport);
-            controller.lockChessboard(false);
+            ChessPieceType type = ChessPieceType.RUNNER; //todo
             controller.removeActor(PromotionWindow.this);
+            controller.continueMove(move.withType(type));
             super.clicked(event, x, y);
         }
     }
 }
-/*TEST*/
