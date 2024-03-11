@@ -76,4 +76,8 @@ public class MoveReport {
     public boolean isValid() {
         return valid;
     }
+
+     public ChessPieceColor actualColor() {
+        return chessPieceInUse.getColor();
+    }
 }

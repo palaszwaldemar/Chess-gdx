@@ -21,8 +21,8 @@ public class ServerFacade {
         repository.addAll(chessPieceFactory.createStartingPieces(ChessPieceColor.BLACK));
     }
 
-    public List<ChessPiece> getChessPieces() {
-        return repository.getChessPieces();
+    public List<ChessPiece> getChessPieces(ChessPieceColor color) {
+        return repository.getChessPieces(color);
     }
 
     public MoveReport move(MoveDto moveRequest) {

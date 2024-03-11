@@ -1,23 +1,21 @@
 package com.mygdx.chess.client;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mygdx.chess.server.ChessPiece;
+import com.mygdx.chess.server.ChessPieceColor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class ChessPieceGroup extends Group {
-    private final Texture boardImage;
+class PlayerGroup extends Group {
     private Controller controller;
+    private final ChessPieceColor color;
 
-    ChessPieceGroup() {
-        setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION, GuiParams.CHESSBOARD_WIDTH,
-            GuiParams.CHESSBOARD_HEIGHT);
-        boardImage = new Texture(Gdx.files.internal("chessboard/chessboard.png"));
+    PlayerGroup(ChessPieceColor color) {
+        this.color = color;
+        setPosition(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION);
     }
 
     void setController(Controller controller) {
@@ -38,6 +36,10 @@ class ChessPieceGroup extends Group {
         return chessPieceActors;
     }
 
+    ChessPieceColor getChessPieceColor() {
+        return color;
+    }
+
     void removeActor(ChessPiece chessPieceToRemove) {
         List<ChessPieceActor> chessPieceActors = getChessPieceActors();
         for (ChessPieceActor chessPieceActor : chessPieceActors) { // todo stream
@@ -49,7 +51,6 @@ class ChessPieceGroup extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(boardImage, getX(), getY());
         super.draw(batch, parentAlpha);
     }
 }

@@ -3,22 +3,27 @@ package com.mygdx.chess.client;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.mygdx.chess.server.*;
+import com.mygdx.chess.server.MoveDto;
+import com.mygdx.chess.server.MoveReport;
+import com.mygdx.chess.server.ServerFacade;
 
 import java.util.List;
 
 class Controller {
     private final ServerFacade service = new ServerFacade();
-    private final ChessPieceGroup chessPieceGroup;
+    private final List<PlayerGroup> players;
     private final Stage stage;
+    private MoveReport moveReport;
 
-    Controller(Stage stage, ChessPieceGroup chessPieceGroup) {
-        this.chessPieceGroup = chessPieceGroup;
+    Controller(Stage stage, List<PlayerGroup> players) {
+        this.players = players;
         this.stage = stage;
     }
 
     void startGame() {
-        chessPieceGroup.createActors(service.getChessPieces());
+        for (PlayerGroup player : players) {
+            player.createActors(service.getChessPieces(player.getChessPieceColor()));
+        }
     }
 
     boolean move(MoveDto move) {
@@ -41,14 +46,16 @@ class Controller {
         if (!moveReport.isValid()) {
             return false;
         }
-        chessPieceGroup.removeActor(moveReport.getChessPieceToRemove());
+
+        this.moveReport = moveReport;
+        lastPlayerEnemy().removeActor(moveReport.getChessPieceToRemove());
         castling(moveReport);
         promotion(moveReport);
         return moveReport.isValid();
     }
 
     private void castling(MoveReport moveReport) {
-        List<ChessPieceActor> chessPieceActors = chessPieceGroup.getChessPieceActors();
+        List<ChessPieceActor> chessPieceActors = lastPlayer().getChessPieceActors();
         for (ChessPieceActor chessPieceActor : chessPieceActors) {
             if (chessPieceActor.getChessPiece().equals(moveReport.getRookToMove())) {
                 float newXRook = Cords.xToPixels(moveReport.getNewXRook());
@@ -59,11 +66,9 @@ class Controller {
     }
 
     void lockChessboard(boolean enable) {
-        if (enable) {
-            chessPieceGroup.setTouchable(Touchable.disabled);
-            return;
+        for (PlayerGroup player : players) {
+            player.setTouchable(enable ? Touchable.disabled : Touchable.enabled);
         }
-        chessPieceGroup.setTouchable(Touchable.enabled);
     }
 
     private void promotion(MoveReport moveReport) {
@@ -71,11 +76,29 @@ class Controller {
             return;
         }
         lockChessboard(false);
-        chessPieceGroup.removeActor(moveReport.getPromotionPawnToRemove());
-        chessPieceGroup.addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
+        lastPlayer().removeActor(moveReport.getPromotionPawnToRemove());
+        lastPlayer().addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
     }
 
     void removeActor(Actor actor) {
         stage.getRoot().removeActor(actor);
+    }
+
+    private PlayerGroup lastPlayer() {
+        for (PlayerGroup player : players) {
+            if(player.getChessPieceColor() == moveReport.actualColor()) {
+                return player;
+            }
+        }
+        throw new IllegalStateException("no player of matching color");
+    }
+
+    private PlayerGroup lastPlayerEnemy() {
+        for (PlayerGroup player : players) {
+            if(player.getChessPieceColor() != moveReport.actualColor()) {
+                return player;
+            }
+        }
+        throw new IllegalStateException("no player of matching color");
     }
 }
