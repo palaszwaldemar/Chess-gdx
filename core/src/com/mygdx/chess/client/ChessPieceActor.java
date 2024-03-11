@@ -63,9 +63,7 @@ class ChessPieceActor extends Actor {
             int yPixels = ((int) (mouseDropPosition.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
             int xCords = Cords.xToCords(xPixels);
             int yCords = Cords.yToCords(yPixels);
-
-            boolean valid = controller.move(MoveDto.create(chessPiece,xCords,yCords));
-
+            boolean valid = controller.move(MoveDto.create(chessPiece, xCords, yCords));
             if (valid) {
                 setPosition(xPixels, yPixels);
             } else {
