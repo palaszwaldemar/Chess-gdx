@@ -46,7 +46,6 @@ class Controller {
         if (!moveReport.isValid()) {
             return false;
         }
-
         this.moveReport = moveReport;
         lastPlayerEnemy().removeActor(moveReport.getChessPieceToRemove());
         castling(moveReport);
@@ -86,7 +85,7 @@ class Controller {
 
     private PlayerGroup lastPlayer() {
         for (PlayerGroup player : players) {
-            if(player.getChessPieceColor() == moveReport.actualColor()) {
+            if (player.getChessPieceColor() == moveReport.actualColor()) {
                 return player;
             }
         }
@@ -95,7 +94,7 @@ class Controller {
 
     private PlayerGroup lastPlayerEnemy() {
         for (PlayerGroup player : players) {
-            if(player.getChessPieceColor() != moveReport.actualColor()) {
+            if (player.getChessPieceColor() != moveReport.actualColor()) {
                 return player;
             }
         }

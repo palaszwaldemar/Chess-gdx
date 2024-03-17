@@ -102,7 +102,6 @@ class MoveValidator {
         int deltaY = Math.abs(move.y() - move.inUse().getY());
         boolean diagonalMove = deltaX == deltaY;
         if (diagonalMove) {
-            System.out.println("diagonal move");
             return !isFreeField(move.x(), move.y(), chessPieces);
         } else {
             return isClearLineForChessPieceInUse() && isFreeField(move.x(), move.y(), chessPieces);

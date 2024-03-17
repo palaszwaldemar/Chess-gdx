@@ -40,12 +40,9 @@ class ChessPieceActor extends Actor {
 
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            /*if (controller.whichColorTurn() != chessPiece.getColor()) {
-                return false;
-            }*/
             startTouchPosition.set(x, y);
             startPosition.set(getX(), getY());
-            toFront();
+            setOnTopLayer();// CHECK : 11.03.2024 czy tak może być?
             return super.touchDown(event, x, y, pointer, button);
         }
 
@@ -59,17 +56,37 @@ class ChessPieceActor extends Actor {
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
             Vector2 mouseDropPosition =
                 getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-            int xPixels = ((int) (mouseDropPosition.x / GuiParams.CHESS_PIECE_WIDTH)) * GuiParams.CHESS_PIECE_WIDTH;
-            int yPixels = ((int) (mouseDropPosition.y / GuiParams.CHESS_PIECE_HEIGHT)) * GuiParams.CHESS_PIECE_HEIGHT;
-            int xCords = mouseDropPosition.x < 0 ? -1 : Cords.xToCords(xPixels);
-            int yCords = mouseDropPosition.y < 0 ? -1 : Cords.yToCords(yPixels);
+            /*// CHECK : 15.03.2024 skoro sprawdzam tutaj mouseDropPosition < 0 to czy od razu nie mógłbym
+            // sprawdzić > 0 ?? Tylko wtedy metoda onBoards() z klasy MoveValidator za bardzo nie ma sensu
+            *//*if (mouseDropPosition.x < 0 || mouseDropPosition.y < 0) {
+                setOnStartPosition();
+                super.touchUp(event, x, y, pointer, button);// CHECK : 15.03.2024 dwa razy powtórzone super. Czy ok?
+                return;
+            }*/
+            int xPixels = calculateSnappedPosition(mouseDropPosition.x, GuiParams.CHESS_PIECE_WIDTH);
+            int yPixels = calculateSnappedPosition(mouseDropPosition.y, GuiParams.CHESS_PIECE_HEIGHT);
+            int xCords = Cords.xToCords(xPixels);
+            int yCords = Cords.yToCords(yPixels);
             boolean valid = controller.move(MoveDto.create(chessPiece, xCords, yCords));
             if (valid) {
                 setPosition(xPixels, yPixels);
             } else {
-                setPosition(startPosition.x, startPosition.y);
+                setOnStartPosition();
             }
             super.touchUp(event, x, y, pointer, button);
+        }
+
+        private void setOnTopLayer() {
+            toFront();
+            getParent().toFront();
+        }
+
+        private void setOnStartPosition() {
+            setPosition(startPosition.x, startPosition.y);
+        }
+
+        private int calculateSnappedPosition(float position, int gridSize) {
+            return (int) Math.floor(position / gridSize) * gridSize;
         }
     }
 }
