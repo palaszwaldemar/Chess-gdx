@@ -35,10 +35,20 @@ class PromotionWindow extends Actor {
     private class PromotionWindowListener extends ClickListener {
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            ChessPieceType type = ChessPieceType.RUNNER; //todo
-            controller.removeActor(PromotionWindow.this);
-            controller.continueMove(move.withType(type));
+            controller.removeActorFromStage(PromotionWindow.this);
+            controller.continueMove(move.withType(type(x)));
             super.clicked(event, x, y);
+        }
+
+        private ChessPieceType type(float x) {
+            int index = (int) x / 100;
+            return switch (index) {
+                case 0 -> ChessPieceType.QUEEN;
+                case 1 -> ChessPieceType.ROOK;
+                case 2 -> ChessPieceType.RUNNER;
+                case 3 -> ChessPieceType.KNIGHT;
+                default -> throw new IllegalStateException("no selected figure");
+            };
         }
     }
 }
