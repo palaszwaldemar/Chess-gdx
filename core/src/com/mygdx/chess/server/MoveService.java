@@ -7,9 +7,8 @@ class MoveService {
     private final MoveValidator moveValidator;
     private final ChessPieceRepository repository;
     private final ChessPieceFactory chessPieceFactory;
-
     private MoveDto move;
-    private  MoveReport moveReport;
+    private MoveReport moveReport;
 
     MoveService(ChessPieceRepository repository, ChessPieceFactory chessPieceFactory) {
         this.repository = repository;
@@ -18,9 +17,9 @@ class MoveService {
     }
 
     MoveReport move(MoveDto move) {
-       this.move = move;
+        this.move = move;
         moveReport = new MoveReport(move.inUse());
-        if ( !moveValidator.canMove(move)) {
+        if (!moveValidator.canMove(move)) {
             return moveReport;
         }
         moveReport.setValid();

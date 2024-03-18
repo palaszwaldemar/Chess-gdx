@@ -42,7 +42,7 @@ class ChessPieceActor extends Actor {
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             startTouchPosition.set(x, y);
             startPosition.set(getX(), getY());
-            setOnTopLayer();// CHECK : 11.03.2024 czy tak może być?
+            setOnTopLayer();
             return super.touchDown(event, x, y, pointer, button);
         }
 
@@ -56,13 +56,6 @@ class ChessPieceActor extends Actor {
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
             Vector2 mouseDropPosition =
                 getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-            /*// CHECK : 15.03.2024 skoro sprawdzam tutaj mouseDropPosition < 0 to czy od razu nie mógłbym
-            // sprawdzić > 0 ?? Tylko wtedy metoda onBoards() z klasy MoveValidator za bardzo nie ma sensu
-            *//*if (mouseDropPosition.x < 0 || mouseDropPosition.y < 0) {
-                setOnStartPosition();
-                super.touchUp(event, x, y, pointer, button);// CHECK : 15.03.2024 dwa razy powtórzone super. Czy ok?
-                return;
-            }*/
             int xPixels = calculateSnappedPosition(mouseDropPosition.x, GuiParams.CHESS_PIECE_WIDTH);
             int yPixels = calculateSnappedPosition(mouseDropPosition.y, GuiParams.CHESS_PIECE_HEIGHT);
             int xCords = Cords.xToCords(xPixels);

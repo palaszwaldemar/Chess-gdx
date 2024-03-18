@@ -3,6 +3,7 @@ package com.mygdx.chess.client;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.MoveDto;
 import com.mygdx.chess.server.MoveReport;
 import com.mygdx.chess.server.ServerFacade;
@@ -23,6 +24,9 @@ class Controller {
     void startGame() {
         for (PlayerGroup player : players) {
             player.createActors(service.getChessPieces(player.getChessPieceColor()));
+            if (player.getChessPieceColor() == ChessPieceColor.BLACK) {
+                player.setTouchable(Touchable.disabled);
+            }
         }
     }
 
@@ -50,7 +54,18 @@ class Controller {
         lastPlayerEnemy().removeActor(moveReport.getChessPieceToRemove());
         castling(moveReport);
         promotion(moveReport);
+        switchPlayer();
         return moveReport.isValid();
+    }
+
+    private void switchPlayer() {
+        for (PlayerGroup player : players) {
+            if (player.getChessPieceColor() == moveReport.getNextActiveColor()) {
+                player.setTouchable(Touchable.enabled);
+            } else {
+                player.setTouchable(Touchable.disabled);
+            }
+        }
     }
 
     private void castling(MoveReport moveReport) {
@@ -79,7 +94,7 @@ class Controller {
         lastPlayer().addActor(new ChessPieceActor(moveReport.getPromotionTarget(), this));
     }
 
-    void removeActor(Actor actor) {
+    void removeActorFromStage(Actor actor) {
         stage.getRoot().removeActor(actor);
     }
 

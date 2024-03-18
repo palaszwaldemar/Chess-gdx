@@ -5,12 +5,13 @@ public class MoveReport {
     private ChessPiece chessPieceToRemove;
     private ChessPiece promotionPawnToRemove;
     private ChessPiece promotionTarget;
-    private ChessPieceType promotionFigureType;
     private Rook rookToMove;
+    private ChessPieceColor nextActiveColor;
     private boolean valid;
 
     public MoveReport(ChessPiece chessPieceInUse) {
         this.chessPieceInUse = chessPieceInUse;
+        nextActiveColor = actualColor();
     }
 
     void setChessPieceToRemove(ChessPiece chessPieceToRemove) {
@@ -25,12 +26,12 @@ public class MoveReport {
         this.promotionTarget = promotionTarget;
     }
 
-    public void setPromotionFigureType (ChessPieceType type) { // CHECK : 15.02.2024 modyfikator dostępu public?
-        promotionFigureType = type;
-    }
-
     void setRookToMove(Rook rookToMove) {
         this.rookToMove = rookToMove;
+    }
+
+    void changeActiveColor() {
+        nextActiveColor = nextActiveColor == ChessPieceColor.WHITE ? ChessPieceColor.BLACK : ChessPieceColor.WHITE;
     }
 
     void setValid() {
@@ -61,10 +62,6 @@ public class MoveReport {
         return promotionTarget;
     }
 
-    public ChessPieceType getPromotionFigureType() {
-        return promotionFigureType;
-    }
-
     public ChessPiece getRookToMove() {
         return rookToMove;
     }
@@ -73,11 +70,15 @@ public class MoveReport {
         return promotionPawnToRemove != null;
     }
 
+    public ChessPieceColor getNextActiveColor() {
+        return nextActiveColor;
+    }
+
     public boolean isValid() {
         return valid;
     }
 
-     public ChessPieceColor actualColor() {
+    public ChessPieceColor actualColor() {
         return chessPieceInUse.getColor();
     }
 }

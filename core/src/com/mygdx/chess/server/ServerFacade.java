@@ -6,13 +6,11 @@ public class ServerFacade {
     private final ChessPieceRepository repository;
     private final MoveService moveService;
     private final ChessPieceFactory chessPieceFactory;
-    private ChessPieceColor activeColor;
 
     public ServerFacade() {
         repository = new ChessPieceRepository();
         chessPieceFactory = new ChessPieceFactory();
         moveService = new MoveService(repository, chessPieceFactory);
-        activeColor = ChessPieceColor.WHITE;
         initBoard();
     }
 
@@ -27,9 +25,8 @@ public class ServerFacade {
 
     public MoveReport move(MoveDto moveRequest) {
         MoveReport moveReport = moveService.move(moveRequest);
-        //todo report
         if (moveReport.isValid()) {
-            activeColor = moveRequest.inUse().getColor().getEnemyColor();
+            moveReport.changeActiveColor();
         }
         return moveReport;
     }
