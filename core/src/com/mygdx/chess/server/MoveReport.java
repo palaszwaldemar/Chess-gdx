@@ -6,12 +6,12 @@ public class MoveReport {
     private ChessPiece promotionPawnToRemove;
     private ChessPiece promotionTarget;
     private Rook rookToMove;
-    private ChessPieceColor nextActiveColor;
+    private final ChessPieceColor activeColor;
     private boolean valid;
 
     public MoveReport(ChessPiece chessPieceInUse) {
         this.chessPieceInUse = chessPieceInUse;
-        nextActiveColor = actualColor();
+        activeColor = chessPieceInUse.getColor();
     }
 
     void setChessPieceToRemove(ChessPiece chessPieceToRemove) {
@@ -30,8 +30,12 @@ public class MoveReport {
         this.rookToMove = rookToMove;
     }
 
-    void changeActiveColor() {
-        nextActiveColor = nextActiveColor == ChessPieceColor.WHITE ? ChessPieceColor.BLACK : ChessPieceColor.WHITE;
+    public ChessPieceColor getActiveColor() {
+        return activeColor;
+    }
+
+    public ChessPieceColor getNextColor() {
+        return activeColor == ChessPieceColor.WHITE ? ChessPieceColor.BLACK : ChessPieceColor.WHITE;
     }
 
     void setValid() {
@@ -70,15 +74,7 @@ public class MoveReport {
         return promotionPawnToRemove != null;
     }
 
-    public ChessPieceColor getNextActiveColor() {
-        return nextActiveColor;
-    }
-
     public boolean isValid() {
         return valid;
-    }
-
-    public ChessPieceColor actualColor() {
-        return chessPieceInUse.getColor();
     }
 }

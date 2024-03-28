@@ -14,7 +14,8 @@ class MoveValidator {
 
     boolean canMove(MoveDto move) {
         this.move = move;
-        return isOnTheBoard() && friendIsNotHere() && move.inUse().isCorrectMovement(move.x(), move.y()) &&
+        return isOnTheBoard() && friendIsNotHere() && move.inUse().isCorrectMovement(move.x(),
+            move.y()) &&
             kingWillNotBeInCheck() && isValidMoveByChessPieceType();
     }
 

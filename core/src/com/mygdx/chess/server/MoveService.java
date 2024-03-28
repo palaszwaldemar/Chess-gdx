@@ -9,6 +9,7 @@ class MoveService {
     private final ChessPieceFactory chessPieceFactory;
     private MoveDto move;
     private MoveReport moveReport;
+    private ChessPieceColor activeColor = ChessPieceColor.WHITE;
 
     MoveService(ChessPieceRepository repository, ChessPieceFactory chessPieceFactory) {
         this.repository = repository;
@@ -19,6 +20,9 @@ class MoveService {
     MoveReport move(MoveDto move) {
         this.move = move;
         moveReport = new MoveReport(move.inUse());
+        if (activeColor != move.inUse().getColor()) {
+            return moveReport;
+        }
         if (!moveValidator.canMove(move)) {
             return moveReport;
         }
@@ -27,7 +31,12 @@ class MoveService {
         moveRookBeforeKing();
         move.inUse().move(move.x(), move.y()); //todo ?
         pawnPromotion();
+        activeColor = moveReport.getNextColor();
         return moveReport;
+    }
+
+    ChessPieceColor getActiveColor() {
+        return activeColor;
     }
 
     private void capturePiece() {

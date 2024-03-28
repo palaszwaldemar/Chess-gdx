@@ -7,6 +7,7 @@ public class ServerFacade {
     private final MoveService moveService;
     private final ChessPieceFactory chessPieceFactory;
 
+
     public ServerFacade() {
         repository = new ChessPieceRepository();
         chessPieceFactory = new ChessPieceFactory();
@@ -19,16 +20,14 @@ public class ServerFacade {
         repository.addAll(chessPieceFactory.createStartingPieces(ChessPieceColor.BLACK));
     }
 
-    public List<ChessPiece> getChessPieces(ChessPieceColor color) {
-        return repository.getChessPieces(color);
+    public ChessGameDto getChessGame() {
+        List<ChessPiece> whiteChessPieces = repository.getChessPieces(ChessPieceColor.WHITE);
+        List<ChessPiece> blackChessPieces = repository.getChessPieces(ChessPieceColor.BLACK);
+        return new ChessGameDto(whiteChessPieces, blackChessPieces, moveService.getActiveColor());
     }
 
     public MoveReport move(MoveDto moveRequest) {
-        MoveReport moveReport = moveService.move(moveRequest);
-        if (moveReport.isValid()) {
-            moveReport.changeActiveColor();
-        }
-        return moveReport;
+        return moveService.move(moveRequest);
     }
 
     public boolean isPromotion(MoveDto move) {

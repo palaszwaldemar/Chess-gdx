@@ -6,7 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.chess.server.*;
+import com.mygdx.chess.server.ChessPieceColor;
+import com.mygdx.chess.server.ChessPieceType;
+import com.mygdx.chess.server.MoveDto;
+
+import static com.mygdx.chess.server.ChessPieceType.*;
 
 class PromotionWindow extends Actor {
     private Texture texture;
@@ -36,19 +40,17 @@ class PromotionWindow extends Actor {
         @Override
         public void clicked(InputEvent event, float x, float y) {
             controller.removeActorFromStage(PromotionWindow.this);
-            controller.continueMove(move.withType(type(x)));
+            controller.continueMove(move.withType(type((int) x)));
             super.clicked(event, x, y);
         }
 
-        private ChessPieceType type(float x) {
-            int index = (int) x / 100;
-            return switch (index) {
-                case 0 -> ChessPieceType.QUEEN;
-                case 1 -> ChessPieceType.ROOK;
-                case 2 -> ChessPieceType.RUNNER;
-                case 3 -> ChessPieceType.KNIGHT;
-                default -> throw new IllegalStateException("no selected figure");
-            };
+        private ChessPieceType type(int pixelX) {
+            int index = pixelX / GuiParams.CHESS_PIECE_SIZE;
+            ChessPieceType[] pieces = {QUEEN, ROOK, RUNNER, KNIGHT};
+            if (index >= pieces.length) {
+                throw new IllegalStateException("no selected figure");
+            }
+            return pieces[index];
         }
     }
 }

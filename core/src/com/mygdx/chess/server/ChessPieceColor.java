@@ -18,7 +18,7 @@ public enum ChessPieceColor {
         return yPawnsPosition;
     }
 
-    public ChessPieceColor getEnemyColor() {
+    public ChessPieceColor getSecondColor() {
         return this == BLACK ? WHITE : BLACK;
     }
 }

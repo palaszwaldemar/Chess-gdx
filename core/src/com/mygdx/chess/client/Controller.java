@@ -3,10 +3,7 @@ package com.mygdx.chess.client;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.mygdx.chess.server.ChessPieceColor;
-import com.mygdx.chess.server.MoveDto;
-import com.mygdx.chess.server.MoveReport;
-import com.mygdx.chess.server.ServerFacade;
+import com.mygdx.chess.server.*;
 
 import java.util.List;
 
@@ -22,12 +19,12 @@ class Controller {
     }
 
     void startGame() {
-        for (PlayerGroup player : players) {
-            player.createActors(service.getChessPieces(player.getChessPieceColor()));
-            if (player.getChessPieceColor() == ChessPieceColor.BLACK) {
-                player.setTouchable(Touchable.disabled);
-            }
-        }
+        ChessGameDto chessGameDto = service.getChessGame();
+        PlayerGroup friendPlayer = getPlayerByColor(chessGameDto.activeColor());
+        PlayerGroup enemyPlayer = getPlayerByColor(chessGameDto.activeColor().getSecondColor());
+        friendPlayer.createActors(chessGameDto.whiteChessPieces());
+        enemyPlayer.createActors(chessGameDto.blackChessPieces());
+        enemyPlayer.setTouchable(Touchable.disabled);
     }
 
     boolean move(MoveDto move) {
@@ -60,7 +57,7 @@ class Controller {
 
     private void switchPlayer() {
         for (PlayerGroup player : players) {
-            if (player.getChessPieceColor() == moveReport.getNextActiveColor()) {
+            if (player.getChessPieceColor() == moveReport.getNextColor()) {
                 player.setTouchable(Touchable.enabled);
             } else {
                 player.setTouchable(Touchable.disabled);
@@ -98,21 +95,20 @@ class Controller {
         stage.getRoot().removeActor(actor);
     }
 
-    private PlayerGroup lastPlayer() {
+    private PlayerGroup getPlayerByColor(ChessPieceColor color) {
         for (PlayerGroup player : players) {
-            if (player.getChessPieceColor() == moveReport.actualColor()) {
+            if (player.getChessPieceColor() == color) {
                 return player;
             }
         }
         throw new IllegalStateException("no player of matching color");
     }
 
+    private PlayerGroup lastPlayer() {
+        return getPlayerByColor(moveReport.getActiveColor());
+    }
+
     private PlayerGroup lastPlayerEnemy() {
-        for (PlayerGroup player : players) {
-            if (player.getChessPieceColor() != moveReport.actualColor()) {
-                return player;
-            }
-        }
-        throw new IllegalStateException("no player of matching color");
+        return getPlayerByColor(moveReport.getNextColor());
     }
 }

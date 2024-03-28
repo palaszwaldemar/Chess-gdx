@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.mygdx.chess.server.ChessPiece;
 import com.mygdx.chess.server.MoveDto;
 
+import static com.mygdx.chess.client.GuiParams.CHESS_PIECE_SIZE;
+
 class ChessPieceActor extends Actor {
     private final ChessPiece chessPiece;
     private final Controller controller;
@@ -20,8 +22,8 @@ class ChessPieceActor extends Actor {
         this.controller = controller;
         image =
             new Texture(Gdx.files.internal("chess_pieces/" + chessPiece.getType() + chessPiece.getColor() + ".png"));
-        setBounds(Cords.xToPixels(chessPiece.getX()), Cords.yToPixels(chessPiece.getY()), GuiParams.CHESS_PIECE_WIDTH,
-            GuiParams.CHESS_PIECE_HEIGHT);
+        setBounds(Cords.xToPixels(chessPiece.getX()), Cords.yToPixels(chessPiece.getY()), CHESS_PIECE_SIZE,
+            CHESS_PIECE_SIZE);
         addListener(new DragChessPieceListener());
     }
 
@@ -54,19 +56,23 @@ class ChessPieceActor extends Actor {
 
         @Override
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            super.touchUp(event, x, y, pointer, button);
             Vector2 mouseDropPosition =
                 getParent().stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-            int xPixels = calculateSnappedPosition(mouseDropPosition.x, GuiParams.CHESS_PIECE_WIDTH);
-            int yPixels = calculateSnappedPosition(mouseDropPosition.y, GuiParams.CHESS_PIECE_HEIGHT);
+            int xPixels = calculateSnappedPosition(mouseDropPosition.x);
+            int yPixels = calculateSnappedPosition(mouseDropPosition.y);
             int xCords = Cords.xToCords(xPixels);
             int yCords = Cords.yToCords(yPixels);
-            boolean valid = controller.move(MoveDto.create(chessPiece, xCords, yCords));
-            if (valid) {
-                setPosition(xPixels, yPixels);
-            } else {
+            if (!cordsValid(xCords, yCords)) {
                 setOnStartPosition();
+                return;
             }
-            super.touchUp(event, x, y, pointer, button);
+            boolean valid = controller.move(MoveDto.create(chessPiece, xCords, yCords));
+            if (!valid) {
+                setOnStartPosition();
+                return;
+            }
+            setPosition(xPixels, yPixels);
         }
 
         private void setOnTopLayer() {
@@ -74,12 +80,16 @@ class ChessPieceActor extends Actor {
             getParent().toFront();
         }
 
+        private boolean cordsValid(int xCords, int yCords) {
+            return xCords >= 0 && xCords <= 7 && yCords >= 0 && yCords <= 7;
+        }
+
         private void setOnStartPosition() {
             setPosition(startPosition.x, startPosition.y);
         }
 
-        private int calculateSnappedPosition(float position, int gridSize) {
-            return (int) Math.floor(position / gridSize) * gridSize;
+        private int calculateSnappedPosition(float position) {
+            return (int) Math.floor(position / CHESS_PIECE_SIZE) * CHESS_PIECE_SIZE;
         }
     }
 }

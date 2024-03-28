@@ -16,4 +16,6 @@ class Cords {
     static int yToCords(int y) {
         return y / 100;
     }
+
+
 }
