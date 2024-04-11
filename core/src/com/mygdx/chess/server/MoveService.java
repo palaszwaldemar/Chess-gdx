@@ -32,7 +32,8 @@ class MoveService {
         moveRookBeforeKing();
         move.inUse().move(move.x(), move.y()); //todo ?
         pawnPromotion();
-        if (isStalemate(moveReport.getNextColor())) {
+        if (isStalemate(moveReport.getNextColor())) {// TODO: 11.04.2024 zastanowić się czy nie połączyć razem
+            // stalemate i checkmate
             moveReport.setStalemate();
         }
         activeColor = moveReport.getNextColor();

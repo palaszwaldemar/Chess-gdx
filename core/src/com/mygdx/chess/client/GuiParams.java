@@ -12,4 +12,9 @@ public class GuiParams {
     static final int PROMOTION_WINDOW_Y_POSITION = 500;
     static final int PROMOTION_WINDOW_WIDTH = 400;
     static final int PROMOTION_WINDOW_HEIGHT = 100;
+    static final int END_WINDOW_X_POSITION = 400;
+    static final int END_WINDOW_Y_POSITION = 500;
+    static final int END_WINDOW_WIDTH = 200;
+    static final int END_WINDOW_HEIGHT = 100;
+
 }

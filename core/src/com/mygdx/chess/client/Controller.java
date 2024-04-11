@@ -58,6 +58,12 @@ class Controller {
         return moveReport.isValid();
     }
 
+    private void showEndWindow(MoveReport moveReport) {
+        EndWindow endWindow = new EndWindow(moveReport, this);
+        stage.addActor(endWindow);
+        lockChessboard(true);
+    }
+
     private void switchPlayer() {
         for (PlayerGroup player : players) {
             if (player.getChessPieceColor() == moveReport.getNextColor()) {
