@@ -7,6 +7,7 @@ public class MoveReport {
     private ChessPiece promotionTarget;
     private Rook rookToMove;
     private final ChessPieceColor activeColor;
+    private boolean isStalemate = false;
     private boolean valid;
 
     public MoveReport(ChessPiece chessPieceInUse) {
@@ -30,16 +31,20 @@ public class MoveReport {
         this.rookToMove = rookToMove;
     }
 
+    void setValid() {
+        valid = true;
+    }
+
+    void setStalemate() {
+        isStalemate = true;
+    }
+
     public ChessPieceColor getActiveColor() {
         return activeColor;
     }
 
     public ChessPieceColor getNextColor() {
         return activeColor == ChessPieceColor.WHITE ? ChessPieceColor.BLACK : ChessPieceColor.WHITE;
-    }
-
-    void setValid() {
-        valid = true;
     }
 
     public int getNewXRook() {
@@ -76,5 +81,9 @@ public class MoveReport {
 
     public boolean isValid() {
         return valid;
+    }
+
+    public boolean isStalemate() {
+        return isStalemate;
     }
 }
