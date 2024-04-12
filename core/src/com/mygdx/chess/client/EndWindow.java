@@ -15,9 +15,9 @@ public class EndWindow extends Actor {
     EndWindow(MoveReport moveReport, Controller controller) {
         setBounds(GuiParams.END_WINDOW_X_POSITION, GuiParams.END_WINDOW_Y_POSITION, GuiParams.END_WINDOW_WIDTH,
             GuiParams.END_WINDOW_HEIGHT);
-        String text = moveReport.isStalemate() ? "stalemate" : "checkmate";
+        String endGame = moveReport.isCheckMate() ? "checkmate" : "stalemate";
         this.controller = controller;
-        texture = new Texture(Gdx.files.internal("end_window/" + text + ".png"));
+        texture = new Texture(Gdx.files.internal("end_window/" + endGame + ".png"));
         addListener(new EndWindowListener());
     }
 

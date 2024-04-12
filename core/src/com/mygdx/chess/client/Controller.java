@@ -48,8 +48,9 @@ class Controller {
             return false;
         }
         this.moveReport = moveReport;
-        if (moveReport.isStalemate()) {
-            System.out.println("end game. stalemate"); // TODO: 11.04.2024 finish
+        if (moveReport.isStalemate() || moveReport.isCheckMate()) {
+            showEndWindow(moveReport);
+            return true;
         }
         lastPlayerEnemy().removeActor(moveReport.getChessPieceToRemove());
         castling(moveReport);

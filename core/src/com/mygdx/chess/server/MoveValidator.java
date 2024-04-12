@@ -173,7 +173,7 @@ class MoveValidator {
         return true;
     }
 
-    private boolean noAttacksFromEnemies(ChessPiece target) {
+    boolean noAttacksFromEnemies(ChessPiece target) {
         int x = target.getX();
         int y = target.getY();
         ChessPieceColor enemyColor = target.getEnemyColor();

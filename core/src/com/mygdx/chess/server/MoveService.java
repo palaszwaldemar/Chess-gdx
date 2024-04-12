@@ -32,10 +32,7 @@ class MoveService {
         moveRookBeforeKing();
         move.inUse().move(move.x(), move.y()); //todo ?
         pawnPromotion();
-        if (isStalemate(moveReport.getNextColor())) {// TODO: 11.04.2024 zastanowić się czy nie połączyć razem
-            // stalemate i checkmate
-            moveReport.setStalemate();
-        }
+        checkStalemateOrCheckMate();
         activeColor = moveReport.getNextColor();
         return moveReport;
     }
@@ -44,14 +41,23 @@ class MoveService {
         return activeColor;
     }
 
-    private boolean isStalemate(ChessPieceColor nextColor) {
-        List<ChessPiece> chessPieces = repository.getChessPieces(nextColor);
+    private void checkStalemateOrCheckMate() {
+        ChessPieceColor color = moveReport.getNextColor();
+        List<ChessPiece> chessPieces = repository.getChessPieces(color);
+        ChessPiece king = repository.getKing(chessPieces, color).orElseThrow();
+        boolean isStalemate = true;
         for (ChessPiece chessPiece : chessPieces) {
             if (canMoveAnyWhere(chessPiece)) {
-                return false;
+                isStalemate = false;
+                break;
             }
         }
-        return true;
+        if (isStalemate) {
+            moveReport.setStalemate();
+        }
+        if (isStalemate && isCheck(king)) {
+            moveReport.setCheckMate();
+        }
     }
 
     private boolean canMoveAnyWhere(ChessPiece chessPiece) {
@@ -64,6 +70,10 @@ class MoveService {
             }
         }
         return false;
+    }
+
+    private boolean isCheck(ChessPiece king) {
+        return !moveValidator.noAttacksFromEnemies(king);
     }
 
     private void capturePiece() {

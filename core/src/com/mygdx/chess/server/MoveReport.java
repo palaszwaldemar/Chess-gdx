@@ -8,6 +8,7 @@ public class MoveReport {
     private Rook rookToMove;
     private final ChessPieceColor activeColor;
     private boolean isStalemate = false;
+    private boolean isCheckMate = false;
     private boolean valid;
 
     public MoveReport(ChessPiece chessPieceInUse) {
@@ -37,6 +38,10 @@ public class MoveReport {
 
     void setStalemate() {
         isStalemate = true;
+    }
+
+    void setCheckMate() {
+        isCheckMate = true;
     }
 
     public ChessPieceColor getActiveColor() {
@@ -85,5 +90,9 @@ public class MoveReport {
 
     public boolean isStalemate() {
         return isStalemate;
+    }
+
+    public boolean isCheckMate() {
+        return isCheckMate;
     }
 }
