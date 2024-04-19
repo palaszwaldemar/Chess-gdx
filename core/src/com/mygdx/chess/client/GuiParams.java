@@ -16,5 +16,4 @@ public class GuiParams {
     static final int END_WINDOW_Y_POSITION = 500;
     static final int END_WINDOW_WIDTH = 200;
     static final int END_WINDOW_HEIGHT = 100;
-
 }

@@ -42,7 +42,7 @@ class PlayerGroup extends Group {
 
     void removeActor(ChessPiece chessPieceToRemove) {
         List<ChessPieceActor> chessPieceActors = getChessPieceActors();
-        for (ChessPieceActor chessPieceActor : chessPieceActors) { // todo stream
+        for (ChessPieceActor chessPieceActor : chessPieceActors) {
             if (chessPieceActor.getChessPiece().equals(chessPieceToRemove)) {
                 removeActor(chessPieceActor);
             }

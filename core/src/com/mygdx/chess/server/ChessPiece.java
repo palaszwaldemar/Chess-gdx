@@ -9,7 +9,7 @@ public abstract class ChessPiece implements Cloneable {
     private final ChessPieceType type;
     boolean moved;
 
-    ChessPiece(ChessPieceDto chessPieceDto){
+    ChessPiece(ChessPieceDto chessPieceDto) {
         x = chessPieceDto.x();
         y = chessPieceDto.y();
         color = chessPieceDto.color();

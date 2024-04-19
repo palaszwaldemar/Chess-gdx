@@ -7,7 +7,6 @@ public class ServerFacade {
     private final MoveService moveService;
     private final ChessPieceFactory chessPieceFactory;
 
-
     public ServerFacade() {
         repository = new ChessPieceRepository();
         chessPieceFactory = new ChessPieceFactory();

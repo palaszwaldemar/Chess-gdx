@@ -13,5 +13,4 @@ public record MoveDto(ChessPiece inUse, int x, int y, ChessPieceType promotionTy
         return create(inUse, x, y, null);
     }
 }
-//todo czy dałoby radę zrobić ChessPieceDto in use?
 

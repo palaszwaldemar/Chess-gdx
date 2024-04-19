@@ -30,7 +30,7 @@ class MoveService {
         moveReport.setValid();
         capturePiece();
         moveRookBeforeKing();
-        move.inUse().move(move.x(), move.y()); //todo ?
+        move.inUse().move(move.x(), move.y());
         pawnPromotion();
         checkStalemateOrCheckMate();
         activeColor = moveReport.getNextColor();

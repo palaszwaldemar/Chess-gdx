@@ -7,8 +7,7 @@ import java.util.Optional;
 class ChessPieceRepository {
     private final List<ChessPiece> chessPieces = new ArrayList<>();
 
-
-    void addAll(List<ChessPiece> chessPiecesToAdd){
+    void addAll(List<ChessPiece> chessPiecesToAdd) {
         chessPieces.addAll(chessPiecesToAdd);
     }
 
@@ -86,5 +85,4 @@ class ChessPieceRepository {
     void add(ChessPiece newFigure) {
         chessPieces.add(newFigure);
     }
-    // TODO: 04.01.2024 wrócić po przerobieniu Streamów
 }

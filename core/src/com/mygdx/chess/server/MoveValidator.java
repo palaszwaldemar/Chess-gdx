@@ -14,8 +14,7 @@ class MoveValidator {
 
     boolean canMove(MoveDto move) {
         this.move = move;
-        return isOnTheBoard() && friendIsNotHere() && move.inUse().isCorrectMovement(move.x(),
-            move.y()) &&
+        return isOnTheBoard() && friendIsNotHere() && move.inUse().isCorrectMovement(move.x(), move.y()) &&
             kingWillNotBeInCheck() && isValidMoveByChessPieceType();
     }
 
@@ -34,18 +33,15 @@ class MoveValidator {
     }
 
     private boolean isValidMoveByChessPieceType() {
-        switch (move.inUse().getType()) {
-            case PAWN:
-                return isValidPawnMove();
-            case ROOK:
-            case RUNNER:
-            case QUEEN:
-                return isClearLineForChessPieceInUse();
-            case KING:
+        return switch (move.inUse().getType()) {
+            case PAWN -> isValidPawnMove();
+            case ROOK, RUNNER, QUEEN -> isClearLineForChessPieceInUse();
+            case KING -> {
                 ChessPiece king = move.inUse();
-                return isValidKingMove(king);
-        }
-        return true;
+                yield isValidKingMove(king);
+            }
+            default -> true;
+        };
     }
 
     private boolean kingWillNotBeInCheck() {
@@ -74,21 +70,16 @@ class MoveValidator {
     }
 
     private boolean isCheck(ChessPiece defendingChessPiece, int kingX, int kingY, List<ChessPiece> chessPieces) {
-        switch (defendingChessPiece.getType()) {
-            case PAWN:
+        return switch (defendingChessPiece.getType()) {
+            case PAWN -> {
                 Pawn pawn = (Pawn) defendingChessPiece;
-                return pawn.isAttackingField(kingX, kingY);
-            case KNIGHT:
-                return defendingChessPiece.isCorrectMovement(kingX, kingY);
-            case ROOK:
-            case RUNNER:
-            case QUEEN:
-                return isClearLineForChessPiece(defendingChessPiece, kingX, kingY, chessPieces) &&
-                    defendingChessPiece.isCorrectMovement(kingX, kingY);
-            case KING:
-                return kingDefendingFiled(defendingChessPiece, kingX, kingY);
-        }
-        return false;
+                yield pawn.isAttackingField(kingX, kingY);
+            }
+            case KNIGHT -> defendingChessPiece.isCorrectMovement(kingX, kingY);
+            case ROOK, RUNNER, QUEEN -> isClearLineForChessPiece(defendingChessPiece, kingX, kingY, chessPieces) &&
+                defendingChessPiece.isCorrectMovement(kingX, kingY);
+            case KING -> kingDefendingFiled(defendingChessPiece, kingX, kingY);
+        };
     }
 
     private boolean kingDefendingFiled(ChessPiece enemyKing, int kingX, int kingY) {
