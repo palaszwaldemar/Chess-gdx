@@ -272,3 +272,129 @@ class MoveValidatorStartingBoardTest {
         assertEquals(expectedOutcome, validator.canMove(move(RUNNER, BLACK, startX, startY, endX, endY)));
     }
 }
+
+class MoveValidatorInProgresGameTest {
+    private ChessPieceRepository repository;
+    private MoveValidator validator;
+
+    @BeforeEach
+    void setUp() {
+        repository = new ChessPieceRepository();
+        validator = new MoveValidator(repository);
+        prepareChessBoard();
+    }
+
+    private void prepareChessBoard() {
+        repository.add(new Pawn(new ChessPieceDto(PAWN, WHITE, 0, 2)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, WHITE, 1, 1)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, WHITE, 2, 3)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, WHITE, 3, 2)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, WHITE, 4, 1)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, WHITE, 5, 1)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, WHITE, 6, 2)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, WHITE, 7, 1)));
+
+        repository.add(new Pawn(new ChessPieceDto(PAWN, BLACK, 0, 3)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, BLACK, 1, 6)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, BLACK, 2, 6)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, BLACK, 3, 4)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, BLACK, 5, 6)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, BLACK, 6, 6)));
+        repository.add(new Pawn(new ChessPieceDto(PAWN, BLACK, 7, 5)));
+
+        repository.add(new Rook(new ChessPieceDto(ROOK, WHITE, 0, 0)));
+        repository.add(new Rook(new ChessPieceDto(ROOK, WHITE, 6, 0)));
+        repository.add(new Rook(new ChessPieceDto(ROOK, BLACK, 0, 6)));
+        repository.add(new Rook(new ChessPieceDto(ROOK, BLACK, 7, 7)));
+
+        repository.add(new Knight(new ChessPieceDto(KNIGHT, WHITE, 2, 2)));
+        repository.add(new Knight(new ChessPieceDto(KNIGHT, WHITE, 5, 2)));
+        repository.add(new Knight(new ChessPieceDto(KNIGHT, BLACK, 1, 7)));
+        repository.add(new Knight(new ChessPieceDto(KNIGHT, BLACK, 5, 5)));
+
+        repository.add(new Runner(new ChessPieceDto(RUNNER, WHITE, 4, 2)));
+        repository.add(new Runner(new ChessPieceDto(RUNNER, WHITE, 7, 2)));
+        repository.add(new Runner(new ChessPieceDto(RUNNER, BLACK, 3, 5)));
+        repository.add(new Runner(new ChessPieceDto(RUNNER, BLACK, 3, 6)));
+
+        repository.add(new Queen(new ChessPieceDto(QUEEN, WHITE, 5, 4)));
+        repository.add(new Queen(new ChessPieceDto(QUEEN, BLACK, 1, 4)));
+
+        repository.add(new King(new ChessPieceDto(KING, WHITE, 3, 0)));
+        repository.add(new King(new ChessPieceDto(KING, BLACK, 3, 7)));
+    }
+
+    private MoveDto move(ChessPieceType type, ChessPieceColor color, int startX, int startY, int endX, int endY) {
+        ChessPiece chessPieceToDto = null;
+        for (ChessPiece chessPiece : repository.getChessPieces()) {
+            if (chessPiece.getType() == type && chessPiece.getColor() == color && chessPiece.getX() == startX &&
+                chessPiece.getY() == startY) {
+                chessPieceToDto = chessPiece;
+            }
+        }
+        return MoveDto.create(chessPieceToDto, endX, endY);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "1, 4, 0, 4, true",
+        "1, 4, 2, 3, true",
+        "1, 4, 3, 2, false",
+        "1, 4, 3, 4, false",
+        "1, 4, 3, 5, false",
+        "1, 4, 2, 5, true",
+        "1, 4, -1, 4, false",
+        "1, 4, 1, 1, true",
+        "1, 4, 0, 2, false"
+    })
+    void correctMoveByBlackQueen(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(QUEEN, BLACK, startX, startY, endX, endY)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "5, 4, 5, 5, true",
+        "5, 4, 7, 6, true",
+        "5, 4, 3, 6, true",
+        "5, 4, 5, 2, false",
+        "5, 4, 6, 2, false",
+        "5, 4, 4, 2, false",
+        "5, 4, 2, 7, false",
+        "5, 4, 3, 4, true",
+        "5, 4, 0, 2, false",
+        "5, 4, 5, 3, true"
+    })
+    void correctMoveByWhiteQueen(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(QUEEN, WHITE, startX, startY, endX, endY)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "3, 0, 1, 0, false",
+        "3, 0, 2, 0, true",
+        "3, 0, 2, 1, true",
+        "3, 0, 4, 0, true",
+        "3, 0, 4, 1, false",
+        "3, 0, 3, 2, false",
+        "3, 0, -1, 2, false",
+        "3, 0, 6, 7, false"
+    })
+    void correctMoveByWhiteKing(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(KING, WHITE, startX, startY, endX, endY)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "3, 7, 2, 7, true",
+        "3, 7, 1, 7, false",
+        "3, 7, 2, 6, false",
+        "3, 7, 3, 6, false",
+        "3, 7, 4, 6, true",
+        "3, 7, 4, 7, true",
+        "3, 7, 3, 8, false",
+        "3, 7, 6, 3, false"
+    })
+    void correctMoveByBlackKing(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(KING, BLACK, startX, startY, endX, endY)));
+    }
+}
