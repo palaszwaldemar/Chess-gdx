@@ -397,4 +397,100 @@ class MoveValidatorInProgresGameTest {
     void correctMoveByBlackKing(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
         assertEquals(expectedOutCome, validator.canMove(move(KING, BLACK, startX, startY, endX, endY)));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "2, 2, 3, 0, false",
+        "2, 2, 1, 4, true",
+        "2, 2, 4, 3, true",
+        "2, 2, 6, 4, false",
+        "5, 2, 6, 0, false",
+        "5, 2, 4, 0, true",
+        "5, 2, 4, 4, true",
+        "5, 2, 8, 3, false"
+    })
+    void correctMoveByWhiteKnights(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(KNIGHT, WHITE, startX, startY, endX, endY)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "1, 7, 0, 5, true",
+        "1, 7, 2, 5, true",
+        "1, 7, -1, 7, false",
+        "1, 7, 2, 7, false",
+        "5, 5, 6, 4, false",
+        "5, 5, 4, 5, false",
+        "5, 5, 5, 6, false",
+        "5, 5, 4, 7, true"
+    })
+    void correctMoveByBlackKnights(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(KNIGHT, BLACK, startX, startY, endX, endY)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "4, 2, 4, 4, false",
+        "4, 2, 3, 2, false",
+        "4, 2, 2, 1, false",
+        "4, 2, 6, 4, true",
+        "7, 2, 5, 0, true",
+        "7, 2, 6, 1, true",
+        "7, 2, 6, 3, true",
+        "7, 2, 4, 5, false"
+    })
+    void correctMoveByWhiteRunners(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(RUNNER, WHITE, startX, startY, endX, endY)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "3, 5, 6, 2, true",
+        "3, 5, 7, 1, false",
+        "3, 5, 1, 3, true",
+        "3, 5, 5, 3, true",
+        "3, 6, 0, 3, false",
+        "3, 6, 1, 4, false",
+        "3, 6, 5, 4, true",
+        "3, 6, 0, 5, false"
+    })
+    void correctMoveByBlackRunners(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(RUNNER, BLACK, startX, startY, endX, endY)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "0, 2, 0, 3, false",
+        "0, 2, 0, 4, false",
+        "0, 2, 1, 3, false",
+        "0, 2, 0, 1, false",
+        "1, 1, 1, 2, true",
+        "1, 1, 1, 3, true",
+        "4, 1, 4, 2, false",
+        "4, 1, 5, 2, false",
+        "4, 1, 4, 3, false",
+        "2, 3, 2, 4, true",
+        "2, 3, 3, 4, true"
+    })
+    void correctMoveByWhitePawns(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(PAWN, WHITE, startX, startY, endX, endY)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "0, 3, 0, 2, false",
+        "1, 6, 1, 4, false",
+        "2, 6, 2, 4, true",
+        "3, 4, 2, 3, true",
+        "5, 6, 4, 6, false",
+        "6, 6, 6, 4, true",
+        "7, 5, 7, 4, true",
+        "3, 4, 3, 2, false",
+        "2, 6, 5, 1, false",
+        "1, 6, 10, 9, false",
+        "6, 5, -1, 4, false"
+    })
+    void correctMoveByBlackPawns(int startX, int startY, int endX, int endY, boolean expectedOutCome) {
+        assertEquals(expectedOutCome, validator.canMove(move(PAWN, BLACK, startX, startY, endX, endY)));
+    }
 }
