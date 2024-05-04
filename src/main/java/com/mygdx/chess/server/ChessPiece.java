@@ -65,6 +65,10 @@ public abstract class ChessPiece implements Cloneable {
         return this.type == type;
     }
 
+    void setMoved(boolean moved) {
+        this.moved = moved;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
