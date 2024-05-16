@@ -1,28 +1,56 @@
 package com.mygdx.chess.server;
 
-public class TestBoardProvider {
-    static String gameBoardForPawnsTest(boolean infoAboutMoves) {
-        if (infoAboutMoves) {
-            return """
-                0 0 0 - - 0 0 0
-                1 0 - 1 0 0 - 0
-                1 1 1 1 - - - -
-                - - - 1 - 1 - -
-                1 - - - 1 - 1 -
-                - 1 - - - - - -
-                0 - 0 - - - 0 0
-                0 0 0 0 0 - - 0
-                """;
-        }
-        return """
-            ♜ ♞ ♝ ⏥ ⏥ ♝ ♞ ♜
-            ♙ ♟ ⏥ ♚ ♟ ♟ ⏥ ♟
-            ♟ ♙ ♟ ♟ ⏥ ⏥ ⏥ ⏥
-            ⏥ ⏥ ⏥ ♛ ⏥ ♘ ⏥ ⏥
-            ♗ ⏥ ⏥ ⏥ ♙ ⏥ ♟ ⏥
-            ⏥ ♙ ⏥ ⏥ ⏥ ⏥ ⏥ ⏥
-            ♙ ⏥ ♙ ⏥ ⏥ ⏥ ♙ ♙
-            ♖ ♘ ♗ ♕ ♔ ⏥ ⏥ ♖
-            """;
+public enum TestBoardProvider {
+    PAWNS_TEST_BOARD("""
+        ♜ ♞ ♝ ⏥ ⏥ ♝ ♞ ♜
+        ♙ ♟ ⏥ ♚ ♟ ♟ ⏥ ♟
+        ♟ ♙ ♟ ♟ ⏥ ⏥ ⏥ ⏥
+        ⏥ ⏥ ⏥ ♛ ⏥ ♘ ⏥ ⏥
+        ♗ ⏥ ⏥ ⏥ ♙ ⏥ ♟ ⏥
+        ⏥ ♙ ⏥ ⏥ ⏥ ⏥ ⏥ ⏥
+        ♙ ⏥ ♙ ⏥ ⏥ ⏥ ♙ ♙
+        ♖ ♘ ♗ ♕ ♔ ⏥ ⏥ ♖
+        """, """
+         0 0 0 - - 0 0 0
+         1 0 - 1 0 0 - 0
+         1 1 1 1 - - - -
+         - - - 1 - 1 - -
+         1 - - - 1 - 1 -
+         - 1 - - - - - -
+         0 - 0 - - - 0 0
+         0 0 0 0 0 - - 0
+        """), KNIGHTS_TEST_BOARD("""
+        ♜ ⏥ ♝ ♛ ♚ ♝ ⏥ ♜
+        ♟ ♟ ♟ ♞ ♟ ♟ ♟ ♟
+        ⏥ ⏥ ♗ ♟ ♕ ⏥ ⏥ ⏥
+        ⏥ ♗ ⏥ ⏥ ♖ ♙ ⏥ ⏥
+        ⏥ ⏥ ⏥ ♘ ⏥ ⏥ ⏥ ⏥
+        ⏥ ♙ ♞ ⏥ ⏥ ♘ ⏥ ⏥
+        ♙ ⏥ ♙ ♙ ♙ ♙ ♙ ♖
+        ⏥ ⏥ ⏥ ⏥ ⏥ ⏥ ♔ ⏥
+        """, """
+        0 - 0 0 0 0 - 0
+        0 0 0 1 0 0 0 0
+        - - 1 1 1 - - -
+        - 1 - - 1 1 - -
+        - - - 1 - - - -
+        - 1 1 - - 1 - -
+        0 - 0 0 0 0 0 1
+        - - - - - - 1 -
+        """);
+    private final String board;
+    private final String infoAboutMovesBoard;
+
+    TestBoardProvider(String board, String infoAboutMovesBoard) {
+        this.board = board;
+        this.infoAboutMovesBoard = infoAboutMovesBoard;
+    }
+
+    String getBoard() {
+        return board;
+    }
+
+    String getInfoAboutMoves() {
+        return infoAboutMovesBoard;
     }
 }
