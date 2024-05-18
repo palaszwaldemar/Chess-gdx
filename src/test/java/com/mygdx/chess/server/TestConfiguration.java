@@ -47,7 +47,7 @@ public class TestConfiguration {
         return value.equals("1");
     }
 
-    boolean chessPieceMoveTest(int startX, int startY, int[][] allCorrectMoves) {
+    boolean chessPieceValidityMoveTest(int startX, int startY, int[][] allCorrectMoves) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if ((allCorrectMoves.length == 0 && validator.canMove(moveDto(startX, startY, i, j))) ||
