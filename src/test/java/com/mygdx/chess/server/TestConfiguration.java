@@ -8,11 +8,10 @@ public class TestConfiguration {
     private final MoveValidator validator;
     private final TestBoardProvider boardProvider;
 
-    TestConfiguration(ChessPieceRepository repository, ChessPieceFactory chessPieceFactory, MoveValidator validator,
-                      TestBoardProvider boardProvider) {
-        this.repository = repository;
-        this.chessPieceFactory = chessPieceFactory;
-        this.validator = validator;
+    TestConfiguration(TestBoardProvider boardProvider) {
+        this.repository = new ChessPieceRepository();
+        this.chessPieceFactory = new ChessPieceFactory();
+        this.validator = new MoveValidator(repository);
         this.boardProvider = boardProvider;
         loadBoard();
     }

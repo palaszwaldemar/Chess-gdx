@@ -91,6 +91,24 @@ public enum TestBoardProvider {
         - - - 1 - - - -
         - - - 0 - - - -
         1 1 - 1 - 1 - -
+        """), QUEENS_TEST_BOARD("""
+        ⏥ ♚ ♝ ⏥ ⏥ ⏥ ⏥ ⏥
+        ⏥ ⏥ ⏥ ⏥ ♟ ⏥ ♟ ⏥
+        ⏥ ♜ ⏥ ⏥ ⏥ ♝ ⏥ ♟
+        ⏥ ⏥ ⏥ ♛ ⏥ ⏥ ⏥ ⏥
+        ⏥ ♞ ⏥ ⏥ ⏥ ⏥ ♕ ⏥
+        ♖ ⏥ ⏥ ⏥ ⏥ ⏥ ⏥ ⏥
+        ⏥ ♙ ⏥ ⏥ ♙ ♔ ⏥ ⏥
+        ⏥ ♘ ♗ ⏥ ⏥ ⏥ ♘ ♖
+        """, """
+        - 1 1 - - - - -
+        - - - - 0 - 0 -
+        - 1 - - - 1 - 1
+        - - - 1 - - - -
+        - 1 - - - - 1 -
+        1 - - - - - - -
+        - 0 - - 0 1 - -
+        - 1 1 - - - 0 0
         """);
     private final String board;
     private final String infoAboutMovesBoard;
