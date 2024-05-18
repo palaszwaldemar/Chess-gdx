@@ -76,4 +76,17 @@ class MoveValidatorTest {
         TestConfiguration tc = new TestConfiguration(repository, chessPieceFactory, validator, ROOKS_TEST_BOARD);
         assertTrue(tc.chessPieceValidityMoveTest(startX, startY, allCorrectsMoves));
     }
+
+    private static Stream<Arguments> kings() {
+        return Stream.of(
+            Arguments.of(2, 4, new int[][]{{1, 5}, {1, 4}, {1, 3}, {2, 3}, {2, 5}, {3, 3}, {3, 4}, {3, 5}}),
+            Arguments.of(6, 3, new int[][]{{5, 4}, {5, 3}, {5, 2}, {6, 2}, {7, 4}, {7, 2}}));
+    }
+
+    @ParameterizedTest
+    @MethodSource("kings")
+    void testKingsMovesValidity(int startX, int startY, int[][] allCorrectsMoves) {
+        TestConfiguration tc = new TestConfiguration(repository, chessPieceFactory, validator, KINGS_TEST_BOARD);
+        assertTrue(tc.chessPieceValidityMoveTest(startX, startY, allCorrectsMoves));
+    }
 }

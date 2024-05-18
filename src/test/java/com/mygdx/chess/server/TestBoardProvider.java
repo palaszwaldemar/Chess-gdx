@@ -73,6 +73,24 @@ public enum TestBoardProvider {
         - - - - 1 - - 1
         0 0 1 - 1 - 0 -
         - - - - 0 - 0 -
+        """), KINGS_TEST_BOARD("""
+        ♜ ⏥ ⏥ ⏥ ⏥ ♝ ⏥ ♜
+        ♟ ♟ ⏥ ⏥ ⏥ ♟ ⏥ ♞
+        ♙ ⏥ ⏥ ⏥ ♙ ⏥ ⏥ ⏥
+        ⏥ ⏥ ♚ ⏥ ⏥ ⏥ ⏥ ⏥
+        ⏥ ⏥ ⏥ ⏥ ⏥ ⏥ ♔ ♖
+        ⏥ ⏥ ⏥ ♟ ⏥ ⏥ ⏥ ⏥
+        ⏥ ⏥ ⏥ ♙ ⏥ ⏥ ⏥ ⏥
+        ♖ ♘ ⏥ ♕ ⏥ ♗ ⏥ ⏥
+        """, """
+        0 - - - - 0 - 0
+        0 0 - - - 0 - 1
+        1 - - - 1 - - -
+        - - 1 - - - - -
+        - - - - - - 1 1
+        - - - 1 - - - -
+        - - - 0 - - - -
+        1 1 - 1 - 1 - -
         """);
     private final String board;
     private final String infoAboutMovesBoard;
