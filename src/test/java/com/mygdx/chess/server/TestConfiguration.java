@@ -77,6 +77,18 @@ public class TestConfiguration {
         return validator.canMove(moveDto(starX, startY, endX, endY));
     }
 
+    boolean isStaleMate(int startX, int startY, int endX, int endY) {
+        MoveService moveService = new MoveService(repository, chessPieceFactory);
+        MoveReport moveReport = moveService.move(moveDto(startX, startY, endX, endY));
+        return moveReport.isStalemate();
+    }
+
+    boolean isCheckMate(int startX, int startY, int endX, int endY) {
+        MoveService moveService = new MoveService(repository, chessPieceFactory);
+        MoveReport moveReport = moveService.move(moveDto(startX, startY, endX, endY));
+        return moveReport.isCheckMate();
+    }
+
     private MoveDto moveDto(int startX, int startY, int endX, int endY) {
         ChessPiece chessPieceToDto = repository.getChessPiece(startX, startY).orElseThrow();
         return MoveDto.create(chessPieceToDto, endX, endY);
