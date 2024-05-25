@@ -151,7 +151,7 @@ class MoveValidator {
         List<ChessPiece> chessPieces = repository.getChessPieces();
         List<ChessPiece> enemyChessPieces = repository.getChessPieces(enemyColor);
         int startXLineToRightSide = move.x() == 6 ? 5 : 1;
-        int endXLineFromLeftSide = move.y() == 6 ? 7 : 4;
+        int endXLineFromLeftSide = move.x() == 6 ? 7 : 4;
         int y = move.inUse().getY();
         for (int i = startXLineToRightSide; i < endXLineFromLeftSide; i++) {
             for (ChessPiece enemyChessPiece : enemyChessPieces) {

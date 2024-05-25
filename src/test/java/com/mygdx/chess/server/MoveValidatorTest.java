@@ -1,5 +1,6 @@
 package com.mygdx.chess.server;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -92,5 +93,58 @@ class MoveValidatorTest {
     void testQueensMovesValidity(int startX, int startY, int[][] allCorrectsMoves) {
         TestConfiguration tc = new TestConfiguration(QUEENS_TEST_BOARD);
         assertTrue(tc.chessPieceValidityMoveTest(startX, startY, allCorrectsMoves));
+    }
+
+    @Test
+    void testCastlingWhenKingInCheck() {
+        TestConfiguration tc = new TestConfiguration(CASTLING_TEST_BOARD_01);
+        assertFalse(tc.isPossibleCastling(4, 7, 2, 7));
+        assertFalse(tc.isPossibleCastling(4, 7, 6, 7));
+    }
+
+    @Test
+    void testCastlingWithKingPassingThroughAttackedSquare() {
+        TestConfiguration tc = new TestConfiguration(CASTLING_TEST_BOARD_02);
+        assertFalse(tc.isPossibleCastling(4, 0, 6, 0));
+    }
+
+    @Test
+    void testCastlingWithChessPieceBetweenKingAndRook() {
+        TestConfiguration tc = new TestConfiguration(CASTLING_TEST_BOARD_02);
+        assertFalse(tc.isPossibleCastling(4, 7, 6, 7));
+        assertFalse(tc.isPossibleCastling(4, 7, 2, 7));
+    }
+
+    @Test
+    void testCastlingWithRookNotInOriginalPosition() {
+        TestConfiguration tc = new TestConfiguration(CASTLING_TEST_BOARD_02);
+        assertFalse(tc.isPossibleCastling(4, 0, 2, 0));
+    }
+
+    @Test
+    void testCastlingWithKingOrRookAlreadyMoved() {
+        TestConfiguration tc = new TestConfiguration(CASTLING_TEST_BOARD_03);
+        assertFalse(tc.isPossibleCastling(4, 0, 6, 0));
+        assertFalse(tc.isPossibleCastling(4, 0, 2, 0));
+        assertFalse(tc.isPossibleCastling(4, 7, 2, 7));
+        assertFalse(tc.isPossibleCastling(4, 7, 6, 7));
+    }
+
+    @Test
+    void testCastlingWithKingNotInOriginalPosition() {
+        TestConfiguration tc = new TestConfiguration(CASTLING_TEST_BOARD_04);
+        assertFalse(tc.isPossibleCastling(3, 0, 1, 0));
+        assertFalse(tc.isPossibleCastling(3, 0, 5, 0));
+        assertFalse(tc.isPossibleCastling(3, 7, 5, 7));
+        assertFalse(tc.isPossibleCastling(3, 7, 1, 7));
+    }
+
+    @Test
+    void testCastlingWithAllConditionsMet() {
+        TestConfiguration tc = new TestConfiguration(CASTLING_TEST_BOARD_05);
+        assertTrue(tc.isPossibleCastling(4, 0, 6, 0));
+        assertTrue(tc.isPossibleCastling(4, 0, 2, 0));
+        assertTrue(tc.isPossibleCastling(4, 7, 2, 7));
+        assertTrue(tc.isPossibleCastling(4, 7, 6, 7));
     }
 }

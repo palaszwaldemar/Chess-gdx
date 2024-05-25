@@ -73,6 +73,10 @@ public class TestConfiguration {
         return false;
     }
 
+    boolean isPossibleCastling(int starX, int startY, int endX, int endY) {
+        return validator.canMove(moveDto(starX, startY, endX, endY));
+    }
+
     private MoveDto moveDto(int startX, int startY, int endX, int endY) {
         ChessPiece chessPieceToDto = repository.getChessPiece(startX, startY).orElseThrow();
         return MoveDto.create(chessPieceToDto, endX, endY);
