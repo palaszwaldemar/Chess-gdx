@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mygdx.chess.server.ChessPieceType.KING;
+import static com.mygdx.chess.server.ChessPieceType.PAWN;
+
 class MoveService {
     private final MoveValidator moveValidator;
     private final ChessPieceRepository repository;
@@ -172,7 +175,7 @@ class MoveService {
      * @return True if the current move is not a castling move, false otherwise.
      */
     private boolean isNotKingOrNotCastling() {
-        boolean isNotKingOrNotCastling = !move.inUse().hasType(ChessPieceType.KING);
+        boolean isNotKingOrNotCastling = !move.inUse().hasType(KING);
         if (Math.abs(move.inUse().getX() - move.x()) != 2) {
             isNotKingOrNotCastling = true;
         }
@@ -202,7 +205,7 @@ class MoveService {
      * to another piece.
      */
     private void pawnPromotion() {
-        if (!move.inUse().hasType(ChessPieceType.PAWN)) {
+        if (!move.inUse().hasType(PAWN)) {
             return;
         }
         if (move.y() == 0 || move.y() == 7) {
@@ -232,7 +235,7 @@ class MoveService {
      * @return True if a promotion is possible, false otherwise.
      */
     boolean isPromotion(MoveDto moveDto) {
-        return moveDto.inUse().hasType(ChessPieceType.PAWN) && (moveDto.y() == 0 || moveDto.y() == 7) &&
+        return moveDto.inUse().hasType(PAWN) && (moveDto.y() == 0 || moveDto.y() == 7) &&
             moveValidator.canMove(moveDto);
     }
 }

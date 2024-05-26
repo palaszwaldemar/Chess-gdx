@@ -1,5 +1,8 @@
 package com.mygdx.chess.server;
 
+import static com.mygdx.chess.server.ChessPieceColor.BLACK;
+import static com.mygdx.chess.server.ChessPieceColor.WHITE;
+
 class Pawn extends ChessPiece {
     Pawn(ChessPieceDto chessPieceDto) {
         super(chessPieceDto);
@@ -31,8 +34,8 @@ class Pawn extends ChessPiece {
     }
 
     private boolean isMoveBack(int deltaY) {
-        return (getColor() == ChessPieceColor.WHITE && Integer.signum(deltaY) < 0) ||
-            (getColor() == ChessPieceColor.BLACK && Integer.signum(deltaY) > 0);
+        return (getColor() == WHITE && Integer.signum(deltaY) < 0) ||
+            (getColor() == BLACK && Integer.signum(deltaY) > 0);
     }
 
     private boolean isOneStep(int deltaX, int deltaY) {

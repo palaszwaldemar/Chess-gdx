@@ -2,6 +2,9 @@ package com.mygdx.chess.server;
 
 import java.util.Optional;
 
+import static com.mygdx.chess.server.ChessPieceColor.BLACK;
+import static com.mygdx.chess.server.ChessPieceColor.WHITE;
+
 public enum ChessPieceType {
     PAWN("♙", "♟"),
     ROOK("♖", "♜"),
@@ -28,6 +31,6 @@ public enum ChessPieceType {
     }
 
     ChessPieceColor getColorByUnicodeSymbol(String unicodeSymbol){
-        return unicodeSymbol.equals(unicodeWhite) ? ChessPieceColor.WHITE : ChessPieceColor.BLACK;
+        return unicodeSymbol.equals(unicodeWhite) ? WHITE : BLACK;
     }
 }

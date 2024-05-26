@@ -9,13 +9,15 @@ import com.mygdx.chess.server.ChessPieceColor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mygdx.chess.client.GuiParams.CHESSBOARD_POSITION;
+
 class PlayerGroup extends Group {
     private Controller controller;
     private final ChessPieceColor color;
 
     PlayerGroup(ChessPieceColor color) {
         this.color = color;
-        setPosition(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION);
+        setPosition(CHESSBOARD_POSITION, CHESSBOARD_POSITION);
     }
 
     void setController(Controller controller) {

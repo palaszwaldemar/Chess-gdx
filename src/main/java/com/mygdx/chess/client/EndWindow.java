@@ -8,13 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.chess.server.MoveReport;
 
+import static com.mygdx.chess.client.GuiParams.*;
+
 public class EndWindow extends Actor {
     private final Controller controller;
     private final Texture texture;
 
     EndWindow(MoveReport moveReport, Controller controller) {
-        setBounds(GuiParams.END_WINDOW_X_POSITION, GuiParams.END_WINDOW_Y_POSITION, GuiParams.END_WINDOW_WIDTH,
-            GuiParams.END_WINDOW_HEIGHT);
+        setBounds(END_WINDOW_X_POSITION, END_WINDOW_Y_POSITION, END_WINDOW_WIDTH, END_WINDOW_HEIGHT);
         String endGame = moveReport.isCheckMate() ? "checkmate" : "stalemate";
         this.controller = controller;
         texture = new Texture(Gdx.files.internal("end_window/" + endGame + ".png"));

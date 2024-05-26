@@ -2,6 +2,9 @@ package com.mygdx.chess.server;
 
 import java.util.Objects;
 
+import static com.mygdx.chess.server.ChessPieceColor.BLACK;
+import static com.mygdx.chess.server.ChessPieceColor.WHITE;
+
 public abstract class ChessPiece implements Cloneable {
     int x;
     int y;
@@ -49,10 +52,10 @@ public abstract class ChessPiece implements Cloneable {
 
     public ChessPieceColor getEnemyColor() {
         ChessPieceColor enemyColor;
-        if (hasColor(ChessPieceColor.WHITE)) {
-            enemyColor = ChessPieceColor.BLACK;
+        if (hasColor(WHITE)) {
+            enemyColor = BLACK;
         } else {
-            enemyColor = ChessPieceColor.WHITE;
+            enemyColor = WHITE;
         }
         return enemyColor;
     }

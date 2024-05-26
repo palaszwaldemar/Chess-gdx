@@ -10,6 +10,7 @@ import com.mygdx.chess.server.ChessPieceColor;
 import com.mygdx.chess.server.ChessPieceType;
 import com.mygdx.chess.server.MoveDto;
 
+import static com.mygdx.chess.client.GuiParams.*;
 import static com.mygdx.chess.server.ChessPieceType.*;
 
 class PromotionWindow extends Actor {
@@ -18,8 +19,8 @@ class PromotionWindow extends Actor {
     private final MoveDto move;
 
     PromotionWindow(MoveDto move, Controller controller) {
-        setBounds(GuiParams.PROMOTION_WINDOW_X_POSITION, GuiParams.PROMOTION_WINDOW_Y_POSITION,
-            GuiParams.PROMOTION_WINDOW_WIDTH, GuiParams.PROMOTION_WINDOW_HEIGHT);
+        setBounds(PROMOTION_WINDOW_X_POSITION, PROMOTION_WINDOW_Y_POSITION, PROMOTION_WINDOW_WIDTH,
+            PROMOTION_WINDOW_HEIGHT);
         setDisplay(move.inUse().getColor());
         this.controller = controller;
         this.move = move;
@@ -45,7 +46,7 @@ class PromotionWindow extends Actor {
         }
 
         private ChessPieceType type(int pixelX) {
-            int index = pixelX / GuiParams.CHESS_PIECE_SIZE;
+            int index = pixelX / CHESS_PIECE_SIZE;
             ChessPieceType[] pieces = {QUEEN, ROOK, RUNNER, KNIGHT};
             if (index >= pieces.length) {
                 throw new IllegalStateException("no selected figure");

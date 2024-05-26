@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mygdx.chess.server.ChessPieceType.KING;
+import static com.mygdx.chess.server.ChessPieceType.ROOK;
+
 class ChessPieceRepository {
     private final List<ChessPiece> chessPieces = new ArrayList<>();
 
@@ -63,7 +66,7 @@ class ChessPieceRepository {
             return Optional.empty();
         }
         ChessPiece chessPiece = getChessPiece(x, y).get();
-        if (chessPiece.hasType(ChessPieceType.ROOK)) {
+        if (chessPiece.hasType(ROOK)) {
             return Optional.of((Rook) chessPiece);
         }
         return Optional.empty();
@@ -71,7 +74,7 @@ class ChessPieceRepository {
 
     Optional<ChessPiece> getKing(List<ChessPiece> chessPieces, ChessPieceColor color) {
         for (ChessPiece chessPiece : chessPieces) {
-            if (chessPiece.hasType(ChessPieceType.KING) && chessPiece.hasColor(color)) {
+            if (chessPiece.hasType(KING) && chessPiece.hasColor(color)) {
                 return Optional.of(chessPiece);
             }
         }

@@ -2,6 +2,9 @@ package com.mygdx.chess.server;
 
 import java.util.List;
 
+import static com.mygdx.chess.server.ChessPieceColor.BLACK;
+import static com.mygdx.chess.server.ChessPieceColor.WHITE;
+
 /**
  * This class acts as a facade for the server-side logic of the chess game.
  * It encapsulates the interactions with the chess piece repository, move service, and chess piece factory.
@@ -27,8 +30,8 @@ public class ServerFacade {
      * Initializes the chess board with starting pieces for both white and black.
      */
     private void initBoard() {
-        repository.addAll(chessPieceFactory.createStartingPieces(ChessPieceColor.WHITE));
-        repository.addAll(chessPieceFactory.createStartingPieces(ChessPieceColor.BLACK));
+        repository.addAll(chessPieceFactory.createStartingPieces(WHITE));
+        repository.addAll(chessPieceFactory.createStartingPieces(BLACK));
     }
 
     /**
@@ -37,8 +40,8 @@ public class ServerFacade {
      * @return A ChessGameDto object representing the current state of the game.
      */
     public ChessGameDto getChessGame() {
-        List<ChessPiece> whiteChessPieces = repository.getChessPieces(ChessPieceColor.WHITE);
-        List<ChessPiece> blackChessPieces = repository.getChessPieces(ChessPieceColor.BLACK);
+        List<ChessPiece> whiteChessPieces = repository.getChessPieces(WHITE);
+        List<ChessPiece> blackChessPieces = repository.getChessPieces(BLACK);
         return new ChessGameDto(whiteChessPieces, blackChessPieces, moveService.getActiveColor());
     }
 

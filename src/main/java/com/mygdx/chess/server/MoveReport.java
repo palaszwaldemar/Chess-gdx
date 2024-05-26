@@ -1,5 +1,8 @@
 package com.mygdx.chess.server;
 
+import static com.mygdx.chess.server.ChessPieceColor.BLACK;
+import static com.mygdx.chess.server.ChessPieceColor.WHITE;
+
 public class MoveReport {
     private final ChessPiece chessPieceInUse;
     private ChessPiece chessPieceToRemove;
@@ -49,7 +52,7 @@ public class MoveReport {
     }
 
     public ChessPieceColor getNextColor() {
-        return activeColor == ChessPieceColor.WHITE ? ChessPieceColor.BLACK : ChessPieceColor.WHITE;
+        return activeColor == WHITE ? BLACK : WHITE;
     }
 
     public int getNewXRook() {

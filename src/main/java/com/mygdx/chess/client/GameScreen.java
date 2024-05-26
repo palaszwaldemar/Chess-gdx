@@ -9,9 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mygdx.chess.server.ChessPieceColor;
 
 import java.util.List;
+
+import static com.mygdx.chess.client.GuiParams.*;
+import static com.mygdx.chess.server.ChessPieceColor.BLACK;
+import static com.mygdx.chess.server.ChessPieceColor.WHITE;
 
 class GameScreen implements Screen {
     private final Chess game;
@@ -22,15 +25,14 @@ class GameScreen implements Screen {
     GameScreen(Chess chess) {
         this.game = chess;
         Image background = new Image(new Texture(Gdx.files.internal("chessboard/chessboard.png")));
-        background.setBounds(GuiParams.CHESSBOARD_X_POSITION, GuiParams.CHESSBOARD_Y_POSITION,
-            GuiParams.CHESSBOARD_WIDTH, GuiParams.CHESSBOARD_HEIGHT);
+        background.setBounds(CHESSBOARD_POSITION, CHESSBOARD_POSITION, CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
         stage = new Stage(new ScreenViewport(), game.getBatch());
         stage.addActor(background);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, GuiParams.WINDOW_SIZE, GuiParams.WINDOW_SIZE);
+        camera.setToOrtho(false, WINDOW_SIZE, WINDOW_SIZE);
         Gdx.input.setInputProcessor(stage);
-        PlayerGroup whitePlayer = new PlayerGroup(ChessPieceColor.WHITE);
-        PlayerGroup blackPlayer = new PlayerGroup(ChessPieceColor.BLACK);
+        PlayerGroup whitePlayer = new PlayerGroup(WHITE);
+        PlayerGroup blackPlayer = new PlayerGroup(BLACK);
         controller = new Controller(stage, List.of(whitePlayer, blackPlayer));
         attach(whitePlayer);
         attach(blackPlayer);
