@@ -25,7 +25,7 @@ class GameScreen implements Screen {
     GameScreen(Chess chess) {
         this.game = chess;
         Image background = new Image(new Texture(Gdx.files.internal("chessboard/chessboard.png")));
-        background.setBounds(CHESSBOARD_POSITION, CHESSBOARD_POSITION, CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
+        background.setBounds(CHESSBOARD_POSITION, CHESSBOARD_POSITION, CHESSBOARD_SIZE, CHESSBOARD_SIZE);
         stage = new Stage(new ScreenViewport(), game.getBatch());
         stage.addActor(background);
         camera = new OrthographicCamera();

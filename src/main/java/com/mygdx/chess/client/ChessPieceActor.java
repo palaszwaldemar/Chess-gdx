@@ -29,7 +29,7 @@ class ChessPieceActor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(image, getX(), getY());
+        batch.draw(image, getX(), getY(), getWidth(), getHeight());
     }
 
     ChessPiece getChessPiece() {
