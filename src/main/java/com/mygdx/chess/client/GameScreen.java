@@ -27,7 +27,7 @@ class GameScreen implements Screen {
         stage = new Stage(new ScreenViewport(), game.getBatch());
         stage.addActor(background);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, GuiParams.WINDOW_SIZE_WIDTH, GuiParams.WINDOW_SIZE_HEIGHT);
+        camera.setToOrtho(false, GuiParams.WINDOW_SIZE, GuiParams.WINDOW_SIZE);
         Gdx.input.setInputProcessor(stage);
         PlayerGroup whitePlayer = new PlayerGroup(ChessPieceColor.WHITE);
         PlayerGroup blackPlayer = new PlayerGroup(ChessPieceColor.BLACK);

@@ -1,8 +1,9 @@
 package com.mygdx.chess.client;
 
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+
 public class GuiParams {
-    public static final int WINDOW_SIZE_WIDTH = 1000;
-    public static final int WINDOW_SIZE_HEIGHT = 1000;
+    public static final int WINDOW_SIZE = Lwjgl3ApplicationConfiguration.getDisplayMode().height - 100;
     static final int CHESSBOARD_X_POSITION = 100;
     static final int CHESSBOARD_Y_POSITION = 100;
     static final int CHESS_PIECE_SIZE = 100;
