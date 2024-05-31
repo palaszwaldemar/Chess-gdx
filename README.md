@@ -6,6 +6,7 @@ A chess game built using the libGDX engine.
 - [Features](#features)
 - [Installation](#installation)
 - [Running the Game](#running-the-game)
+- [Tests](#tests)
 
 ## Features
 - Rich grahics and animations powered by libGDX
