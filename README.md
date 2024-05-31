@@ -28,4 +28,4 @@ You can download the latest release from the [Release page](https://github.com/p
 
 ## Running the Game
 1. Ensure you have Java installed and set up correctly. You can check this by runnig the following command in your terminal or command prompt:
-2. ![java -version](1.png.jpg)
+   ![java -version](1.png.jpg)
