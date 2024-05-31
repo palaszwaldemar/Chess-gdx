@@ -4,6 +4,7 @@ A chess game built using the libGDX engine.
 
 ## Table of Contents
 - [Features](#features)
+- [Installation](#installation)
 
 ## Features
 - Rich grahics and animations powered by libGDX
@@ -15,3 +16,5 @@ A chess game built using the libGDX engine.
 - Detection and signaling of checkmate.
 - Mechanism for recognizing stalemate situations.
 - Handling of pawn promotion, including the possibility of promoting to a queen, rook, bishop, or knight.
+
+## Installation
