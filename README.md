@@ -34,5 +34,5 @@ You can download the latest release from the [Release page](https://github.com/p
 3. Open a terminal or command prompt and navigate to the directory where the '.jar' file is located.
 4. Run the following command to start the game:
 
-   ![java -version](2.jpg)
+   ![java -jar your-game-file.jar](2.jpg)
 5. Replace your-game-fie.jar' with the actual name of the downloaded file.
