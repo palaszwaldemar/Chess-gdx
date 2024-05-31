@@ -2,13 +2,8 @@
 
 A chess game built using the libGDX engine.
 
-
-
-
-
-
 ## Table of Contents
-- [Features] (Features)
+- [Features] (#features)
 
 ## Features
 - Classic chess gameplay
