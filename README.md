@@ -18,3 +18,9 @@ A chess game built using the libGDX engine.
 - Handling of pawn promotion, including the possibility of promoting to a queen, rook, bishop, or knight.
 
 ## Installation
+### Perequisites
+- Java Development Kit (JDK) 17 or higher
+
+You can download the JDK from [Oracle's website](https://www.oracle.com/pl/java/technologies/downloads/) or use your system's package manager.
+###Download
+You can download the latest release from the [Release page]().
