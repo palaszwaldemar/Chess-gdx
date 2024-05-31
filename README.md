@@ -40,5 +40,5 @@ You can download the latest release from the [Release page](https://github.com/p
 
 ## Tests
 This project includes unit tests to ensure the correctness of the core functionality. You can run the tests using your preferred Java IDE or via the command line using a build tool like Maven. To run the tests via command line, navigate to the project directory and use the following commands:
-   
+
    ![mvn test](3.jpg)
