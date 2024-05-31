@@ -5,6 +5,7 @@ A chess game built using the libGDX engine.
 ## Table of Contents
 - [Features](#features)
 - [Installation](#installation)
+- [Running the Game](#running the game)
 
 ## Features
 - Rich grahics and animations powered by libGDX
@@ -24,3 +25,6 @@ A chess game built using the libGDX engine.
 You can download the JDK from [Oracle's website](https://www.oracle.com/pl/java/technologies/downloads/) or use your system's package manager.
 ### Download
 You can download the latest release from the [Release page](https://github.com/palaszwaldemar/Chess-gdx/releases).
+
+## Running the Game
+1. Ensure you have Java installed and set up correctly. You can check this by runnig the following command in your terminal or command prompt:
