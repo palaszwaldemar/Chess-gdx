@@ -14,7 +14,7 @@ A chess game built using the libGDX engine.
 
 ## Gameplay
 
-![Gameplay GIF](gameplay.gif)
+<img src="gameplay.gif" alt="Gameplay GIF" width="400"/>
 
 ## Features
 - Rich grahics and animations powered by libGDX
