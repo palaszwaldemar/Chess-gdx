@@ -8,6 +8,7 @@ A chess game built using the libGDX engine.
 - [Running the Game](#running-the-game)
 - [Tests](#tests)
 - [Documentation](#documentation)
+- [Contributing](#contributing)
 
 ## Features
 - Rich grahics and animations powered by libGDX
@@ -48,3 +49,10 @@ This project includes unit tests to ensure the correctness of the core functiona
 Documentation for the most important classes is provided to help undestand the code structure and functionality. You can generate the documentation using the following command:
 
 ![mvn javadoc:javadoc](4.jpg)
+
+## Contributing
+1. Fork the repository
+2. Create your feature branch (**git checkout -b feature/Feature**)
+3. Commit your changes (**git commit -m 'Add some Feature'**)
+4. Push to the branch (**git push origin feature/Feature**)
+5. Open a Pull Request
