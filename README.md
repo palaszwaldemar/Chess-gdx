@@ -11,6 +11,10 @@ A chess game built using the libGDX engine.
 - [Future Development](#future-development)
 - [Contributing](#contributing)
 
+## Gameplay
+
+![Gameplay GIF](gameplay.gif)
+
 ## Features
 - Rich grahics and animations powered by libGDX
 - Classic chess gameplay
