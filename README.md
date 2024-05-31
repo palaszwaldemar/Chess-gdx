@@ -17,7 +17,7 @@ Below is a short GIF showing the basic moves in the chess game:
 
 <img src="gameplay.gif" alt="Gameplay GIF" width="400"/>
 Presented moves: 
--moving chess pieces
+- moving chess pieces
 - capturing chess pieces
 - promoting pawns
 - castling
