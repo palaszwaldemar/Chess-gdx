@@ -34,7 +34,7 @@ You can download the latest release from the [Release page](https://github.com/p
 
    ![java -version](1.jpg)
 2. Download the '.jar' file from [Releases page](https://github.com/palaszwaldemar/Chess-gdx/releases).
-3. Open a terminal or command prompt and navigate to the directory where the '.jar' file is located.
+3. **You can simply double-click the '.jar' file to start the game**. If double-clicking doesn't work, open a terminal or command prompt and navigate to the directory where the '.jar' file is located.
 4. Run the following command to start the game:
 
    ![java -jar your-game-file.jar](2.jpg)
