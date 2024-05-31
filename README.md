@@ -13,8 +13,9 @@ A chess game built using the libGDX engine.
 - [Contributing](#contributing)
 
 ## Gameplay
-
+Below is a short GIF showing the basic moves in the chess game:
 <img src="gameplay.gif" alt="Gameplay GIF" width="400"/>
+This GIF shows some basic chess moves such as moving chess pieces, capturing chess pieces, pawn promotion, castling. 
 
 ## Features
 - Rich grahics and animations powered by libGDX
