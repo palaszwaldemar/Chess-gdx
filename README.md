@@ -6,7 +6,9 @@ A chess game built using the libGDX engine.
 - [Features](#features)
 
 ## Features
+- Rich grahics and animations powered by libGDX
 - Classic chess gameplay
+- Single-player mode
 - Implementation of basic chess moves, such as moving pawns, knights, rooks, bishops, queens, and kings.
 - Ability to perform castling.
 - Detection of check.
