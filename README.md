@@ -22,5 +22,5 @@ A chess game built using the libGDX engine.
 - Java Development Kit (JDK) 17 or higher
 
 You can download the JDK from [Oracle's website](https://www.oracle.com/pl/java/technologies/downloads/) or use your system's package manager.
-###Download
-You can download the latest release from the [Release page]().
+### Download
+You can download the latest release from the [Release page](https://github.com/palaszwaldemar/Chess-gdx/releases).
