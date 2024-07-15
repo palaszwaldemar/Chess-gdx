@@ -70,7 +70,7 @@ The project is actively being developed, and future versions may include additio
 - Adding multiplayer mode
 - Implementing artificial intelligence for single-player mode
 - Improving user interface and player experience
-- Optimizing performance and increasing game stability
+
 If you have an idea for a new feature or improvement, or you'd like to contribute to the project in any other way, I encourage you to submit proposals and participate in its development.
 
 ## Contributing
