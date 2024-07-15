@@ -26,7 +26,7 @@ Below is a short GIF showing the basic moves in the chess game:
 ## Features
 - Rich graphics and animations powered by libGDX
 - Classic chess gameplay
-- Single-player mode
+- Local two-player mode: Play with a friend on a single computer
 - Implementation of basic chess moves, such as moving pawns, knights, rooks, bishops, queens, and kings
 - Ability to perform castling
 - Detection of check
